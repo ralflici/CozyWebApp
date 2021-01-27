@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-security-policy" content="default-src 'self'">
+    <title>Profile</title>
+    <link rel="icon" href="../images/favicon.png" sizes="16x16 32x32" type="image/png">
+    <link rel="stylesheet" type="text/css" href="https://connary.com/_fontvue/greycliff.css">
+    <!--<link rel="stylesheet" href="../style/index_style.css">-->
+    <link rel="stylesheet" href="../stylesheets/user_style.css">
+</head>
+<body>
+    <div class="user-popup" id="change-password-popup">
+        <div class="user-popup-container" id="change-password-popup-container">
+            <div class="close-icon">✖</div>
+            <form>
+                <label for="old-pass">Old password</label><br>
+                <input type="password" id="old-pass" name="old-password" minlength="8" required><br><br>
+                <label for="old-pass">New password (min 8)</label><br>
+                <input type="password" id="new-pass1" name="new-password1" minlength="8" required><br><br>
+                <label for="old-pass">New password again</label><br>
+                <input type="password" id="new-pass2" name="new-password2" minlength="8" required><br><br>
+                <input class="big-button" id="submit-pass-change" type="submit" value="Change">
+            </form>
+        </div>
+    </div>
+
+    <div class="user-popup" id="delete-account-popup">
+        <div class="user-popup-container" id="delete-account-popup-container">
+            <div class="close-icon">✖</div>
+            <p class="user-popup-text">Are you sure you want to delete this account?</p>
+            <div class="user-popup-button-container">
+                <button class="big-button" id="no-delete">No</button>
+                <button class="big-button" id="yes-delete">Yes</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="header">
+        <span class="home">
+            <span class="logo">
+                <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g>
+                        <rect rx="2px" width="13" height="13" style="fill:#000000"/>
+                        <rect rx="2px" y=17 width="13" height="13" style="fill:#000000"/>
+                        <rect rx="2px" x=17 y=17 width="13" height="13" style="fill:#000000"/>
+                    </g>
+                </svg>
+            </span>
+            <span class="name-container"><a href="../index.html" class="name">Cozy</a></span>
+        </span>
+        <ul class="navbar-list">
+            <li id="messages-item"><a style="cursor: pointer;" href="messages.html" title="User messages">Messages</a></li>
+            <li id="bookings-item"><a style="cursor: pointer;" href="bookings.html" title="User bookings">Bookings</a></li>
+            <li class="selected" id="user-item"><a style="cursor: default;" onclick="">User</a></li>
+            <a href="log.html" style="cursor: pointer;" id="user-icon-link"><li id="user-icon" title="User profile">
+                <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#ffffff" stroke="#000000" stroke-width="2px" stroke-linecap="round">
+                        <circle cx="15" cy="15" r="14"/>
+                        <path d="M 4.4 24 Q 15 10 25.6 24"/>
+                        <circle cx="15" cy="15" r="5.5"/>
+                        <circle cx="25" cy="5" r="5" fill="#EF4923" stroke="none"/>
+                    </g>
+                </svg>
+            </li></a>
+        </ul>
+    </div>
+    <div class="main-container">
+        <div class="menu-container">
+            <div class="user-info">
+                <span class="user-info-image">
+                    <img src="../images/userIcon.png" alt="">
+                </span>
+                <span class="user-info-text">
+                    <div class="user-name">Name Surname</div>
+                    <div class="user-account">User account</div>
+                </span>
+            </div>
+            <ul class="menu-list">
+                <li class="menu-item" id="messages"><a href="messages.html">Messages</a></li>
+                <li class="menu-item" id="bookings"><a href="bookings.html">Bookings</a></li>
+                <li class="menu-item selected" id="profile"><a href="#">Profile</a></li>
+            </ul>
+        </div>
+        <div class="content-container">
+            <h1 class="page-title">Profile</h1>
+            <div class="profile-container">
+                <span class="form-container">
+                    <form action="">
+                        <div class="section" id="name">
+                            <label for="name">Name</label><br>
+                            <input type="text" id="name" name="name" value=""><br>
+                        </div>
+                        <div class="section" id="email">
+                            <label for="email">Email</label><br>
+                            <input type="text" id="email" name="email" value=""><br>
+                        </div>
+                        <div class="section" id="location">
+                            <label for="location">Location</label><br>
+                            <input type="text" id="location" name="location" value=""><br>
+                        </div>
+                        <div class="section" id="bio">
+                            <label for="bio">Bio</label><br>
+                            <!--<input type="text" id="bio" name="bio" value="Tell us something about you"><br>-->
+                            <textarea name="bio" rows="4"></textarea><br>
+                        </div>
+                    </form>
+                    <div class="button-container">
+                        <button class="big-button" id="edit-profile">Edit your profile</button>
+                        <button class="big-button" id="change-password">Change password</button>
+                        <button class="big-button" id="delete-account">Delete account</button>
+                    </div>
+                    
+                </span>
+                <form class="picture-container">
+                    <label id="pic-label" for="picture">Profile picture</label>
+                    <div class="pic">
+                        <img src="../images/userIcon.svg" alt="Profile picture">
+                    </div>
+                    <input type="file" id="edit-picture" name="name" accept="image/*"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <ul class="footer-list">
+            <li><a href="../index.html">Discover</a></li>
+            <li id="login-footer">Log In</li>
+            <li id="homepage"><img src="../images/logoIcon.png" alt=""><a href="../index.html">Cozy</a></li>
+            <li id="share">Share</li>
+            <li id="contact">Contact</li>
+        </ul>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../javascripts/user.js"></script>
+</body>

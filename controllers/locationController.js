@@ -1,0 +1,10 @@
+var Location = require("../models/location");
+
+exports.location_list = function(req, res) {
+    Location
+        .find({})
+        .exec(function (err, listLocations) {
+            if (err) {console.log(err);}
+            res.send(listLocations);
+        });
+}

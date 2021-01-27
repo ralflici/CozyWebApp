@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-security-policy" content="default-src 'self'">
+    <title>Messages</title>
+    <link rel="icon" href="../../images/favicon.png" sizes="16x16 32x32" type="image/png">
+    <link rel="stylesheet" type="text/css" href="https://connary.com/_fontvue/greycliff.css">
+    <!--<link rel="stylesheet" href="../style/index_style.css">-->
+    <link rel="stylesheet" href="../stylesheets/user_style.css">
+</head>
+<body>
+    <div class="header">
+        <span class="home">
+            <span class="logo">
+                <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g>
+                        <rect rx="2px" width="13" height="13" style="fill:#000000"/>
+                        <rect rx="2px" y=17 width="13" height="13" style="fill:#000000"/>
+                        <rect rx="2px" x=17 y=17 width="13" height="13" style="fill:#000000"/>
+                    </g>
+                </svg>
+            </span>
+            <span class="name-container"><a href="../index.html" class="name">Cozy</a></span>
+        </span>
+        <ul class="navbar-list">
+            <li class="selected" id="messages-item"><a style="cursor: default;" onclick="">Messages</a></li>
+            <li id="bookings-item"><a style="cursor: pointer;" href="bookings.html" title="User bookings">Bookings</a></li>
+            <li id="user-item"><a style="cursor: pointer;" href="profile.html" title="User profile">User</a></li>
+            <a href="log.html" style="cursor: pointer;" id="user-icon-link"><li id="user-icon" title="User profile">
+                <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#ffffff" stroke="#000000" stroke-width="2px" stroke-linecap="round">
+                        <circle cx="15" cy="15" r="14"/>
+                        <path d="M 4.4 24 Q 15 10 25.6 24"/>
+                        <circle cx="15" cy="15" r="5.5"/>
+                        <circle cx="25" cy="5" r="5" fill="#EF4923" stroke="none"/>
+                    </g>
+                </svg>
+            </li></a>
+        </ul>
+    </div>
+    <div class="main-container">
+        <div class="menu-container">
+            <div class="user-info">
+                <span class="user-info-image">
+                    <img src="../media/userIcon.png" alt="">
+                </span>
+                <span class="user-info-text">
+                    <div class="user-name">Name Surname</div>
+                    <div class="user-account">User account</div>
+                </span>
+            </div>
+            <ul class="menu-list">
+                <li class="menu-item selected" id="messages"><a href="#">Messages</a></li>
+                <li class="menu-item" id="bookings"><a href="bookings.html">Bookings</a></li>
+                <li class="menu-item" id="profile"><a href="profile.html">Profile</a></li>
+            </ul>
+        </div>
+        <div class="content-container">
+            <h1 class="page-title">Messages</h1>
+            <div class="main-messages-container">
+                <!--
+                <div class="no-messages-container">
+                    <p class="no-messages-text">There are no<br>messages to read</p>
+                </div>
+                -->
+                <div class="item-container">
+                    <span class="item-image-container"></span>
+                    <span class="item-text">
+                        <div class="item-name">Castello di Udine, Udine, Italia</div>
+                        <div class="item-price">80€/night</div>
+                        <div class="item-open-icon">···</div>
+                    </span>
+                </div>
+                <div class="item-container">
+                    <span class="item-image-container"></span>
+                    <span class="item-text">
+                        <div class="item-name">Castello di Udine, Udine, Italia</div>
+                        <div class="item-price">80€/night</div>
+                        <div class="item-open-icon">···</div>
+                    </span>
+                </div>
+                <div class="item-container">
+                    <span class="item-image-container"></span>
+                    <span class="item-text">
+                        <div class="item-name">Castello di Udine, Udine, Italia</div>
+                        <div class="item-price">80€/night</div>
+                        <div class="item-open-icon">···</div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <ul class="footer-list">
+            <li><a href="../index.html">Discover</a></li>
+            <li id="login-footer">Log In</li>
+            <li id="homepage"><img src="../images/logoIcon.png" alt=""><a href="../index.html">Cozy</a></li>
+            <li id="share">Share</li>
+            <li id="contact">Contact</li>
+        </ul>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../javascripts/user.js"></script>
+</body>

@@ -1,0 +1,81 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+    {
+        "type": "Feature",
+        "properties": {
+          "id": 0,
+          "name": "Casa graziosa",
+          "type": 0,
+          "avail": [["2021-01-17","2021-06-30"]],
+          "guests": [2,1,1],
+          "price": 80,
+          "rooms": [1,1,1]
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            13.232817649841307,
+            46.06587644594251
+        ]
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+          "id": 1,
+          "name": "Stanza Cairoli",
+          "type": 1,
+          "avail": [["2021-01-17","2021-06-30"]],
+          "guests": [2,0,0],
+          "price": 50,
+          "rooms": [1,1,0]
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            13.24101448059082,
+            46.06462584021945
+        ]
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+          "id": 2,
+          "name": "Casa deliziosa",
+          "type": 0,
+          "avail": [["2021-01-17","2021-06-30"]],
+          "guests": [3,1,0],
+          "price": 90,
+          "rooms": [2,2,1]
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            13.231873512268065,
+            46.061618315234156
+        ]
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+          "id": 4,
+          "name": "Feruglio",
+          "type": 2,
+          "avail": [["2021-01-17","2021-06-30"]],
+          "guests": [1,0,0],
+          "price": 40,
+          "rooms": [1,1,0]
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            13.241443634033203,
+            46.06006982263798
+        ]
+        }
+    }
+]
+}

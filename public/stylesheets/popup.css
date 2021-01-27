@@ -1,0 +1,221 @@
+.ol-popup {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 0px 2px rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 9px;
+    /*bottom: 12px;
+    left: -50px;*/
+    width: 270px;
+    height: 350px;
+    display: none;
+    /*transition: all 0.2s ease-out;*/
+}
+
+.ol-popup:after, .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+}
+
+.ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
+
+.popup-content {
+    margin: 0;
+    text-align: center;
+    height: 100%;
+}
+
+.popup-text-container {
+    position: relative;
+    top: -6px;
+    margin-top: 15px;
+    height: 49px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content:space-between;
+}
+
+.popup-text-container p {
+    margin: 0;
+}
+
+.popup-text {
+    color: #000000;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 500;
+    flex-basis: 50%;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.popup-price {
+    color: #707070;
+    width: 40%;
+    /*padding-left: 18%;
+    padding-right: 2%;*/
+    margin: auto;
+    text-align: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    overflow-wrap: break-word;
+    font-size: 18px;
+    font-weight: 300;
+    border-left: 1px solid #cccccc;
+}
+
+.popup-slide-container {
+    width: 100%;
+    height: 80%;
+    background-color: #ffffff;
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.popup-image-arrow {
+    position: absolute;
+    top: 138.75px;
+    left: 20px;
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 19px;
+    border-radius: 25px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    font-size: 20px;
+    font-weight: 500;
+    z-index: 1;
+    opacity: 0;
+    transition: all 0.1s;
+}
+
+.popup-image-arrow > svg {
+    display: block;
+    width: 60%;
+    height: 60%;
+    margin: 20%;
+}
+
+.popup-image-arrow#next {
+    left: 222px;
+}
+
+.popup-image-arrow:hover, .popup-checkmark:hover, .popup-vignette:hover {
+    opacity: 1;
+}
+
+.popup-image-arrow:active {
+    box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    transform: scale(0.97);
+}
+
+.popup-image {
+    height: 100%;
+    filter: blur(5px);
+    display: none;
+    transition: all 0.2s;
+}
+
+.popup-image.visible {
+    display: initial;
+    filter: none;
+}
+
+.popup-slide-indicator {
+    position: relative;
+    top: -20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.popup-slide-circle {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    margin-right: 5px;
+    background-color: #ffffff;
+    opacity: 0.7;
+    transform: scale(0.8);
+    transition: all 0.2s ease-out;
+}
+
+.popup-slide-circle:last-child {
+    margin-right: 0px;
+}
+
+.popup-slide-circle.active {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.popup-checkmark, .popup-vignette {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    top: 15px;
+    right: 15px;
+    border-bottom-left-radius: 9px;
+    color: #707070;
+    background-color: #ffffff;
+    font-family: greycliff;
+    font-size: 16px;
+    font-weight: 900;
+    text-align: center;
+    line-height: 28px;
+    z-index: 1;
+    opacity: 0.5;
+    transition: all 0.1s;
+    cursor: pointer;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.popup-vignette {
+    top: 15px;
+    left: 15px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 9px;
+    font-size: 14px;
+}
+
+.slide {
+    position: absolute;
+    width:100%;
+    max-height: 100%;
+    object-fit:cover;
+    z-index: 2;
+}

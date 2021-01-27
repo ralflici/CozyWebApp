@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <g id="user_icon" data-name="user icon" transform="translate(-1845 -16)">
+    <g id="Ellisse_2" data-name="Ellisse 2" transform="translate(1845 16)" fill="#fff" stroke="#000" stroke-width="2">
+      <circle cx="15" cy="15" r="15" stroke="none"/>
+      <circle cx="15" cy="15" r="14" fill="none"/>
+    </g>
+    <path id="Tracciato_1" data-name="Tracciato 1" d="M1849.146,40.188c10.39-16.57,21.313,0,21.313,0" transform="translate(0.292 1)" fill="none" stroke="#000" stroke-width="2"/>
+    <g id="Ellisse_3" data-name="Ellisse 3" transform="translate(1853 24)" fill="#fff" stroke="#000" stroke-width="2">
+      <circle cx="7" cy="7" r="7" stroke="none"/>
+      <circle cx="7" cy="7" r="6" fill="none"/>
+    </g>
+  </g>
+</svg>

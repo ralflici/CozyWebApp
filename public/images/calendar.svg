@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="250" height="195" viewBox="0 0 250 195">
+  <g id="CalendarBooking" transform="translate(-962 -222)">
+    <g id="Rettangolo_13" data-name="Rettangolo 13" transform="translate(962 241)" fill="none" stroke="#ccc" stroke-width="2">
+      <path d="M22,0H228a22,22,0,0,1,22,22V167a9,9,0,0,1-9,9H9a9,9,0,0,1-9-9V22A22,22,0,0,1,22,0Z" stroke="none"/>
+      <path d="M22,1H228a21,21,0,0,1,21,21V167a8,8,0,0,1-8,8H9a8,8,0,0,1-8-8V22A21,21,0,0,1,22,1Z" fill="none"/>
+    </g>
+    <g id="Rettangolo_16" data-name="Rettangolo 16" transform="translate(962 241)" fill="none" stroke="#ccc" stroke-width="2">
+      <path d="M22,0H228a22,22,0,0,1,22,22V145a31,31,0,0,1-31,31H9a9,9,0,0,1-9-9V22A22,22,0,0,1,22,0Z" stroke="none"/>
+      <path d="M22,1H228a21,21,0,0,1,21,21V145a30,30,0,0,1-30,30H9a8,8,0,0,1-8-8V22A21,21,0,0,1,22,1Z" fill="none"/>
+    </g>
+    <g id="Rettangolo_17" data-name="Rettangolo 17" transform="translate(962 241)" fill="none" stroke="#ccc" stroke-width="2">
+      <path d="M22,0H228a22,22,0,0,1,22,22v83a71,71,0,0,1-71,71H9a9,9,0,0,1-9-9V22A22,22,0,0,1,22,0Z" stroke="none"/>
+      <path d="M22,1H228a21,21,0,0,1,21,21v83a70,70,0,0,1-70,70H9a8,8,0,0,1-8-8V22A21,21,0,0,1,22,1Z" fill="none"/>
+    </g>
+    <g id="Rettangolo_18" data-name="Rettangolo 18" transform="translate(962 241)" fill="#ccc" stroke="#ccc" stroke-width="1">
+      <path d="M22,0H228a22,22,0,0,1,22,22V44a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V22A22,22,0,0,1,22,0Z" stroke="none"/>
+      <path d="M22,.5H228A21.5,21.5,0,0,1,249.5,22V43a.5.5,0,0,1-.5.5H1A.5.5,0,0,1,.5,43V22A21.5,21.5,0,0,1,22,.5Z" fill="none"/>
+    </g>
+    <g id="Rettangolo_14" data-name="Rettangolo 14" transform="translate(1017 222)" fill="#fff" stroke="#ccc" stroke-width="2">
+      <rect width="25" height="38" rx="6" stroke="none"/>
+      <rect x="1" y="1" width="23" height="36" rx="5" fill="none"/>
+    </g>
+    <g id="Rettangolo_15" data-name="Rettangolo 15" transform="translate(1132 222)" fill="#fff" stroke="#ccc" stroke-width="2">
+      <rect width="25" height="38" rx="6" stroke="none"/>
+      <rect x="1" y="1" width="23" height="36" rx="5" fill="none"/>
+    </g>
+  </g>
+</svg>

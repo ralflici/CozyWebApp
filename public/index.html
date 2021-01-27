@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozy</title>
+    
+    <link rel="icon" href="images/favicon.png" sizes="16x16 32x32" type="image/png">
+    
+    <link rel="stylesheet" href="https://connary.com/_fontvue/greycliff.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css">
+    <link rel="stylesheet" href="stylesheets/index_style.css">
+    <link rel="stylesheet" href="stylesheets/index_small_style.css">
+    <link rel="stylesheet" href="stylesheets/popup.css">
+</head>
+<body>
+    <div class="main-page-wrapper">
+        <div class="left-container">
+            <div class="left-text">
+                <div class="home">
+                    <div class="logo">
+                        <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g width="30" hieght="30" fill="#000000">
+                                <rect rx="2px" width="13" height="13"/>
+                                <rect rx="2px" y=17 width="13" height="13"/>
+                                <rect rx="2px" x=17 y=17 width="13" height="13"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <h1 class="name">Cozy</h1>
+                </div>
+                <div class="scroll">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve" style="transform: rotate(-90deg);">
+                        <polyline fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" points="15.5,21 6.5,12 15.5,3 "/>
+                    </svg>
+                </div>
+                <h1 class="left-header">Prepare for a lifetime experience and cruise with confidence!</h1>
+                <p class="left-paragraph">Travel is the only thing you buy that makes you richer. The journey of a thousand miles begins with a single step.</p>
+                <a href="user/log.html" id="get-started-link"><button type="button" class="big-button" id="get-started">Get started</button></a>
+            </div>
+
+            <div class="map" id="map"></div>
+
+            <div class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div class="popup-content">
+                    <div class="popup-slide-container">
+                        <div class="popup-vignette">💬</div>
+                        <div class="popup-checkmark">✓</div>
+                        <img class="popup-image visible" src="https://www.ilfriuli.it/writable/images/castello_Udineesterno-01_Thumb_HighlightCenter225388.jpg" alt="Castello di Udine">
+                        <img class="popup-image" src="https://www.italyzone.it/viaggi/wp-content/uploads/2013/07/castello-di-udine.jpg" alt="Castello di Udine">
+                        <img class="popup-image" src="https://citynews-udinetoday.stgy.ovh/~media/horizontal-mid/24020558212835/castello-udine-3.jpg" alt="Castello di Udine">
+                        <div class="popup-image-arrow" id="prev">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+                                <g>
+                                    <polyline stroke="#707070" fill="none" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" points="15.5,21 6.5,12 15.5,3 "/>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="popup-image-arrow" id="next">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve" style="transform: rotate(180deg);">
+                                <g>
+                                    <polyline stroke="#707070" fill="none" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" points="15.5,21 6.5,12 15.5,3 "/>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="popup-slide-indicator">
+                        <span class="popup-slide-circle active"></span>
+                        <span class="popup-slide-circle"></span>
+                        <span class="popup-slide-circle"></span>
+                    </div>
+                    <div class="popup-text-container">
+                        <p class="popup-text">Castello di Udine, Udine 33100, Italia</p>
+                        <p class="popup-price">80€<br>night</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-container">
+            <ul class="navbar-list">
+                <li id="menu-icon">
+                    <svg stroke="none" width="35px" height="27px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"/>
+                    </svg>
+                </li>
+                <li id="messages-item"><a style="cursor: pointer;" href="./user/messages.html" title="User messages">Messages</a></li>
+                <li id="bookings-item"><a style="cursor: pointer;" href="./user/bookings.html" title="User bookings">Bookings</a></li>
+                <li id="user-item"><a style="cursor: pointer;" href="/user/profile.html" title="User profile">User</a></li>
+                <a href="user/log.html" style="cursor: pointer;" id="user-icon-link"><li id="user-icon" title="User profile">
+                    <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="#ffffff" stroke="#000000" stroke-width="2px" stroke-linecap="round">
+                            <circle cx="15" cy="15" r="14"/>
+                            <path d="M 4.4 24 Q 15 10 25.6 24"/>
+                            <circle cx="15" cy="15" r="5.5"/>
+                            <circle cx="25" cy="5" r="5" fill="#EF4923" stroke="none"/>
+                        </g>
+                    </svg>
+                </li></a>
+            </ul>
+            <div class="searchbar">
+                <span class="search-icon">
+                    <svg viewbox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" >
+                        <g width="22" height="22" fill="transparent" stroke="#000000" stroke-width="2px">
+                            <circle cx="8.5" cy="8.5" r="8.5"/>
+                            <path d="M 15 15 L 22 22"/>
+                        </g>
+                    </svg>
+                </span>
+                <input class="search-form" id="search" type="text" name="search" value="Search">
+                <div class="search-line"></div>
+                <div class="search-dropdown">
+                </div>
+            </div>
+
+            <h1 class="right-main-header">Discover</h1>
+            <ul class="continent-list">
+                <li class="continent">Europe</li>
+                <li class="continent">Asia</li>
+                <li class="continent">America</li>
+                <li class="continent">Africa</li>
+                <li class="continent">Oceania</li>
+            </ul>
+            
+            <div class="location-slideshow">
+                <span class="location-image" id="loc1"></span>
+                <span class="location-image" id="loc2"></span>
+                <span class="location-image" id="loc3"></span>
+                <span class="location-image" id="loc4"></span>
+                <span class="location-image" id="loc5"></span>
+            </div>
+            
+            <h2 class="right-header">Type of place</h2>
+            <div class="typeplace-list">
+                <span class="typeplace" id="entire-place">
+                    <div class="type-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24.297" height="24.56" viewBox="0 0 24.297 24.56">
+                            <g transform="translate(0 0)" fill="none">
+                            <path d="M9.648,24.56h-6a1,1,0,0,1-1-1v-10H1a1,1,0,0,1-.72-1.695L11.428.306a1,1,0,0,1,1.44,0l2.78,2.883V2.56h4V7.337l4.367,4.529a1,1,0,0,1-.72,1.695H21.649v10a1,1,0,0,1-1,1h-6v-7a1,1,0,0,0-1-1h-3a1,1,0,0,0-1,1v7h0Z" stroke="none"/>
+                            <path d="M 8.648900985717773 23.55994987487793 L 8.648900985717773 17.55990028381348 C 8.648900985717773 16.45666122436523 9.546051025390625 15.55910015106201 10.64880084991455 15.55910015106201 L 13.6485013961792 15.55910015106201 C 14.75125122070313 15.55910015106201 15.64840126037598 16.45666122436523 15.64840126037598 17.55990028381348 L 15.64840126037598 23.55921745300293 L 20.64860153198242 23.55929946899414 L 20.64860153198242 13.56030082702637 L 20.64860153198242 12.56030082702637 L 21.64860153198242 12.56030082702637 L 23.29452896118164 12.56030082702637 C 23.29461860656738 12.56008815765381 23.29470825195313 12.55987548828125 23.29484176635742 12.55971050262451 L 18.92804145812988 8.030910491943359 L 18.64790153503418 7.740390300750732 L 18.64790153503418 7.336800575256348 L 18.64790153503418 3.559600353240967 L 16.64830017089844 3.559600353240967 L 16.64830017089844 5.666150569915771 L 14.92850112915039 3.882880449295044 L 12.14805126190186 1.000130414962769 L 1.001940965652466 12.5593204498291 C 1.00182843208313 12.5594367980957 1.001718044281006 12.55955219268799 1.001609206199646 12.55966663360596 C 1.001695394515991 12.5598783493042 1.001783728599548 12.56009006500244 1.001873731613159 12.56030082702637 L 2.648700952529907 12.56030082702637 L 3.648700952529907 12.56030082702637 L 3.648700952529907 13.56030082702637 L 3.648751020431519 23.55920028686523 L 8.648900985717773 23.55994987487793 M 9.648900985717773 24.56010055541992 L 9.648000717163086 24.56010055541992 L 3.648601055145264 24.55920028686523 C 3.096900939941406 24.55920028686523 2.648700952529907 24.11100006103516 2.648700952529907 23.55929946899414 L 2.648700952529907 13.56030082702637 L 1.0017009973526 13.56030082702637 C 0.1197009906172752 13.56030082702637 -0.3302990198135376 12.50100040435791 0.281700998544693 11.8656005859375 L 11.42820072174072 0.3060003519058228 C 11.62485122680664 0.1021503657102585 11.88652610778809 0.0002253631537314504 12.14820098876953 0.0002253631537314504 C 12.40987586975098 0.0002253631537314504 12.67155075073242 0.1021503657102585 12.86820125579834 0.3060003519058228 L 15.64830112457275 3.188700437545776 L 15.64830112457275 2.559600353240967 L 19.64790153503418 2.559600353240967 L 19.64790153503418 7.336800575256348 L 24.01470184326172 11.8656005859375 C 24.62670135498047 12.50100040435791 24.17670059204102 13.56030082702637 23.29470062255859 13.56030082702637 L 21.64860153198242 13.56030082702637 L 21.64860153198242 23.55929946899414 C 21.64860153198242 24.11100006103516 21.19950103759766 24.55920028686523 20.64870071411133 24.55920028686523 L 14.64840126037598 24.55920028686523 L 14.64840126037598 17.55990028381348 C 14.64840126037598 17.00819969177246 14.19930076599121 16.55910110473633 13.6485013961792 16.55910110473633 L 10.64880084991455 16.55910110473633 C 10.09710121154785 16.55910110473633 9.648900985717773 17.00819969177246 9.648900985717773 17.55990028381348 L 9.648900985717773 24.55920028686523 L 9.648900985717773 24.56010055541992 Z" stroke="none" fill="#cccccc"/>
+                            </g>
+                        </svg>                      
+                    </div>
+                    <div class="typeplace-text">ENTIRE PLACE</div>
+                </span>
+                <span class="typeplace" id="private-room">
+                    <div class="type-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 25 25">
+                            <g id="lock" transform="translate(-1168 -949)">
+                            <g id="Ellisse_6" data-name="Ellisse 6" transform="translate(1168 949)" fill="none" stroke="#ccc" stroke-width="1">
+                                <circle cx="12.5" cy="12.5" r="12.5" stroke="none"/>
+                                <circle cx="12.5" cy="12.5" r="12" fill="none"/>
+                            </g>
+                            <path id="Unione_2" data-name="Unione 2" d="M2,14V6.663a3.5,3.5,0,1,1,3,0V14Z" transform="translate(1177 955)" fill="#ccc"/>
+                            </g>
+                        </svg>    
+                    </div>
+                    <div class="typeplace-text">PRIVATE ROOM</div>
+                </span>
+                <span class="typeplace" id="shared-room">
+                    <div class="type-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 25 25">
+                            <defs>
+                            <clipPath id="clip-path">
+                                <rect id="Rettangolo_13" data-name="Rettangolo 13" width="25" height="25" transform="translate(1296 949)" fill="#ccc"/>
+                            </clipPath>
+                            </defs>
+                            <g id="Gruppo_di_maschere_1" data-name="Gruppo di maschere 1" transform="translate(-1296 -949)" clip-path="url(#clip-path)">
+                            <g id="greeting_icon" transform="translate(1297.608 949)">
+                                <path id="Tracciato_6" data-name="Tracciato 6" d="M17.769-28.059c-.147.069-.154.082-.479.959a4.777,4.777,0,0,0-.3.9.371.371,0,0,0,.717.137c.06-.137.571-1.532.583-1.587a.394.394,0,0,0-.062-.278A.38.38,0,0,0,17.769-28.059Z" transform="translate(-12.532 28.09)" fill="transparent"/>
+                                <path id="Tracciato_7" data-name="Tracciato 7" d="M14.875-27.975a.349.349,0,0,0-.225.342c0,.09.013.131.147.419l.282.612c.288.628.305.659.38.724a.37.37,0,0,0,.612-.287.7.7,0,0,0-.1-.3c-.052-.116-.156-.342-.231-.5-.451-.98-.422-.932-.55-1A.347.347,0,0,0,14.875-27.975Z" transform="translate(-12.629 28.093)" fill="transparent"/>
+                                <path id="Tracciato_8" data-name="Tracciato 8" d="M24.818-26.818a3.569,3.569,0,0,0-2.874,1.984,3.6,3.6,0,0,0-.345,1.106,4.681,4.681,0,0,0,0,1.039,3.606,3.606,0,0,0,1.034,2.071,3.611,3.611,0,0,0,2.177,1.022,4.893,4.893,0,0,0,1.014-.034,3.563,3.563,0,0,0,2.623-1.949,3.6,3.6,0,0,0,.374-1.58,3.667,3.667,0,0,0-.181-1.212,3.472,3.472,0,0,0-.838-1.376,3.525,3.525,0,0,0-1.994-1.041A4.981,4.981,0,0,0,24.818-26.818Z" transform="translate(-12.341 28.142)" fill="transparent"/>
+                                <path id="Tracciato_9" data-name="Tracciato 9" d="M13.027-25.869a.341.341,0,0,0-.211.1.452.452,0,0,0-.106.266.436.436,0,0,0,.141.292c.072.054,1.621.628,1.73.64a.276.276,0,0,0,.178-.034.373.373,0,0,0,.08-.633c-.059-.045-1.552-.612-1.676-.633A.459.459,0,0,0,13.027-25.869Z" transform="translate(-12.71 28.182)" fill="transparent"/>
+                                <path id="Tracciato_10" data-name="Tracciato 10" d="M16.663-25.506a1.439,1.439,0,0,0-1.155,1.151,1.7,1.7,0,0,0,.017.59A12.87,12.87,0,0,0,16.792-21.5a15.259,15.259,0,0,0,1.456,1.884,10.182,10.182,0,0,0,1.872,1.538c.853.6,1,.717,1.151.939a1.476,1.476,0,0,1,.25.665,13.9,13.9,0,0,1,.027,1.686c0,.825-.007,1.813-.013,2.2s-.013,2.34-.018,4.349c-.007,3.186-.005,3.672.017,3.8a1.372,1.372,0,0,0,1.242,1.2,1.529,1.529,0,0,0,.411.047.658.658,0,0,0,.335-.05,1.594,1.594,0,0,0,.543-.39,1.173,1.173,0,0,0,.362-.5,2.9,2.9,0,0,0,.107-.607c.005-.087.008-1.317.01-2.732,0-2.13.007-2.591.027-2.681a.9.9,0,0,1,.878-.721.907.907,0,0,1,.88.68c.022.085.025.451.027,2.831v2.732l.057.24a1.13,1.13,0,0,0,.35.67,1.214,1.214,0,0,0,1.4.474c.69-.173,1.034-.461,1.168-.985.069-.266.067-.154.069-6.231,0-5.45,0-5.836.028-5.894.037-.084.1-.112.154-.075a21.882,21.882,0,0,1,1.242,2.216,11.642,11.642,0,0,0,1.111,1.937,1.424,1.424,0,0,0,1.384.4,1.417,1.417,0,0,0,1.051-1.176,1.462,1.462,0,0,0-.124-.8c-.028-.06-.188-.35-.354-.645-.426-.766-.458-.821-.639-1.156-.09-.166-.211-.39-.27-.5l-.216-.4-.218-.4c-.749-1.383-1.213-2.221-1.257-2.269-.017-.017-.089-.106-.161-.194a2.492,2.492,0,0,0-.721-.617,2.348,2.348,0,0,0-.722-.213,1.259,1.259,0,0,0-.424-.027,2.888,2.888,0,0,0-.674.193,4.073,4.073,0,0,0-.63.315,4.764,4.764,0,0,1-2.16.684,5.078,5.078,0,0,1-1.941-.266,8.331,8.331,0,0,1-1.047-.461A9.849,9.849,0,0,1,20.865-21.1a9.616,9.616,0,0,1-2.588-3.335,1.672,1.672,0,0,0-.5-.768,1.571,1.571,0,0,0-.553-.282A1.491,1.491,0,0,0,16.663-25.506Z" transform="translate(-12.594 28.197)" fill="transparent"/>
+                            </g>
+                            </g>
+                        </svg>                      
+                    </div>
+                    <div class="typeplace-text">SHARED ROOM</div>
+                </span>
+            </div>
+
+            <div class="right-header">Dates of your stay</div>
+            <div class="calendar-container">
+                <div class="month-arrow" id="prev-month">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+                        <polyline fill="none" stroke="#cccccc" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" points="15.5,21 6.5,12 15.5,3 "/>
+                    </svg>
+                </div>
+                <div class="calendar">
+                    <div class="roundtrip-container">
+                        <span class="reset-icon"><img src="https://icons.veryicon.com/png/o/miscellaneous/jt2/reset-filter-1.png" alt="reset"></span>
+                        <span class="date" id="start-date">
+                            <span class="calendar-icon">
+                                <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <rect x="0" y="3" width="25" height="5" />
+                                    <rect x="0" y="3" width="25" height="21" rx="3" stroke-width="2px"/>
+                                    <rect x="4" y="-1" width="3" height="7" rx="1" stroke-width="2px"/>
+                                    <rect x="17" y="-1" width="3" height="7" rx="1" stroke-width="2px"/>
+                                </svg>
+                            </span>
+                            <p class="date-text" id="start-date-text">Fri, 20 May 2020</p>
+                            <span class="control-container">
+                                <span class="control-icon" id="minus-date">-</span>
+                                <span class="control-icon" id="plus-date">+</span>
+                            </span>
+                        </span>
+                        <span class="date" id="end-date">
+                            <span class="calendar-icon">
+                                <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <rect x="0" y="3" width="25" height="5" fill="#cccccc" />
+                                    <rect x="0" y="3" width="25" height="21" rx="3" fill="transparent" stroke-width="2px" stroke="#cccccc"/>
+                                    <rect x="4" y="-1" width="3" height="7" rx="1" fill="#cccccc" stroke-width="2px" stroke="#cccccc"/>
+                                    <rect x="17" y="-1" width="3" height="7" rx="1" fill="#cccccc" stroke-width="2px" stroke="#cccccc"/>
+                                </svg>
+                            </span>
+                            <p class="date-text" id="start-date-text">Tue, 24 May 2020</p>
+                            <span class="control-container">
+                                <span class="control-icon" id="minus-date">-</span>
+                                <span class="control-icon" id="plus-date">+</span>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="month-container">
+                        <span class="month">
+                            <h2 class="month-name">May 2020</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                        <span class="month">
+                            <h2 class="month-name">June 2020</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                        <span class="month">
+                            <h2 class="month-name">July 2020</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                        <span class="month">
+                            <h2 class="month-name">August 2020</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                        <span class="month">
+                            <h2 class="month-name">September 2020</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                        <span class="month">
+                            <h2 class="month-name">October 2020</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                        <span class="month">
+                            <h2 class="month-name">November 2020</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                        <span class="month">
+                            <h2 class="month-name">December 2020</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                        <span class="month">
+                            <h2 class="month-name">January 2021</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                        <span class="month">
+                            <h2 class="month-name">February 2021</h2>
+                            <ul class="weekdays-name">
+                                <li id="mon">MON</li>
+                                <li id="tue">TUE</li>
+                                <li id="wed">WED</li>
+                                <li id="thu">THU</li>
+                                <li id="fri">FRI</li>
+                                <li id="sat">SAT</li>
+                                <li id="sun">SUN</li>
+                            </ul>
+                            <ul class="days-table">
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="day">1</li>
+                                <li class="day">2</li>
+                                <li class="day">3</li>
+                                <li class="day">4</li>
+                                <li class="day">5</li>
+                                <li class="day">6</li>
+                                <li class="day">7</li>
+                                <li class="day">8</li>
+                                <li class="day">9</li>
+                                <li class="day">10</li>
+                                <li class="day">11</li>
+                                <li class="day">12</li>
+                                <li class="day">13</li>
+                                <li class="day">14</li>
+                                <li class="day">15</li>
+                                <li class="day">16</li>
+                                <li class="day">17</li>
+                                <li class="day">18</li>
+                                <li class="day">19</li>
+                                <li class="day">20</li>
+                                <li class="day">21</li>
+                                <li class="day">22</li>
+                                <li class="day">23</li>
+                                <li class="day">24</li>
+                                <li class="day">25</li>
+                                <li class="day">26</li>
+                                <li class="day">27</li>
+                                <li class="day">28</li>
+                                <li class="day">29</li>
+                                <li class="day">30</li>
+                                <li class="day">31</li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                                <li class="dummy-day"></li>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+                <div class="month-arrow" id="next-month">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+                        <polyline fill="none" stroke="#cccccc" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" points="15.5,21 6.5,12 15.5,3 "/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="right-header">Number of guests</div>
+            <div class="list" id="guests-list">
+                <span class="type" id="adults">
+                    <span class="type-text">
+                        <h2>Adults</h2>
+                        <p>Over 13</p>
+                    </span>
+                    <span class="type-control">
+                        <span class="control-icon" id="minus-adults">-</span>
+                        <span class="control-number" id="number-adults">0</span>
+                        <span class="control-icon" id="plus-adults">+</span>
+                    </span>
+                </span>
+                <span class="type" id="children">
+                    <span class="type-text">
+                        <h2>Children</h2>
+                        <p>Ages 2–12</p>
+                    </span>
+                    <span class="type-control">
+                        <span class="control-icon">-</span>
+                        <span class="control-number">0</span>
+                        <span class="control-icon">+</span>
+                    </span>
+                </span>
+                <span class="type" id="infants">
+                    <span class="type-text">
+                        <h2>Infants</h2>
+                        <p>Under 2</p>
+                    </span>
+                    <span class="type-control">
+                        <span class="control-icon">-</span>
+                        <span class="control-number">0</span>
+                        <span class="control-icon">+</span>
+                    </span>
+                </span>
+            </div>
+
+
+            <div class="right-header">Price range</div>
+            <div class="price-chart" id="chart-container"></div>
+            <div class="range">
+                <span class="price" id="min">
+                    <div class="price-container">
+                        <p>Minimum price</p>
+                        <span class="price-form-container">
+                            <input type="number" class="price-form" id="min-price" name="min-price" value="0">
+                            <p style="display: inline;">€</p>
+                        </span>
+                    </div>
+                </span>
+                <span class="price" id="max">
+                    <div class="price-container">
+                        <p>Maximum price</p>
+                        <span class="price-form-container">
+                            <input type="number" class="price-form" id="max-price" name="max-price" value="0">
+                            <p style="display: inline;">€</p>
+                        </span>
+                    </div>
+                </span>
+            </div>
+
+            <div class="right-header">Rooms and beds</div>
+            <div class="list" id="rooms-list">
+                <span class="type" id="beds">
+                    <span class="type-text">
+                        <h2>Beds</h2>
+                    </span>
+                    <span class="type-control">
+                        <span class="control-icon">-</span>
+                        <span class="control-number">0</span>
+                        <span class="control-icon">+</span>
+                    </span>
+                </span>
+                <span class="type" id="bedrooms">
+                    <span class="type-text">
+                        <h2>Bedrooms</h2>
+                    </span>
+                    <span class="type-control">
+                        <span class="control-icon">-</span>
+                        <span class="control-number">0</span>
+                        <span class="control-icon">+</span>
+                    </span>
+                </span>
+                <span class="type" id="bathrooms">
+                    <span class="type-text">
+                        <h2>Bathrooms</h2>
+                    </span>
+                    <span class="type-control">
+                        <span class="control-icon">-</span>
+                        <span class="control-number">0</span>
+                        <span class="control-icon">+</span>
+                    </span>
+                </span>
+            </div>
+
+            <button type="button" class="big-button" id="search-button">Search</button>
+        </div>    
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="javascripts/calendar.js"></script>
+    <script src="javascripts/main.js"></script>
+</body>
+</html>
