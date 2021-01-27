@@ -11,6 +11,7 @@ var fs = require('fs');
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 var locationsRouter = require("./routes/locations");
+var placesRouter = require("./routes/places")
 var errorRouter = require('./routes/error');
 
 var app = express();
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use("/locations", locationsRouter);
+app.use("/places", placesRouter);
 app.use(/[\s\S]*/, errorRouter);
 
 // Importable by the /bin/www file
