@@ -2,18 +2,38 @@
 
 $(document).ready(function() {
     // ----------- GLOBAL VARIABLES ---------- //
-    var mapShowed = false;
-    var windowWidth = $(window).width();
-    var windowHeight = $(window).height();
+    let mapShowed = false;
+    let windowWidth = $(window).width();
+    let windowHeight = $(window).height();
 
-    var min = 10, max = 100;
-    var minPrice = 10, maxPrice = 100;
+    let min = getPrice(false), max = getPrice(true);
+    let minPrice = 10, maxPrice = 100;
     
     // 0:    0px -  425px (mobile)
     // 1:  426px - 1366px (small)
     // 2: 1367px - 1920px (normal)
     // 3: 1921px -    inf (wide)
-    var screenType;                                               
+    let screenType;
+
+    let preferences = {
+        location: undefined,
+        type: [],
+        dates: {
+            start: undefined,
+            end: undefined
+        },
+        guests: {
+            adults: 0,
+            children: 0,
+            infants: 0
+        },
+        price: [],
+        rooms: {
+            beds: 0,
+            bedrooms: 0,
+            bathrooms: 0
+        }
+    }
     // --------------------------------------- //
 
 
@@ -110,12 +130,11 @@ $(document).ready(function() {
                     .then((res) => {
                         //console.log(res[0].continent);
                         const continent = $(`.continent#${res[0].continent}`)[0];
-                        const location = $(`#${res[0].name}`)[0];
-                        const click1 = new MouseEvent('click');
-                        //continent.dispatchEvent(click1);
-                        const click2 = new MouseEvent('click');
-                        //console.log("dispatching event")
-                        location.dispatchEvent(click2); //<----------------- [BUG: recalls function multiple time]
+                        const location = $(`span[id="${res[0].name}"]`)[0];
+                        const click = new MouseEvent('click');
+                        if (!$(`#${res[0].continent}`).hasClass("selected"))
+                            continent.dispatchEvent(click);
+                        location.dispatchEvent(click);
                     })
                     .catch((err) => console.log(err));
             });
@@ -126,7 +145,7 @@ $(document).ready(function() {
     };
 
     $("#min-price")
-        .attr("min", min)
+        .attr("min", min) // <------------------ Can't do this cause min is fetched and thus must be awaited
         .val(min)
         .change(function() {
             if ($(this).val() == "")
@@ -154,6 +173,36 @@ $(document).ready(function() {
                 }
             }
         });
+
+    function getPrice(max) {
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+        }
+        async function communicate() {
+            const response = await fetch("/places/price", options);
+            const json = await response.json();
+            return json; //this return a promise so in order to get it when it's resolved we have to use '.then()' 
+        }
+        let price;
+        communicate()
+            .then((places) => {
+                console.log(places);
+                let prices = [];
+                for (let i in places) 
+                    prices.push(places[i].price);
+                if (max)
+                    price = Math.max(...prices);
+                else
+                    price = Math.min(...prices);
+                console.log(price)
+                return price;
+            })
+            .catch((err) => console.log(err));
+    }
     // --------------------------------------- //
 
 
@@ -203,12 +252,12 @@ $(document).ready(function() {
                     </div>
                 </span>`);
             $(`span[id="${locations[i].name}"]`).css("background-image", `url(${locations[i].image})`);
-            $(".location-image").click(function() { // <----------------------------------------------------- REPEATS TOO MANY TIME
-                $(".location-image.selected").removeClass("selected");
-                console.log(this);
-                $(this).addClass("selected");
-            });
         }
+        $(".location-image").click(function() {
+            $(".location-image.selected").removeClass("selected");
+            $(this).addClass("selected");
+            preferences.location = $(this).find(".location-city").text();
+        })
     }
     // --------------------------------------- //
 
@@ -216,10 +265,15 @@ $(document).ready(function() {
 
     // ------------ TYPE OF PLACE ------------ //
     $(".typeplace").click(function() {
-        if (!$(this).hasClass("selected"))
+        if (!$(this).hasClass("selected")) {
             $(this).addClass("selected");
-        else
+            preferences.type.push($(this).find(".typeplace-text").text().toLowerCase());
+        }
+        else {
             $(this).removeClass("selected");
+            preferences.type.splice(preferences.type.indexOf($(this).find(".typeplace-text").text().toLowerCase()), 1);
+        }
+        console.log(preferences)
     });
     // --------------------------------------- //
 
@@ -230,9 +284,11 @@ $(document).ready(function() {
         if ($(this).text() == "-") {
             
             let parent = $(this).parents(".date");
+            // Date button
             if (parent.length !== 0) {
-                calendar.controlDate(parent, false);
+                preferences.dates = calendar.controlDate(parent, false);
             }
+            // Guests or rooms button
             else {
                 parent = $(this).parents(".type");
                 let number = parseInt($(this).next().text());
@@ -248,9 +304,11 @@ $(document).ready(function() {
         else if ($(this).text() == "+") {
             
             let parent = $(this).parents(".date");
+            // Date
             if (parent.length !== 0) {
-                calendar.controlDate(parent, true);
+                preferences.dates = calendar.controlDate(parent, true);
             }
+            // Guests or rooms button
             else {
                 parent = $(this).parents(".type");
                 let number = parseInt($(this).prev().text());
@@ -263,6 +321,16 @@ $(document).ready(function() {
                 }
             }
         }
+        preferences.guests = {
+            adults: parseInt($("#number-adults").text()),
+            children: parseInt($("#number-children").text()),
+            infants: parseInt($("#number-infants").text())
+        };
+        preferences.rooms = {
+            beds: parseInt($("#number-beds").text()),
+            bedrooms: parseInt($("#number-bedrooms").text()),
+            bathrooms: parseInt($("#number-bathrooms").text())
+        };
     });
     // --------------------------------------- //
 
@@ -415,9 +483,10 @@ $(document).ready(function() {
         });
 
         // Define the map
+        const center = [13.230720, 46.064940];
         const map = new ol.Map({
             view: new ol.View({
-                center: [1473372.7202053638, 5790745.382380794],
+                center: ol.proj.fromLonLat(center),
                 zoom: 15,
                 maxZoom: 18,
                 minZoom: 12
@@ -578,7 +647,7 @@ $(document).ready(function() {
                 resetCalendar();
             }
             else {
-                calendar.setDate(thisLi, day, month, "end");
+                preferences.dates = calendar.setDate(thisLi, day, month, "end");
             }
         }
 
@@ -618,6 +687,7 @@ $(document).ready(function() {
             .removeClass("start")
             .removeClass("end")
             .removeClass("in-range");
+        preferences.dates = {start: undefined, end: undefined};
     }
     // --------------------------------------- //
 
