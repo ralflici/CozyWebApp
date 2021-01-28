@@ -70,21 +70,35 @@ $(document).ready(function() {
     });
 
     $(".search-form").on("input", function() {
-        // TODO:
-        // Send to server and retrieve infos about places matching the string
         if (this.value !== "" && this.value.replace(/\s/g, '').length)
-            sendServer("/location_search", {location: this.value})
+            searchLocation(this.value)
                 .then((locs) => dropdownResults(locs))
                 .catch(err => console.log(err));
     });
+    function searchLocation(text) {
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({location : text})
+        }
+        async function communicate() {
+            const response = await fetch("/locations/name", options);
+            const json = await response.json();
+            return json; //this return a promise so in order to get it when it's resolved we have to use '.then()' 
+        }
+        return communicate()
+    }
     function dropdownResults(locs) {
+        //console.log(locs);
         $(".search-result").remove();
         if (locs.length !== 0) {
             $(".search-dropdown")
                 .css("width", $(".right-container").width() + "px")
                 .fadeIn(0);
             for (let i in locs) {
-                $(".search-dropdown").append(`<div class="search-result" id="${locs[i]}">${locs[i]}</div>`);
+                $(".search-dropdown").append(`<div class="search-result" id="${locs[i].name}">${locs[i].name}</div>`);
             }
 
             $(".search-result").click(function() {
@@ -92,6 +106,18 @@ $(document).ready(function() {
                 document.getElementById("search").value = choosen;
                 $("search-result").remove();
                 $(".search-dropdown").fadeOut(0);
+                searchLocation(choosen)
+                    .then((res) => {
+                        //console.log(res[0].continent);
+                        const continent = $(`.continent#${res[0].continent}`)[0];
+                        const location = $(`#${res[0].name}`)[0];
+                        const click1 = new MouseEvent('click');
+                        //continent.dispatchEvent(click1);
+                        const click2 = new MouseEvent('click');
+                        //console.log("dispatching event")
+                        location.dispatchEvent(click2); //<----------------- [BUG: recalls function multiple time]
+                    })
+                    .catch((err) => console.log(err));
             });
         }
         else {
@@ -132,15 +158,58 @@ $(document).ready(function() {
 
 
     // -------------- LOCATION -------------- //
-    $(".continent").click(function() {
+    getLocationsContinent("")
+        .then((locs) => displayLocationSlides(locs))
+        .catch((err) => console.log(err));
+
+    $(".continent").click(function () {
         if ($(this).hasClass("selected")) {
             $(this).removeClass("selected");
+            $(`.location-image.hide`).removeClass("hide");
         }
         else {
             $(".continent").removeClass("selected");
-            $(this).addClass("selected");
+            $(this).addClass("selected")
+            const continentName = $(this).text();
+            $(".location-image").removeClass("hide");
+            $('span[class^="location-image"]:not(.'+ continentName +')')
+                .removeClass("selected")
+                .addClass("hide");
         }
     });
+    function getLocationsContinent(continent) {
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({continent : continent})
+        }
+        async function communicate() {
+            const response = await fetch("/locations/continent", options);
+            const json = await response.json();
+            return json; //this return a promise so in order to get it when it's resolved we have to use '.then()' 
+        }
+        return communicate()
+    }
+    function displayLocationSlides(locations) {
+        $(".location-image").remove();
+        for (let i in locations) {
+            $(".location-slideshow").append(
+                `<span class="location-image ${locations[i].continent}" id="${locations[i].name}">
+                    <div class="location-text">
+                        <div class="location-city">${locations[i].name}</div>
+                        <div class="location-country">${locations[i].country}</div>
+                    </div>
+                </span>`);
+            $(`span[id="${locations[i].name}"]`).css("background-image", `url(${locations[i].image})`);
+            $(".location-image").click(function() { // <----------------------------------------------------- REPEATS TOO MANY TIME
+                $(".location-image.selected").removeClass("selected");
+                console.log(this);
+                $(this).addClass("selected");
+            });
+        }
+    }
     // --------------------------------------- //
 
 
@@ -399,8 +468,8 @@ $(document).ready(function() {
             .attr('id', id)
             .css("z-index", "10")
             .fadeIn(100)
-            .css("top", pixel[1]  - 360)
-            .css("left", pixel[0]  - 48);
+            .css("top", pixel[1]  - 408)
+            .css("left", pixel[0]  - 135);
         $(".popup-text").text(name);
         $(".popup-price").text(price + "€/night");
     }
