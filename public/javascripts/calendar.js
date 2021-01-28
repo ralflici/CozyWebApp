@@ -98,8 +98,10 @@ const calendar = {
                 thisLi.addClass("selected");
             }
         }
-        if (this.start !== undefined && this.end !== undefined)
+        if (this.start !== undefined && this.end !== undefined) {
             this.fillDaysInRange();
+            return {start: this.startDate, end: this.endDate};
+        }
     },
 
     fillDaysInRange: function() {
@@ -153,6 +155,7 @@ const calendar = {
                 }
             }
         }
+        return {start: this.startDate, end: this.endDate};
     },
 
     adjacentDate: function(referenceDate, add) {
