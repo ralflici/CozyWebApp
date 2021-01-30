@@ -22,9 +22,3 @@ In the client I have used LeafletJS as a dynamic map renderer and ChartJS to dra
 * Oceania:
     * Sydney (Australia)
     * Auckland (New Zealand)  
-
----
-
-## Useful links:  
-[geojson-extent](https://github.com/mapbox/geojson-extent)  
-[geojson.io](http://geojson.io/)  
