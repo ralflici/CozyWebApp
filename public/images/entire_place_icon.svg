@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="66" height="72" viewBox="0 0 66 72">
+  <defs>
+    <filter id="custom-house-icon" x="0" y="0" width="66" height="72" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feFlood flood-opacity="0.251"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="custom-marker" transform="translate(-939.5 -519.5)">
+    <rect id="background" width="39" height="39" transform="translate(953 530)" fill="#fff"/>
+    <g transform="matrix(1, 0, 0, 1, 939.5, 519.5)" filter="url(#custom-house-icon)">
+      <path id="custom-house-icon-2" data-name="custom-house-icon" d="M22,51h0l-4.8-6H4a4,4,0,0,1-4-4V4A4,4,0,0,1,4,0H41a4,4,0,0,1,4,4V41a4,4,0,0,1-4,4H26.8L22,51Zm.5-40.56a.992.992,0,0,0-.72.306L10.634,22.306A1,1,0,0,0,11.354,24H13V34a1,1,0,0,0,1,1h6V28a1,1,0,0,1,1-1h3a1,1,0,0,1,1,1v7h6a1,1,0,0,0,1-1V24h1.646a1,1,0,0,0,.72-1.694L23.22,10.746A.992.992,0,0,0,22.5,10.44Z" transform="translate(10.5 7.5)" fill="#707070"/>
+    </g>
+  </g>
+</svg>
