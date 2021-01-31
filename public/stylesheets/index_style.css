@@ -1,4 +1,13 @@
+* {
+    box-sizing: border-box;
+    font-family: greycliff !important;
+    font-weight: 400;
+    outline: 0;
+    cursor: default;
+}
+
 html {
+    font-size: 100%;
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: subpixel-antialiased;
     text-rendering: optimizeLegibility;
@@ -11,14 +20,6 @@ html {
     -moz-user-select: none; /* Old versions of Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
-}
-
-* {
-    box-sizing: border-box;
-    font-family: greycliff !important;
-    font-weight: 400;
-    outline: 0;
-    cursor: default;
 }
 
 body {
@@ -75,7 +76,7 @@ ul {
     height: 100vh;
     /*border-radius: 0 40px 40px 0;*/
     overflow: hidden;
-    background-image: url("https://images.pexels.com/photos/3607084/pexels-photo-3607084.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+    background-image: url("../images/ice.jpeg");
     background-repeat: no-repeat;
     background-position: center center;
     -webkit-background-size: cover;

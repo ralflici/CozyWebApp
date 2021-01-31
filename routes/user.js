@@ -1,25 +1,32 @@
-var express = require('express');
-var router = express.Router();
-var path = require('path');
+const express = require('express');
+const router = express.Router();
+const path = require('path');
 
 router.use(express.static(path.join(__dirname, '..', 'public', 'views')));
-
-router.get('/', function(req, res, next) {
-  // if authenticated res.redirect("profile.html");
-  // otherwise
+router.get("/profile", function(req,res,next) {
+  res.redirect("profile.html");
+});
+router.get("/messages", function(req,res,next) {
+  res.redirect("messages.html");
+});
+router.get("/bookings", function(req,res,next) {
+  res.redirect("bookings.html");
+});
+router.get("/log", function(req,res,next) {
   res.redirect("log.html");
 });
-router.get('/profile.html', function(req, res, next) {
-  res.sendFile(path.join(__dirname, 'profile.html'));
+/*
+router.get('/profile', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '..', 'public', 'views', 'profile.html'));
 });
-router.get('/messages.html', function(req, res, next) {
-  res.sendFile(path.join(__dirname, 'messages.html'));
+router.get('/messages', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '..', 'public', 'views', 'messages.html'));
 });
-router.get('/bookings.html', function(req, res, next) {
-  res.sendFile(path.join(__dirname, 'bookings.html'));
+router.get('/bookings', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '..', 'public', 'views', 'bookings.html'));
 });
-router.get('/log.html', function(req, res, next) {
-  res.sendFile(path.join(__dirname, 'log.html'));
-});
+router.get('/log', function(req, res, next) {
+  router.use(serveStatic("public/views", {"log" : "log.html"}));
+});*/
 
 module.exports = router;

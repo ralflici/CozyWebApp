@@ -40,7 +40,7 @@
         padding: 10px;
         border: 2px solid #000000;
         grid-column-start: 4;
-        z-index: 10;
+        z-index: 20;
         display: initial;
     }
 

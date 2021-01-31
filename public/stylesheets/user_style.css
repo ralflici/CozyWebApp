@@ -1,3 +1,11 @@
+* {
+    box-sizing: border-box;
+    font-family: greycliff !important;
+    font-weight: 400;
+    outline: 0;
+    cursor: default;
+}
+
 html {
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: subpixel-antialiased;
@@ -11,14 +19,6 @@ html {
     -moz-user-select: none; /* Old versions of Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
-}
-
-* {
-    box-sizing: border-box;
-    font-family: greycliff !important;
-    font-weight: 400;
-    outline: 0;
-    cursor: default;
 }
 
 body {
@@ -203,7 +203,6 @@ ul {
 
 #log-main-container {
     padding: 0;
-    padding-top: max(5%, 30px);
 }
 
 .menu-container {
@@ -647,11 +646,7 @@ ul {
     width: 100vw;
     height: 100vh;
     display: none;
-    backdrop-filter: blur(6px);
-}
-
-.user-popup-container {
-    box-shadow: 0 0px 12px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(3px);
 }
 
 #change-password-popup-container {

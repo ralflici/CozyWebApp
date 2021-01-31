@@ -1,10 +1,14 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const path = require('path');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  //res.render('index', { title: 'Cozy' });
-  res.sendFile("index.html");
+//router.use(express.static(path.join(__dirname, '..', 'public')));
+router.get("/", function(req, res, next) {
+  res.set("Set-Cookie", "Secure");
+  res.sendStatus(200);
 });
-
+router.get('/index', function(req, res, next) {
+  res.set("Set-Cookie", "Secure");
+  res.redirect("/");
+})
 module.exports = router;

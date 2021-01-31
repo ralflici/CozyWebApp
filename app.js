@@ -1,34 +1,57 @@
 #! /usr/bin/env node
 "use strict";
 
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var mongoose = require("mongoose");
-var fs = require('fs');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const mongoose = require("mongoose");
+const fs = require('fs');
+const serveStatic = require("serve-static");
 
-var indexRouter = require('./routes/index');
-var userRouter = require('./routes/user');
-var locationsRouter = require("./routes/locations");
-var placesRouter = require("./routes/places")
-var errorRouter = require('./routes/error');
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
+const locationsRouter = require("./routes/locations");
+const placesRouter = require("./routes/places")
+const errorRouter = require('./routes/error');
 
-var app = express();
+const app = express();
 
 // Create the default connection to the database
-var mongoDB_URL = fs.readFileSync("./utilities/mongoDB.txt", "utf8");
+//var mongoDB_URL = fs.readFileSync("./utilities/mongoDB.txt", "utf8");
+const mongoDB_URL = `mongodb+srv://RalfLici:FingerprintLab@cluster0.nza9m.mongodb.net/cozy_app01?retryWrites=true&w=majority`;
 mongoose.connect(mongoDB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error: "));
 
+// Middleware  
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public', 'images')));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.get('/favicon.ico', (req, res) => {res.sendFile(path.join(__dirname, 'public', 'images', 'favicon.ico'))});
 
+app.set('trust proxy', 1)
+
+app.use(function (req, res, next) {
+    // check if client sent cookie
+    var cookie = req.cookies.cookieName;
+    if (cookie === undefined) {
+      // no: set a new cookie
+      var randomNumber=Math.random().toString();
+      randomNumber=randomNumber.substring(2,randomNumber.length);
+      res.cookie('cookieName',randomNumber, { maxAge: 900000, httpOnly: true });
+      console.log('cookie created successfully');
+    } else {
+      // yes, cookie was already present 
+      console.log('cookie exists', cookie);
+    } 
+    next(); // <-- important!
+});
+
+
+// Routers
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use("/locations", locationsRouter);

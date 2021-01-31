@@ -350,7 +350,7 @@ $(document).ready(function() {
     let myChart;
     function initChart(places) {
         const segments = 8;
-        const basis = (max - min)/segments;
+        const basis = (max + 0.001 - min)/segments;
         let labels = [];
         let data = new Array(segments);
 
@@ -358,7 +358,7 @@ $(document).ready(function() {
             labels.push((basis*(i-1) + min).toFixed(2) + "€ - " + (basis*i + min).toFixed(2) + "€");
             data[i-1] = 0;
             for (let j in places) {
-                if (places[j].price >= (basis*(i-1) + min) && places[j].price < (basis*i) + 0.001 + min) {
+                if (places[j].price >= (basis*(i-1) + min) && places[j].price < (basis*i) + min) {
                     data[i-1]++;
                 }
             }
@@ -425,8 +425,7 @@ $(document).ready(function() {
         for (let i in markers)
             mymap.removeLayer(markers[i]);
         markers = [];
-
-        console.log(preferences)
+        
         $(".left-container").find(".result-number").remove();
         submitPreferences()
             .then((data) => {

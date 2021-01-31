@@ -1,4 +1,3 @@
-const { nextTick } = require("async");
 const Place = require("../models/place");
 
 exports.places_list = function(req, res) {
