@@ -27,8 +27,8 @@ $(document).ready(function() {
             infants: 0
         },
         price: {
-            min: undefined, 
-            max: undefined
+            min: -1, 
+            max: 1000000
         },
         rooms: {
             beds: 0,
@@ -167,15 +167,17 @@ $(document).ready(function() {
         max = json.max_price;
         minPrice = min;
         maxPrice = max;
-        preferences.price.min = min;
-        preferences.price.max = max;
-        $("#min-price")
-            .attr("min", json.min_price)
-            .val(json.min_price);
+        $("#min-price").attr("min", json.min_price);
+        if (preferences.price.min < 0)
+            $("#min-price").val(json.min_price);
+        else
+            $("#min-price").val(preferences.price.min);
             
-        $("#max-price")
-            .attr("max", json.max_price)
-            .val(json.max_price);
+        $("#max-price").attr("max", json.max_price);
+        if (preferences.price.max > 10000)
+            $("#max-price").val(json.max_price);
+        else
+            $("#max-price").val(preferences.price.max);
     }
     getOutmostPrices();
 
@@ -252,18 +254,20 @@ $(document).ready(function() {
         }
         $(".location-image").click(function() {
             // initialise everything
+            if($(this).hasClass("selected")) return;
             $(".location-image.unselected").removeClass("unselected");
             $(".location-image.selected").removeClass("selected");
-            // 
+
             const thisName = $(this).attr("id");
             $(`.location-image:not([id="${thisName}"])`).addClass("unselected");
             $(this).addClass("selected");
             preferences.location = thisName;
-            const click = new MouseEvent('click');
-            //$(`#${$(this.)}`)
+            //const click = new MouseEvent('click');
+            
+            preferences.price = {min: -1, max: 1000000};
             if (preferences.dates.start !== undefined && preferences.dates.end !== undefined)
                 $("#search-button").removeClass("unavailable");
-        })
+        });
     }
     // --------------------------------------- //
 
@@ -343,14 +347,12 @@ $(document).ready(function() {
 
     // ------------- PRICE CHART ------------- //
     const ctx = document.getElementById('chart-canvas').getContext('2d');
-    let myChart = new Chart(ctx, {});
+    let myChart;
     function initChart(places) {
-        const segments = 10;
+        const segments = 8;
         const basis = (max - min)/segments;
         let labels = [];
         let data = new Array(segments);
-        let borderColor = [];
-        let backgroundColor = [];
 
         for (let i = 1; i <= segments; i++) {
             labels.push((basis*(i-1) + min).toFixed(2) + "€ - " + (basis*i + min).toFixed(2) + "€");
@@ -358,12 +360,6 @@ $(document).ready(function() {
             for (let j in places) {
                 if (places[j].price >= (basis*(i-1) + min) && places[j].price < (basis*i) + 0.001 + min) {
                     data[i-1]++;
-                    borderColor.push("#707070");
-                    backgroundColor.push("#cccccc1a")
-                }
-                else {
-                    borderColor.push("#EF4923");
-                    backgroundColor.push("#EF49231A");
                 }
             }
         }
@@ -375,9 +371,9 @@ $(document).ready(function() {
                 datasets: [{
                     //label: 'Places',
                     data: data,
-                    backgroundColor: backgroundColor,
-                    borderColor: borderColor,
-                    borderWidth: 1
+                    backgroundColor: "#EF49231A",
+                    borderColor: "#EF4923",
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -390,12 +386,12 @@ $(document).ready(function() {
                             beginAtZero: true,
                             max: (Math.max(...data) + 1),
                             stepSize: 1,
-                            fontSize: 10
+                            fontSize: 12
                         }
                     }],
                     xAxes: [{
                         ticks: {
-                            fontSize: 11
+                            fontSize: 12
                         }
                     }]
                 },
@@ -415,44 +411,51 @@ $(document).ready(function() {
 
         }
         else if (id === "search-button") {
-            if ($(this).hasClass("unavailable")) return;
-                $(".scroll").css("background-color", "#ffffff");
-                
-                if (!mapShowed) $(".map").fadeIn(100);
-                mapShowed = true;
-                
-                for (let i in markers)
-                    mymap.removeLayer(markers[i]);
-                markers = [];
-
-                $(".left-container").find(".result-number").remove();
-                submitPreferences()
-                    .then((data) => {
-                        if (data.length > 1)
-                            $(".left-container").append(`<div class="result-number">There are ${data.length} results</div>`);
-                        else if (data.length === 1)
-                            $(".left-container").append(`<div class="result-number">There is ${data.length} result</div>`);
-                        else
-                            $(".left-container").append(`<div class="result-number">Sorry, there are no results.</div>`);
-
-                        if (screenType < 2)
-                            $(".result-number").css("animation-delay", "0.6s");
-
-                        getOutmostPrices(preferences.location)
-                            .then((res) => {
-                                $(".chart-text").remove();
-                                initMap(data);
-                                initChart(data);
-                            })
-                            .catch((err) => console.log(err));
-                    })
-                    .catch((err) => console.log(err));
-
-            if (screenType < 2) {
-                window.scrollTo(0, 0);
-            }
+            submit();
         }
     });
+    
+    function submit() {
+        if ($(this).hasClass("unavailable")) return;
+        $(".scroll").css("background-color", "#ffffff");
+        
+        if (!mapShowed) $(".map").fadeIn(100);
+        mapShowed = true;
+        
+        for (let i in markers)
+            mymap.removeLayer(markers[i]);
+        markers = [];
+
+        console.log(preferences)
+        $(".left-container").find(".result-number").remove();
+        submitPreferences()
+            .then((data) => {
+                if (data.length > 1)
+                    $(".left-container").append(`<div class="result-number">There are ${data.length} results</div>`);
+                else if (data.length === 1)
+                    $(".left-container").append(`<div class="result-number">There is ${data.length} result</div>`);
+                else
+                    $(".left-container").append(`<div class="result-number">Sorry, there are no results.</div>`);
+
+                if (screenType < 2)
+                    $(".result-number").css("animation-delay", "0.6s");
+
+                getOutmostPrices(preferences.location)
+                    .then((res) => {
+                        $(".chart-text").remove();
+                        initMap(data);
+                        if(myChart) myChart.destroy();
+                        initChart(data);
+                    })
+                    .catch((err) => console.log(err));
+            })
+            .catch((err) => console.log(err));
+        
+        if (screenType < 2) {
+            window.scrollTo(0, 0);
+        }
+    }
+
     async function submitPreferences() {
         const options = {
             method: "POST",
@@ -481,20 +484,20 @@ $(document).ready(function() {
     const entirePlaceIcon = L.icon({
         iconUrl: "../images/entire_place_icon.svg",
         iconSize: [51, 45],
-        iconAnchor: [26, 40],
-        popupAnchor: [0, -34]
+        iconAnchor: [26, 45],
+        popupAnchor: [0, -44]
     });
     const privateRoomIcon = L.icon({
         iconUrl: "../images/private_room_icon.svg",
         iconSize: [51, 45],
-        iconAnchor: [26, 40],
-        popupAnchor: [0, -34]
+        iconAnchor: [26, 45],
+        popupAnchor: [0, -44]
     });
     const sharedRoomIcon = L.icon({
         iconUrl: "../images/shared_room_icon.svg",
         iconSize: [51, 45],
-        iconAnchor: [26, 40],
-        popupAnchor: [0, -34]
+        iconAnchor: [26, 45],
+        popupAnchor: [0, -44]
     });
 
     function initMap(data) {
@@ -514,8 +517,6 @@ $(document).ready(function() {
                 alt: data[i]._id
             }
             let marker = L.marker([data[i].coordinates[1], data[i].coordinates[0]], markerOptions).addTo(mymap);
-            //marker.bindPopup(`<b style='font-size: 30px;'>Hello world!</b><br>I am a popup.`);
-            let popupContent = L.DomUtil.create
             let popup = L.popup().setContent(
                 `<div class="popup" id="${data[i]._id}">
                     <div class="popup-slide-container">
