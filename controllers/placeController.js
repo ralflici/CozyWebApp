@@ -22,7 +22,6 @@ exports.outmost_price = function(req, res) {
                     return place.price
             });
             prices = prices.filter(price => price != undefined)
-            console.log(prices);
             res.json({
                 min_price: Math.min(...prices), 
                 max_price: Math.max(...prices)
@@ -63,10 +62,6 @@ exports.places_list_filter = function(req, res) {
                 for (let i in place.avail) {
                     const availStart = new Date(place.avail[i].start).valueOf();
                     const availEnd = new Date(place.avail[i].end).valueOf();
-                    console.log("Pref start: " + start);
-                    console.log("Avail start: " + availStart);
-                    console.log("Pref end: " + end);
-                    console.log("Avail end: " + availEnd);
                     if (start >= availStart && end <= availEnd) {
                         return place;
                     }
