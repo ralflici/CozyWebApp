@@ -18,8 +18,7 @@ const errorRouter = require('./routes/error');
 const app = express();
 
 // Create the default connection to the database
-//var mongoDB_URL = fs.readFileSync("./utilities/mongoDB.txt", "utf8");
-const mongoDB_URL = `mongodb+srv://RalfLici:FingerprintLab@cluster0.nza9m.mongodb.net/cozy_app01?retryWrites=true&w=majority`;
+var mongoDB_URL = fs.readFileSync("./utilities/mongoDB.txt", "utf8");
 mongoose.connect(mongoDB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error: "));
@@ -31,8 +30,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-app.set('trust proxy', 1)
 
 app.use(function (req, res, next) {
     // check if client sent cookie
