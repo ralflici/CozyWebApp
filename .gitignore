@@ -1,2 +1,4 @@
 node_modules
-utilities/
+utilities
+.env
+uploads
