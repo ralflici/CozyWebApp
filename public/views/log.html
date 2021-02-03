@@ -24,45 +24,37 @@
             <span class="name-container"><a href="../index" class="name">Cozy</a></span>
         </span>
         <ul class="navbar-list">
-            <li id="messages-item"><a style="cursor: pointer;" href="messages" title="User messages">Messages</a></li>
-            <li id="bookings-item"><a style="cursor: pointer;" href="bookings" title="User bookings">Bookings</a></li>
-            <li id="user-item"><a style="cursor: pointer;" href="profile" title="User profile">User</a></li>
-            <a onclick="" style="cursor: default;" id="user-icon-link"><li id="user-icon" title="User profile">
-                <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="#ffffff" stroke="#000000" stroke-width="2px" stroke-linecap="round">
-                        <circle cx="15" cy="15" r="14"/>
-                        <path d="M 4.4 24 Q 15 10 25.6 24"/>
-                        <circle cx="15" cy="15" r="5.5"/>
-                        <circle cx="25" cy="5" r="5" fill="#EF4923" stroke="none"/>
-                    </g>
-                </svg>
-            </li></a>
+            <li id="messages-item"><a style="cursor: pointer;" href="messages.html" title="User messages">Messages</a></li>
+            <li id="bookings-item"><a style="cursor: pointer;" href="bookings.html" title="User bookings">Bookings</a></li>
+            <li id="user-item"><a style="cursor: pointer;" href="profile.html" title="User profile">User</a></li>
+            <li id="user-icon" title="User profile"><img src="../images/userIcon.svg" width="29px" height="29px" style="object-fit: cover; border-radius: 30px;"></img></li>
         </ul>
     </div>
     <div class="main-container" id="log-main-container">
         <div class="small-container" id="login">
             <h1>Log in</h1>
-            <form>
+            <form id="login-form">
                 <label for="login-username">Username</label><br>
                 <input type="text" id="login-username" name="login-username" minlength="3" required><br><br>
                 <label for="login-password">Password</label><br>
                 <input type="password" id="login-password" name="login-password" minlength="8" required><br><br>
+                <p class="login-wrong">Wrong credentials</p>
                 <input class="big-button" id="login-button" type="submit" value="Log in">
             </form>
             <button class="log-switch" id="signup-switch">Sign up ➜</button>
         </div>
         <div class="small-container" id="signup">
             <h1>Sign up</h1>
-            <form>
+            <form id="signup-form">
                 <label for="signup-username">Username</label><br>
                 <input type="text" id="signup-username" name="signup-username" minlength="3" required><br><br>
                 <label for="signup-password">Password</label><br>
                 <input type="password" id="signup-password1" name="signup-password1" minlength="8" required><br><br>
                 <label for="signup-password">Password again</label><br>
                 <input type="password" id="signup-password2" name="signup-password2" minlength="8" required><br><br>
-                <input class="big-button" id="signup-button" type="submit" value="Sign up">
+                <input class="big-button unavailable" id="signup-button" type="submit" value="Sign up">
             </form>
-            <button class="log-switch" id="login-switch"><p style="transform: rotateY(180deg); display: inline-block; text-decoration: underline;">➜</p> Log in</button>
+            <button class="log-switch" id="login-switch"><p style="transform: rotateY(180deg); display: inline-block;">➜</p> Log in</button>
         </div>
         
     </div>

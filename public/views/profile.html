@@ -51,26 +51,17 @@
             <span class="name-container"><a href="../index" class="name">Cozy</a></span>
         </span>
         <ul class="navbar-list">
-            <li id="messages-item"><a style="cursor: pointer;" href="messages" title="User messages">Messages</a></li>
-            <li id="bookings-item"><a style="cursor: pointer;" href="bookings" title="User bookings">Bookings</a></li>
+            <li id="messages-item"><a style="cursor: pointer;" href="messages.html" title="User messages">Messages</a></li>
+            <li id="bookings-item"><a style="cursor: pointer;" href="bookings.html" title="User bookings">Bookings</a></li>
             <li class="selected" id="user-item"><a style="cursor: default;" onclick="">User</a></li>
-            <a href="log" style="cursor: pointer;" id="user-icon-link"><li id="user-icon" title="User profile">
-                <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="#ffffff" stroke="#000000" stroke-width="2px" stroke-linecap="round">
-                        <circle cx="15" cy="15" r="14"/>
-                        <path d="M 4.4 24 Q 15 10 25.6 24"/>
-                        <circle cx="15" cy="15" r="5.5"/>
-                        <circle cx="25" cy="5" r="5" fill="#EF4923" stroke="none"/>
-                    </g>
-                </svg>
-            </li></a>
+            <li id="user-icon" title="User profile"><img src="../images/userIcon.svg" width="29px" height="29px" style="object-fit: cover; border-radius: 30px;"></img></li>
         </ul>
     </div>
     <div class="main-container">
         <div class="menu-container">
             <div class="user-info">
                 <span class="user-info-image">
-                    <img src="../images/userIcon.png" alt="">
+                    <img src="../images/userIcon.svg" width="30px" height="30px" style="object-fit: cover; border-radius: 300px;"></img>
                 </span>
                 <span class="user-info-text">
                     <div class="user-name">Name Surname</div>
@@ -87,38 +78,40 @@
             <h1 class="page-title">Profile</h1>
             <div class="profile-container">
                 <span class="form-container">
-                    <form action="">
+                    <form id="profile-form">
                         <div class="section" id="name">
                             <label for="name">Name</label><br>
-                            <input type="text" id="name" name="name" value=""><br>
+                            <input type="text" id="name-input" name="name" value=""><br>
                         </div>
                         <div class="section" id="email">
                             <label for="email">Email</label><br>
-                            <input type="text" id="email" name="email" value=""><br>
+                            <input type="text" id="email-input" name="email" value=""><br>
                         </div>
                         <div class="section" id="location">
                             <label for="location">Location</label><br>
-                            <input type="text" id="location" name="location" value=""><br>
+                            <input type="text" id="location-input" name="location" value=""><br>
                         </div>
                         <div class="section" id="bio">
                             <label for="bio">Bio</label><br>
                             <!--<input type="text" id="bio" name="bio" value="Tell us something about you"><br>-->
-                            <textarea name="bio" rows="4"></textarea><br>
+                            <textarea name="bio" rows="4" id="bio-input"></textarea><br>
                         </div>
+                        <button class="big-button" id="edit-profile" type="submit">Edit your profile</button>
                     </form>
                     <div class="button-container">
-                        <button class="big-button" id="edit-profile">Edit your profile</button>
                         <button class="big-button" id="change-password">Change password</button>
                         <button class="big-button" id="delete-account">Delete account</button>
+                        <button class="big-button" id="signout">Sign out</button>
                     </div>
                     
                 </span>
-                <form class="picture-container">
+                <form class="picture-container" enctype="multipart/form-data" action="/user/edit-picture" method="post">
                     <label id="pic-label" for="picture">Profile picture</label>
                     <div class="pic">
-                        <img src="../images/userIcon.svg" alt="Profile picture">
+                        <img id="picture" src="../images/userIcon.svg" alt="Profile picture">
                     </div>
-                    <input type="file" id="edit-picture" name="name" accept="image/*"></button>
+                    <input type="file" id="input-picture" name="picture" accept="image/jpeg"></input>
+                    <button class="big-button" id="edit-picture" type="submit">Edit</button>
                 </form>
             </div>
         </div>

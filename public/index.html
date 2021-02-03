@@ -49,16 +49,7 @@
                 <li id="messages-item"><a style="cursor: pointer;" href="./user/messages.html" title="User messages">Messages</a></li>
                 <li id="bookings-item"><a style="cursor: pointer;" href="./user/bookings.html" title="User bookings">Bookings</a></li>
                 <li id="user-item"><a style="cursor: pointer;" href="/user/profile.html" title="User profile">User</a></li>
-                <a href="user/log.html" style="cursor: pointer;" id="user-icon-link"><li id="user-icon" title="User profile">
-                    <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="#ffffff" stroke="#000000" stroke-width="2px" stroke-linecap="round">
-                            <circle cx="15" cy="15" r="14"/>
-                            <path d="M 4.4 24 Q 15 10 25.6 24"/>
-                            <circle cx="15" cy="15" r="5.5"/>
-                            <circle cx="25" cy="5" r="5" fill="#EF4923" stroke="none"/>
-                        </g>
-                    </svg>
-                </li></a>
+                <li id="user-icon" title="User profile"><img src="../images/userIcon.svg" width="29px" height="29px" style="object-fit: cover; border-radius: 30px;"></img></li>
             </ul>
             <div class="searchbar">
                 <span class="search-icon">
@@ -69,7 +60,7 @@
                         </g>
                     </svg>
                 </span>
-                <input class="search-form" id="search" type="text" name="search" value="Search">
+                <input aria-label="Search" class="search-form" id="search" type="text" name="search" value="Search">
                 <div class="search-line"></div>
                 <div class="search-dropdown">
                 </div>
@@ -158,8 +149,8 @@
                             </span>
                             <p class="date-text" id="start-date-text">Day, 00 Mon Year</p>
                             <span class="control-container">
-                                <span class="control-icon" id="minus-date">-</span>
-                                <span class="control-icon" id="plus-date">+</span>
+                                <span class="control-icon" id="minus-date-start">-</span>
+                                <span class="control-icon" id="plus-date-start">+</span>
                             </span>
                         </span>
                         <span class="date" id="end-date">
@@ -171,10 +162,10 @@
                                     <rect x="17" y="-1" width="3" height="7" rx="1" fill="#cccccc" stroke-width="2px" stroke="#cccccc"/>
                                 </svg>
                             </span>
-                            <p class="date-text" id="start-date-text">Day, 00 Mon Year</p>
+                            <p class="date-text" id="end-date-text">Day, 00 Mon Year</p>
                             <span class="control-container">
-                                <span class="control-icon" id="minus-date">-</span>
-                                <span class="control-icon" id="plus-date">+</span>
+                                <span class="control-icon" id="minus-date-end">-</span>
+                                <span class="control-icon" id="plus-date-end">+</span>
                             </span>
                         </span>
                     </div>
@@ -182,13 +173,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table">
                             </ul>
@@ -196,13 +187,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table">
                             </ul>
@@ -210,13 +201,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table">
                             </ul>
@@ -224,13 +215,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table">                               
                             </ul>
@@ -238,13 +229,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table">          
                             </ul>
@@ -252,13 +243,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table">  
                             </ul>
@@ -266,13 +257,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table">
                             </ul>
@@ -280,13 +271,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table">
                             </ul>
@@ -294,13 +285,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table">     
                             </ul>
@@ -308,13 +299,13 @@
                         <span class="month">
                             <h2 class="month-name"></h2>
                             <ul class="weekdays-name">
-                                <li id="mon">MON</li>
-                                <li id="tue">TUE</li>
-                                <li id="wed">WED</li>
-                                <li id="thu">THU</li>
-                                <li id="fri">FRI</li>
-                                <li id="sat">SAT</li>
-                                <li id="sun">SUN</li>
+                                <li>MON</li>
+                                <li>TUE</li>
+                                <li>WED</li>
+                                <li>THU</li>
+                                <li>FRI</li>
+                                <li>SAT</li>
+                                <li>SUN</li>
                             </ul>
                             <ul class="days-table"> 
                             </ul>
@@ -373,22 +364,22 @@
             </div>
             <div class="range">
                 <span class="price" id="min">
-                    <div class="price-container">
-                        <p>Minimum price</p>
-                        <span class="price-form-container">
-                            <input type="number" class="price-form" id="min-price" name="min-price" value="0">
+                    <form class="price-container">
+                        <label>Minimum price</label>
+                        <span class="price-input-container">
+                            <input type="number" class="price-input" id="min-price" name="min-price" value="0" aria-label="min-price">
                             <p style="display: inline;">€</p>
                         </span>
-                    </div>
+                    </form>
                 </span>
                 <span class="price" id="max">
-                    <div class="price-container">
-                        <p>Maximum price</p>
-                        <span class="price-form-container">
-                            <input type="number" class="price-form" id="max-price" name="max-price" value="0">
+                    <form class="price-container">
+                        <label>Maximum price</label>
+                        <span class="price-input-container">
+                            <input type="number" class="price-input" id="max-price" name="max-price" value="0" aria-label="max-price">
                             <p style="display: inline;">€</p>
                         </span>
-                    </div>
+                    </form>
                 </span>
             </div>
 
