@@ -54,12 +54,12 @@ const calendar = {
     },
 
     getWeekDayName: function(format, date) {
-        let options = { weekday: format};
+        let options = { weekday: format, timeZone: "Europe/Rome" };
         return new Intl.DateTimeFormat('en-US', options).format(date);
     },
 
     getMonthName: function(format, date) {
-        let options = { month: format};
+        let options = { month: format, , timeZone: "Europe/Rome" };
         return new Intl.DateTimeFormat('en-US', options).format(date);
     },
 
