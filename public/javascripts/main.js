@@ -66,6 +66,9 @@ $(document).ready(function() {
             screenType = 3
         }
     }
+    $.get("/user/picture", function(data) {
+        $("#user-icon>img").attr("src", `data:image/jpeg;base64,${data}`);
+    });
     // --------------------------------------- //
 
 

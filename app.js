@@ -1,13 +1,16 @@
 #! /usr/bin/env node
 "use strict";
 
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require("mongoose");
-const fs = require('fs');
-const serveStatic = require("serve-static");
+const favicon = require('serve-favicon');
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
@@ -18,42 +21,54 @@ const errorRouter = require('./routes/error');
 const app = express();
 
 // Create the default connection to the database
-var mongoDB_URL = fs.readFileSync("./utilities/mongoDB.txt", "utf8");
-mongoose.connect(mongoDB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error: "));
 
-// Middleware  
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, '..', 'public', 'images')));
+// Middleware
+let setCache = function (req, res, next) {
+  // here you can define period in second
+  const period = 31536000;
+
+  // you only want to cache for GET requests
+  if (req.method == 'GET') {
+    res.set('Cache-control', 'immutable');
+  } 
+  else {
+    // for the other requests set strict no caching parameters
+    res.set('Cache-control', `no-cache`);
+  }
+  next();
+}
+
+//app.use(setCache);
 app.use(logger('dev'));
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')), setCache)
+app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public', 'images')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-app.use(function (req, res, next) {
-    // check if client sent cookie
-    var cookie = req.cookies.cookieName;
-    if (cookie === undefined) {
-      // no: set a new cookie
-      var randomNumber=Math.random().toString();
-      randomNumber=randomNumber.substring(2,randomNumber.length);
-      res.cookie('cookieName',randomNumber, { maxAge: 900000, httpOnly: true });
-      console.log('cookie created successfully');
-    } else {
-      // yes, cookie was already present 
-      console.log('cookie exists', cookie);
-    } 
-    next(); // <-- important!
-});
-
+app.use(function(req,res,next) {
+  const cookie = req.cookies.jwt;
+  if (cookie == null) {
+    //const random = require("crypto").randomBytes(16).toString("hex");
+    //res.cookie('jwt', random, { maxAge: 900000, httpOnly: true });
+    console.log("jwt cookie doesn't exsist");
+  }
+  else
+    console.log("jwt cookie exists:", cookie);
+  next();
+})
 
 // Routers
+
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use("/locations", locationsRouter);
 app.use("/places", placesRouter);
-app.use(/[\s\S]*/, errorRouter);
+//app.use(/[\s\S]*/, errorRouter);
+
 
 // Importable by the /bin/www file
 module.exports = app;

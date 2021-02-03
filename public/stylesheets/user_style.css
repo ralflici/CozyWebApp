@@ -136,7 +136,7 @@ ul {
     cursor: default;
     display: none;
 }
-
+/*
 #user-icon-link {
     padding-top: 0px;
     width: 30px;
@@ -145,11 +145,10 @@ ul {
     position: relative;
     top: 6px;
 }
-
+*/
 #user-icon {
-    width: 100%;
-    height: 100%;
-    display: inline-block;
+    position: relative;
+    top: 6px
 }
 
 #user-item, #bookings-item, #messages-item {
@@ -195,7 +194,7 @@ ul {
     padding-left: 16px;
     width: max(53.54vw, 785px);
     max-width: 1028px;
-    min-height: calc(100vh - 190px);
+    min-height: calc(100vh - 200px);
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -220,7 +219,7 @@ ul {
     display: inline-block;
     width: 30px;
     height: 30px;
-    margin-right: 20px;
+    margin-right: 5px;
 }
 
 .user-info-text {
@@ -306,26 +305,43 @@ ul {
     font-weight: 300;
 }
 
-#login {
+#signup {
+    display: none;
 }
 
-#signup {
+#login > h1, #signup > h1 {
+    font-weight: 200;
+}
+
+.login-wrong {
+    color: #ef4923;
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0;
+    text-align: right;
     display: none;
 }
 
 #login-button, #signup-button {
     display: block;
     cursor: pointer;
-    border-radius: 100px;
-    width: 60%;
+    border-radius: 5px;
+    width: 100%;
     margin: auto;
     margin-top: 20px;
+    border: none;
+    color: #fff;
+    background-color: #ef4923;
+    transition: background-color 0.2s, color 0.2s, border 0.05s;
+}
+
+#signup-button.unavailable {
+    background-color: #cccccc;
+    color: #fff;
+    cursor: not-allowed;
 }
 
 #login-button:hover, #signup-button:hover {
-    border: 2px solid #ef4923;
-    color: #ef4923;
-    background-color: #ef49231a;
     box-shadow: none;
 }
 
@@ -338,7 +354,7 @@ ul {
     color: #707070;
     padding-right: 2px;
     margin: 30px 0 20px 0;
-    text-decoration: underline;
+    /*text-decoration: underline;*/
     letter-spacing: 0.5px;
 }
 
@@ -468,6 +484,10 @@ ul {
     width: 62.55%;
 }
 
+#profile-form {
+    overflow: auto;
+}
+
 .section {
     margin-top: 30px;
 }
@@ -479,15 +499,20 @@ ul {
 .section label, .small-container label {
     font-size: 16px;
     font-weight: 600;
+    /*position: relative;
+    top: 16px;
+    left: 8px;
+    background-color: #fff;
+    padding: 3px;*/
 }
 
 .section input, .small-container input {
     margin-top: 7px;
     padding: 4px 8px;
     width: 100%;
-    height: 34px;
+    height: 40px;
     background-color: rgba(204, 204, 204, 0.1);
-    border-radius: 9px;
+    border-radius: 5px;
     border: 1px solid #cccccc;
     color: #707070;
     font-size: 16px;
@@ -524,7 +549,7 @@ ul {
     clear: both;
 }
 
-#change-password, #delete-account {
+#change-password, #delete-account, #signout {
     display: block;
     margin-top: 20px;
     font-size: 16px;
@@ -540,9 +565,6 @@ ul {
     cursor: pointer;
     float: right;
     clear: both;
-}
-
-#change-password:hover, #delete-account {
     box-shadow: none;
 }
 
@@ -569,34 +591,17 @@ ul {
     object-fit: cover;
 }
 
-#edit-picture {
+#input-picture {
     color: #ffffff;
     margin-top: 7px;
-    width: 72px;
-    overflow: hidden;
     cursor: default;
-}
-
-#edit-picture::-webkit-file-upload-button {
-    width: 0.1px;
-    visibility: hidden;
-}
-
-#edit-picture:hover::before {
-    border-color: black;
-}
-#edit-picture:active::before {
-    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
-}
-
-#edit-picture::before {
-    content: 'Edit';
+    width: 50%;
     display: inline-block;
+}
+
+#edit-picture {
     background-color: #ef4923;
     border-radius: 9px;
-    outline: none;
-    white-space: nowrap;
-    -webkit-user-select: none;
     cursor: pointer;
     color: #ffffff;
     font-size: 16px;
@@ -605,8 +610,12 @@ ul {
     height: auto;
     padding: 8px 22px;
     letter-spacing: 0;
+    float: right;
 }
 
+#edit-picture:hover {
+    box-shadow: none;
+}
 
 .footer {
     margin: auto;
