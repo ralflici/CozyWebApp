@@ -1,5 +1,28 @@
 "use strict";
 
+let preferences = {
+    location: undefined,
+    type: [],
+    dates: {
+        start: undefined,
+        end: undefined
+    },
+    guests: {
+        adults: 0,
+        children: 0,
+        infants: 0
+    },
+    price: {
+        min: -1, 
+        max: 1000000
+    },
+    rooms: {
+        beds: 0,
+        bedrooms: 0,
+        bathrooms: 0
+    }
+};
+
 $(document).ready(function() {
     // ----------- GLOBAL VARIABLES ---------- //
     let mapShowed = false;
@@ -13,29 +36,6 @@ $(document).ready(function() {
     // 2: 1367px - 1920px (normal)
     // 3: 1921px -    inf (wide)
     let screenType;
-
-    let preferences = {
-        location: undefined,
-        type: [],
-        dates: {
-            start: undefined,
-            end: undefined
-        },
-        guests: {
-            adults: 0,
-            children: 0,
-            infants: 0
-        },
-        price: {
-            min: -1, 
-            max: 1000000
-        },
-        rooms: {
-            beds: 0,
-            bedrooms: 0,
-            bathrooms: 0
-        }
-    }
     // --------------------------------------- //
 
 
@@ -414,12 +414,14 @@ $(document).ready(function() {
 
         }
         else if (id === "search-button") {
+            if ($(this).hasClass("unavailable")) {
+                return;
+            }
             submit();
         }
     });
     
     function submit() {
-        if ($(this).hasClass("unavailable")) return;
         $(".scroll").css("background-color", "#ffffff");
         
         if (!mapShowed) $(".map").fadeIn(100);
@@ -668,26 +670,6 @@ $(document).ready(function() {
             $("#search-button").addClass("unavailable")
     }
     // --------------------------------------- //
-
-
-    // ------------- SERVER ----------------- //
-    function sendServer(path, dataObject) {
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(dataObject)
-        }
-        async function communicate() {
-            const response = await fetch(path, options);
-            const json = await response.json();
-            return json; //this return a promise so in order to get it when it's resolved we have to use '.then()' 
-        }
-        return communicate()
-        //.then(res => console.log(res))
-        //.catch(err => console.log(err));
-    }
 });
 
 function swapImages(event) {
@@ -739,12 +721,35 @@ function swapImages(event) {
 
 function sendMessage(e) {
     // Find the popup id (which is the place._id)
-    const id = e.target.parentNode.parentNode.id;
-    console.log("send message to " + id);
+    const placeID = e.target.parentNode.parentNode.id;
+    console.log("send message to " + placeID);           // <-------------- TODO
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({message: message})
+    }
 }
 
-function book(e) {
+async function book(e) {
     // Find the popup id (which is the place._id)
-    const id = e.target.parentNode.parentNode.id;
-    console.log("book " + id);
+    const placeID = e.target.parentNode.parentNode.id;
+    console.log("book " + placeID);
+    const dates = new Array(preferences.dates.start, preferences.dates.end);
+    console.log(dates);
+    console.log(new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()));
+    console.log("timezone offset:", preferences.dates.start.getTimezoneOffset(), preferences.dates.end.getTimezoneOffset());
+    const price = parseInt($(".popup-price").text().split(" ")[0]);
+    console.log(price);
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()), price: price})
+    };
+    const response = await fetch("/user/book-place", options);
+    if (response.status >= 400 && response.status < 500)
+        $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html">authenticate</a></div>`);
 }

@@ -6,13 +6,13 @@ var chatSchema = new Schema({
     place: {type: Schema.Types.ObjectId, ref: 'place', required: true},
     content: [{
         sender: {type: String, required: true, enum: ["user", "place"]},
-        read: {type: Boolean, required: true},
+        //read: {type: Boolean, required: true},
         message: {type: String, required: true, maxlength: 200}
     }]
 });
 
 chatSchema.virtual("url").get(function() {
-    return "/user/messages/" + this._id;
+    return "/user/chat/" + this._id;
 });
 
 module.exports = mongoose.model("chat", chatSchema);

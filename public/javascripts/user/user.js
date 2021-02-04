@@ -1,7 +1,3 @@
-jQuery.ajaxSetup({
-    async: false
-});
-
 $(document).ready(function() {
 
     // ---------------- LOGIN --------------- //
@@ -111,12 +107,6 @@ $(document).ready(function() {
     $(window).resize(function(){
         $(".pic").css({"height" :$(".pic").width() + "px"});
     });
-    $.get("/user/picture", function(data) {
-        $("#user-icon>img").attr("src", `data:image/jpeg;base64,${data}`);
-        $(".user-info-image>img").attr("src", `data:image/jpeg;base64,${data}`);
-        $(".pic>img").attr("src", `data:image/jpeg;base64,${data}`);
-        $(".pic").css({"height" :$(".pic").width() + "px"});
-    });
     // --------------------------------------- //
 
 
@@ -128,4 +118,11 @@ $(document).ready(function() {
     });
     $("#login-footer").click(() => {window.location.href = 'log.htm';});
     // --------------------------------------- //
+});
+
+$.get("/user/picture", function(data) {
+    $("#user-icon>img").attr("src", `data:image/jpeg;base64,${data}`);
+    $(".user-info-image>img").attr("src", `data:image/jpeg;base64,${data}`);
+    $(".pic>img").attr("src", `data:image/jpeg;base64,${data}`);
+    $(".pic").css({"height" :$(".pic").width() + "px"});
 });

@@ -72,6 +72,38 @@ ul {
     grid-template-columns: calc(50% - 48px) 48px calc(50% - 32px) 32px;
 }
 
+.auth-warn {
+    padding: 15px;
+    border-radius: 9px;
+    background-color: #ffffff;
+    color: #707070;
+    font-weight: 400;
+    text-align: center;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0;
+    width: 20%;
+    height: min-content;
+    margin: 0 40%;
+    z-index: 20;
+    animation: drop 0.5s ease-in-out forwards;
+}
+
+@keyframes drop {
+    0% {
+        top: -100px;
+    }
+    100% {
+        top: 30px
+    }
+}
+
+.auth-warn a {
+    text-decoration: underline;
+    color: #ef4923;
+    cursor: pointer;
+}
+
 .left-container {
     height: 100vh;
     /*border-radius: 0 40px 40px 0;*/
@@ -131,6 +163,7 @@ ul {
 }
 
 .map {
+    position: relative;
     top: -100%;
     display: none;
     background-color: #ffffff;

@@ -22,7 +22,7 @@ const calendar = {
         let nextMonthYear = nextMonthNum === 0 ? thisYear+1 : thisYear;
         let nextMonthName = this.getMonthName("short", new Date(nextMonthYear, nextMonthNum, 1));
 
-        for (let j = 1; j < $(".month").length; j++) {
+        for (let j = 1; j < 10; j++) {
             this.setupMonth(j, 0, nextMonthNum, nextMonthName, nextMonthYear);
             nextMonthNum = nextMonthNum === 11 ? 0 : nextMonthNum+1;
             nextMonthYear = nextMonthNum === 0 ? nextMonthYear+1 : nextMonthYear;
@@ -31,25 +31,39 @@ const calendar = {
     },
 
     setupMonth: function (m, passed, monthNum, monthName, year) {
-        $($(".month")[m]).find(".month-name").text(monthName + " " + year.toString());
-        $($(".month")[m]).find(".dummy-day").remove();
-        $($(".month")[m]).find(".day").remove();
+        //$($(".month")[m]).find(".month-name").text(monthName + " " + year.toString());
+        $(".month-container").append(`
+            <span class="month" id="${monthName + year.toString()}">
+                <h2 class="month-name">${monthName + " " + year.toString()}</h2>
+                <ul class="weekdays-name">
+                    <li>MON</li>
+                    <li>TUE</li>
+                    <li>WED</li>
+                    <li>THU</li>
+                    <li>FRI</li>
+                    <li>SAT</li>
+                    <li>SUN</li>
+                </ul>
+                <ul class="days-table">
+                </ul>
+            </span>
+        `);
 
         const first = new Date(monthName + "1, " + year.toString());
         const last = new Date(year, monthNum+1, 0);
         let i;
         for (i = 0; i < this.myGetDay(first); i++) {
-            $($(".month")[m]).find(".days-table").append('<li class="dummy-day"></li>');
+            $(`#${monthName + year.toString()}>.days-table`).append('<li class="dummy-day"></li>');
         }
         for (; i < last.getDate() + this.myGetDay(first); i++) {
             let day = i + 1 - this.myGetDay(first);
             if (day < passed)
-                $($(".month")[m]).find(".days-table").append('<li class="day passed">' + day.toString() + '</li>');
+                $(`#${monthName + year.toString()}>.days-table`).append('<li class="day passed">' + day.toString() + '</li>');
             else
-                $($(".month")[m]).find(".days-table").append('<li class="day">' + day.toString() + '</li>');
+                $(`#${monthName + year.toString()}>.days-table`).append('<li class="day">' + day.toString() + '</li>');
         }
         for (; i < 42; i++) {
-            $($(".month")[m]).find(".days-table").append('<li class="dummy-day"></li>');
+            $(`#${monthName + year.toString()}>.days-table`).append('<li class="dummy-day"></li>');
         }
     },
 
@@ -59,7 +73,7 @@ const calendar = {
     },
 
     getMonthName: function(format, date) {
-        let options = { month: format, , timeZone: "Europe/Rome" };
+        let options = { month: format, timeZone: "Europe/Rome" };
         return new Intl.DateTimeFormat('en-US', options).format(date);
     },
 
@@ -100,7 +114,7 @@ const calendar = {
         }
         if (this.start !== undefined && this.end !== undefined) {
             this.fillDaysInRange();
-            return {start: this.startDate, end: this.endDate};
+            return {start: this.start, end: this.end};
         }
     },
 

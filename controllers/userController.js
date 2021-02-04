@@ -23,14 +23,14 @@ exports.signup = async function(req, res, next) {
     res.send();
 }
 
-exports.login = async function(req, res){
+exports.login = async function(req, res, next){
     const username = req.body.username;
     const password = req.body.password;
     console.log("Request: " + username + " " + password);
     let user = await User.findOne({username: username, password: password}, "_id refreshToken");
     console.log(user);
     if (!user){
-        return res.status(401).send();
+        res.status(401).send();
     }
 
     //use the payload to store information about the user such as username, user role, etc.
@@ -56,40 +56,66 @@ exports.login = async function(req, res){
     //send the access token to the client inside a cookie
     //res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
     res.cookie("jwt", accessToken, {httpOnly: true});
-    res.status(200);
     res.send();
     //res.redirect("profile");
 };
 
-exports.verify = function(req, res, next) {
+exports.verifyJWT = function(req, res, next) {
     const accessToken = req.cookies.jwt;
-    console.log("accessToken", accessToken);
+    console.log("\x1b[36m", "accessToken", accessToken);
 
     if(!accessToken) {
-        return res.status(403).send();
+        console.log("\x1b[31m", "jwt not found");
+        res.statusCode = 403;
+        res.send();
     }
-    let payload; 
-    try {
-        payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-        console.log(payload);
+    else {
+        let payload; 
+        try {
+            payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+            res.locals.userID = payload.id;
+            console.log("\x1b[34m", "payload.id: ", payload.id);
+            next();
+        }
+        catch(err) {
+            console.log("\x1b[31m", "jwt is not valid: ", err);
+            res.statusCode = 401;
+            res.send();
+        }
     }
-    catch(err) {
-        //return res.status(401).send();
-    }
-    next();
 };
 
-exports.refresh = async function(req, res) {
+exports.isLogged = function(req, res, next) {
+    const accessToken = req.cookies.jwt;
+    console.log("\x1b[31m", "accessToken", accessToken);
+
+    if(accessToken !== undefined) {
+        let payload; 
+        try {
+            payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+            res.redirect(301, "profile.html");
+        }
+        catch(err) {
+            res.status(200);
+        }
+    }
+    else {
+        res.status(200);
+    }
+    next();
+}
+
+exports.refresh = async function(req, res, next) {
     const accessToken = req.cookies.jwt;
     if(!accessToken) {
-        return res.status(403).send();
+        res.status(403).send();
     }
     let payload;
     try {
         payload = jwt.verify(accessToken, process.env,ACCESS_TOKEN_SECRET);
     }
     catch(err) {
-        return res.status(401).send();
+        res.status(401).send();
     }
 
     let user = await User.findById(payload.id, "refreshToken");
@@ -98,7 +124,7 @@ exports.refresh = async function(req, res) {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
     }
     catch(err) {
-        return res.status(401).send();
+        res.status(401).send();
     }
 
     const newToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
@@ -110,7 +136,7 @@ exports.refresh = async function(req, res) {
     res.send();
 }
 
-exports.editProfile = async function(req, res) {
+exports.editProfile = async function(req, res, next) {
     const token = req.cookies.jwt;
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
@@ -124,7 +150,7 @@ exports.editProfile = async function(req, res) {
     res.send(user);
 }
 
-exports.editPicture = async function (req, res) {
+exports.editPicture = async function (req, res, next) {
     console.log(req.file);
     const img = fs.readFileSync(path.join(__dirname + "/..", "/uploads", req.file.filename));
     const encode_image = img.toString("base64");
@@ -151,13 +177,22 @@ exports.editPicture = async function (req, res) {
     res.redirect("./profile.html");
 }
 
-exports.getPic = async function(req, res) {
+exports.getPic = async function(req, res, next) {
     const user = await User.findById("6018887ac0f599939545efa9", "pic");
-    console.log(user.pic);
     res.writeHead(200, {
         'Content-Type': user.pic.contentType,
         'Content-disposition': 'attachment;filename=' + user.pic.filename,
         'Content-Length': user.pic.data.length
     });
     res.end(user.pic.data.toString("base64"));
+}
+
+exports.getUserByID = async function(id) {
+    try{
+        const user = await User.findById(id).exec();
+        return user;
+    } 
+    catch(err) {
+        return null;
+    }
 }

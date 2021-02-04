@@ -148,7 +148,8 @@ ul {
 */
 #user-icon {
     position: relative;
-    top: 6px
+    top: 6px;
+    z-index: -1;
 }
 
 #user-item, #bookings-item, #messages-item {
@@ -157,6 +158,17 @@ ul {
 
 #user-item {
     margin-right: 16px;
+}
+
+.notification-icon {
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    background-color: #ef4923;
+    position: relative;
+    top: -34px;
+    left: 21px;
+    display: none;
 }
 
 .navbar-list > li > a::after {
@@ -422,7 +434,6 @@ ul {
     height: 66px;
     border-radius: 9px;
     border: 1px solid #cccccc;
-    cursor: pointer;
 }
 
 .item-text {
@@ -456,7 +467,7 @@ ul {
 .no-bookings-container {
     width: 250px;
     height: 195px;
-    background-image: url(http://127.0.0.1:5500/calendar.svg);
+    background-image: url(../images/calendar.svg);
     background-repeat: no-repeat;
     margin: 100px auto;
     padding-top: 63px;
