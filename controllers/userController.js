@@ -20,7 +20,6 @@ exports.verifyJWT = async function(req, res, next) {
             payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
             res.locals.userID = payload.id;
             res.locals.user = await User.findById(payload.id);
-            console.log("\x1b[36m", "USER ID:", payload.id);
             next();
         }
         catch(err) {
@@ -35,7 +34,6 @@ exports.verifyJWT = async function(req, res, next) {
 exports.signup = async function(req, res, next) {
     const username = req.body.username;
     const password = req.body.password;
-    console.log(username, password);
     const userInDB = await User.findOne({username: username});
     if (userInDB != undefined) {
         res.status(401);
@@ -57,9 +55,7 @@ exports.signup = async function(req, res, next) {
 exports.login = async function(req, res, next){
     const username = req.body.username;
     const password = req.body.password;
-    console.log("Request: " + username + " " + password);
     let user = await User.findOne({username: username, password: password}, "_id");
-    console.log(user);
     if (user == null) {
         res.status(401).send({ message: "There are no users with those credentials" });
     }

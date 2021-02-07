@@ -52,10 +52,8 @@ exports.getBookingsList = async function(req, res, next) {
     Booking.find({}).populate("user place").exec(function(err, bookings) {
         if (err) throw err;
         const arr = bookings.filter((booking) => {
-            console.log("booking: userID:", booking.user._id);
             return booking.user._id == res.locals.userID;
         });
-        console.log(arr);
         res.send(arr);
     }); 
 };
@@ -63,7 +61,6 @@ exports.getBookingsList = async function(req, res, next) {
 exports.deleteBooking = async function(req, res, next) {
     try {
         const b = await Booking.find({_id: req.body.bookingID});
-        console.log(b);
         await Booking.deleteOne({_id: req.body.bookingID});
         res.status(200);
         res.redirect('back');

@@ -30,7 +30,6 @@ exports.outmost_price = function(req, res) {
 
 exports.places_list_filter = function(req, res) {
     const pref = req.body;
-    console.log(pref);
     Place
     .find({
         "guests.adults": { $gte: pref.guests.adults },
