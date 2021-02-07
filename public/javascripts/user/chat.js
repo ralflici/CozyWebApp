@@ -2,13 +2,19 @@ $.ajax({
     url: '/user/picture',
     type: 'GET',
     success: function(data){
-        $("#user-icon>img").attr("src", data);
-        $(".user-info-image>img").attr("src", data);
+        if (data == "") {
+            $("#user-icon>img").attr("src", "../images/userIcon.svg");
+            $(".user-info-image>img").attr("src", "../images/userIcon.svg");
+        }
+        else {
+            $("#user-icon>img").attr("src", data);
+            $(".user-info-image>img").attr("src", data);
+        }
     },
     error: function(data) {
         $("#user-icon>img").attr("src", "../images/userIcon.svg");
         $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-        console.warn('Could not load profile picture. You must authenticate.');
+        console.warn('Could not load profile picture.');
     }
 });
 
@@ -31,7 +37,10 @@ $.ajax({
                 let image;
                 if (message.sender === "user") {
                     const response = await fetch("/user/picture", {method: "GET", headers: { "Content-Type": "image/jpeg" }});
-                    image = await response.text(); 
+                    image = await response.text();
+                    if (image == "") {
+                        image = "../images/userIcon.svg";
+                    }
                 }
                 else {
                     image = data.place.images[0];

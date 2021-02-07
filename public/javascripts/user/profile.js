@@ -99,9 +99,16 @@ $.ajax({
     url: '/user/picture',
     type: 'GET',
     success: function(data){
-        $("#user-icon>img").attr("src", data);
-        $(".user-info-image>img").attr("src", data);
-        $(".pic>img").attr("src", data);
+        if (data == "") {
+            $("#user-icon>img").attr("src", "../images/userIcon.svg");
+            $(".user-info-image>img").attr("src", "../images/userIcon.svg");
+            $(".pic>img").attr("src", "../images/userIcon.svg");
+        }
+        else {
+            $("#user-icon>img").attr("src", data);
+            $(".user-info-image>img").attr("src", data);
+            $(".pic>img").attr("src", data);
+        }
         $(".pic").css({"height" :$(".pic").width() + "px"});
     },
     error: function(data) {
@@ -109,6 +116,17 @@ $.ajax({
         $(".user-info-image>img").attr("src", "../images/userIcon.svg");
         $(".pic>img").attr("src", "../images/userIcon.svg");
         $(".pic").css({"height" :$(".pic").width() + "px"});
-        console.warn('Could not load profile picture. You must authenticate.');
+        console.warn('Could not load profile picture.');
     }
+});
+
+$("#edit-picture").click(function(event) {
+    event.preventDefault();
+    $("#input-picture").click();
+});
+
+$("#input-picture").on("change", function() {
+    console.log("uploading...");
+    console.log(this);
+    $(".picture-container").submit();
 });

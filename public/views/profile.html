@@ -56,7 +56,7 @@
             <li id="bookings-item"><a style="cursor: pointer;" href="bookings.html" title="User bookings">Bookings</a></li>
             <li class="selected" id="user-item"><a style="cursor: default;" onclick="">User</a></li>
             <li id="user-icon" title="User profile">
-                <img src="../images/userIcon.svg" width="29px" height="29px" style="object-fit: cover; border-radius: 30px;"></img>
+                <img width="29px" height="29px" style="object-fit: cover; border-radius: 30px;"></img>
                 <div class="notification-icon"></div>
             </li>
         </ul>
@@ -65,7 +65,7 @@
         <div class="menu-container">
             <div class="user-info">
                 <span class="user-info-image">
-                    <img src="../images/userIcon.svg" width="30px" height="30px" style="object-fit: cover; border-radius: 300px;"></img>
+                    <img width="30px" height="30px" style="object-fit: cover; border-radius: 300px;"></img>
                 </span>
                 <span class="user-info-text">
                     <div class="user-name">Name Surname</div>
@@ -111,9 +111,7 @@
                 </span>
                 <form class="picture-container" enctype="multipart/form-data" action="/user/edit-picture" method="post">
                     <label id="pic-label" for="picture">Profile picture</label>
-                    <div class="pic">
-                        <img id="picture" src="../images/userIcon.svg" alt="Profile picture">
-                    </div>
+                    <div class="pic"><img id="picture" alt="Profile picture"></div>
                     <input type="file" id="input-picture" name="picture" accept="image/jpeg"></input>
                     <button class="big-button" id="edit-picture" type="submit">Edit</button>
                 </form>

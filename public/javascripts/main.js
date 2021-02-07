@@ -22,11 +22,11 @@ let preferences = {
         bathrooms: 0
     }
 };
-
+/*
 async function getPicture() {
     const response = await fetch("/user/picture", { method: "GET", headers: { "Content-Type": "image/jpeg" }});
     if (response.status === 401 || response.status === 403) {
-        console.warn("Could not load profile picture. You must authenticate.");
+        console.warn("Could not load profile picture.");
         $("#user-icon>img").attr("src", "../images/userIcon.svg");
     }
     else {
@@ -34,6 +34,21 @@ async function getPicture() {
         $("#user-icon>img").attr("src", src);
     }
 }
+*/
+$.ajax({
+    url: '/user/picture',
+    type: 'GET',
+    success: function(data){
+        if (data == "")
+            $("#user-icon>img").attr("src", "../images/userIcon.svg");
+        else
+            $("#user-icon>img").attr("src", data);
+    },
+    error: function(data) {
+        $("#user-icon>img").attr("src", "../images/userIcon.svg");
+        console.warn('Could not load profile picture.');
+    }
+});
 
 $(document).ready(function() {
     // ----------- GLOBAL VARIABLES ---------- //
@@ -49,7 +64,6 @@ $(document).ready(function() {
     // 3: 1921px -    inf (wide)
     let screenType;
     // --------------------------------------- //
-    getPicture();
 
 
     // ------------- SCREEN SIZE ------------- // 
@@ -746,7 +760,7 @@ async function sendMessage(e) {
     const response = await fetch("/user/chat", options);
     console.log(response);
     if (response.status >= 400 && response.status < 500)
-        $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html">authenticate</a></div>`);
+        $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html" target="_blank">authenticate</a></div>`);
     if (response.redirected)
         window.open(response.url,'_blank');
 }
@@ -770,5 +784,22 @@ async function book(e) {
     };
     const response = await fetch("/user/book-place", options);
     if (response.status >= 400 && response.status < 500)
-        $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html">authenticate</a></div>`);
+        $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html" target="_blank">authenticate</a></div>`);
 }
+
+$(window).on('focus', async function() {
+    //console.log("focus");
+    const response = await fetch("/user/picture", {method: "GET", headers: { "Content-Type": "application/json" }});
+    if (response.status === 200) {
+        $(".auth-warn").remove();
+        const img = await response.text();
+        if (img == "")
+            $("#user-icon>img").attr("src", "../images/userIcon.svg");
+        else
+            $("#user-icon>img").attr("src", img);
+    }
+    else {
+        $("#user-icon>img").attr("src", "../images/userIcon.svg");
+        console.warn('Could not load profile picture.');
+    }
+});

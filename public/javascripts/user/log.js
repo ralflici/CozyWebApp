@@ -71,12 +71,19 @@ $(document).ready(function() {
         url: '/user/picture',
         type: 'GET',
         success: function(data){
-            $("#user-icon>img").attr("src", data);
-            console.log(data);
+            if (data == "") {
+                $("#user-icon>img").attr("src", "../images/userIcon.svg");
+                $(".user-info-image>img").attr("src", "../images/userIcon.svg");
+            }
+            else {
+                $("#user-icon>img").attr("src", data);
+                $(".user-info-image>img").attr("src", data);
+            }
         },
         error: function(data) {
             $("#user-icon>img").attr("src", "../images/userIcon.svg");
-            console.warn('Could not load profile picture. You must authenticate.');
+            $(".user-info-image>img").attr("src", "../images/userIcon.svg");
+            console.warn('Could not load profile picture.');
         }
     });
 });

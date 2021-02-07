@@ -19,7 +19,8 @@ exports.verifyJWT = async function(req, res, next) {
         try {
             payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
             res.locals.userID = payload.id;
-            res.locals.user = await User.findById(payload.id);
+            res.locals.user = await User.findById(payload.id, "name email location bio pic");
+            res.statusCode = 200;
             next();
         }
         catch(err) {
@@ -83,10 +84,11 @@ exports.isLogged = function(req, res, next) {
         let payload; 
         try {
             payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+            res.statusCode = 200;
             res.redirect("profile.html");
         }
         catch(err) {
-            res.status(200);
+            //res.sendStatus(401);
         }
     }
     next();
@@ -137,9 +139,11 @@ exports.getPic = function(req, res, next) {
         });
         res.end(user.pic.data);
     }
+    res.send();
+    /*
     else {
-        res.sendStatus(401);
-    }
+        res.send();
+    }*/
 };
 
 exports.changePassword = async function(req, res, next) {
@@ -163,6 +167,7 @@ exports.deleteAccount = function(req, res, next) {
             res.send({ message: "Could not delete the account" });
         }
         else {
+            res.cookie("jwt", "deleted", {httpOnly: true});
             res.status(200);
             res.redirect("log.html");
         }

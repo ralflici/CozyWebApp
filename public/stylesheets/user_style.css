@@ -639,6 +639,10 @@ ul {
     display: inline-block;
 }
 
+#input-picture {
+    display: none;
+}
+
 #edit-picture {
     background-color: #ef4923;
     border-radius: 9px;
@@ -650,7 +654,7 @@ ul {
     height: auto;
     padding: 8px 22px;
     letter-spacing: 0;
-    float: right;
+    float: left;
 }
 
 #edit-picture:hover {
