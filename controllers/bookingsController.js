@@ -13,6 +13,10 @@ exports.getBookingByID = async function(id) {
 }
 
 exports.bookPlace = async function(req, res, next) {
+    if (res.statusCode === 401 || res.statusCode === 403) {
+        res.send();
+        return;
+    }
     // Check if there is already another booking with the same data
     const book = await Booking.find({dates: req.body.dates, price: req.body.price}).populate().exec(function(err, bookings) {
         for(let i in bookings)
@@ -20,7 +24,7 @@ exports.bookPlace = async function(req, res, next) {
                 return bookings[i];
     });
     // If there are send error status code
-    if (book != null) res.send(400);
+    if (book != null) res.sendStatus(400);
 
     // Otherwise create a new booking and save it in the database
     const user = res.locals.user;

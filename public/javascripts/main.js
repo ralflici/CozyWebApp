@@ -754,13 +754,13 @@ async function sendMessage(e) {
 async function book(e) {
     // Find the popup id (which is the place._id)
     const placeID = e.target.parentNode.parentNode.id;
-    console.log("book " + placeID);
+    
     const dates = new Array(preferences.dates.start, preferences.dates.end);
     console.log(dates);
     console.log(new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()));
     console.log("timezone offset:", preferences.dates.start.getTimezoneOffset(), preferences.dates.end.getTimezoneOffset());
+
     const price = parseInt($(".popup-price").text().split(" ")[0]);
-    console.log(price);
     const options = {
         method: "POST",
         headers: {
