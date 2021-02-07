@@ -163,7 +163,6 @@
     border: none;
     background-color: #F9F9F9;
     padding: 6px 6px 6px 18px;
-    z-index: 10;
 }
 
 #message-input {

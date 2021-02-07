@@ -7,7 +7,7 @@ var chatSchema = new Schema({
     content: [{
         sender: {type: String, required: true, enum: ["user", "place"]},
         //read: {type: Boolean, required: true},
-        message: {type: String, required: true, maxlength: 200},
+        message: {type: String, required: true, maxlength: 500},
         date: {type: Date, required: true}
     }]
 });
