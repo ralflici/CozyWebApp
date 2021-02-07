@@ -35,7 +35,7 @@ router.post("/chat", user_controller.verifyJWT, chat_controller.getChat);
 router.get("/chat/:id", user_controller.verifyJWT, unauthRedirect, function(req, res, next) {res.sendFile(path.join(__dirname, '..', 'public', 'views', 'chat.html'))});
 router.get("/chat/:id/conversation", user_controller.verifyJWT, unauthRedirect, chat_controller.getConversation);
 router.post("/send-message", user_controller.verifyJWT, unauthRedirect, chat_controller.sendMessage)
-router.post("/book-place", user_controller.verifyJWT, bookings_controller.bookPlace);
+router.post("/book-place", user_controller.verifyJWT, unauthRedirect, bookings_controller.bookPlace);
 router.get("/bookings-list", user_controller.verifyJWT, bookings_controller.getBookingsList);
 router.post("/delete-booking", user_controller.verifyJWT, bookings_controller.deleteBooking);
 router.use(express.static(path.join(__dirname, '..', 'public', 'views')));
