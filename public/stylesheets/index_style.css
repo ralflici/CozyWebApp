@@ -1047,4 +1047,5 @@ ul {
     background-color: #cccccc;
     cursor: default;
     box-shadow: none;
+    cursor: not-allowed;
 }

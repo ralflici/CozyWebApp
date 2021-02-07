@@ -23,6 +23,18 @@ let preferences = {
     }
 };
 
+async function getPicture() {
+    const response = await fetch("/user/picture", { method: "GET", headers: { "Content-Type": "image/jpeg" }});
+    if (response.status === 401 || response.status === 403) {
+        console.warn("Could not load profile picture. You must authenticate.");
+        $("#user-icon>img").attr("src", "../images/userIcon.svg");
+    }
+    else {
+        const src = await response.text();
+        $("#user-icon>img").attr("src", src);
+    }
+}
+
 $(document).ready(function() {
     // ----------- GLOBAL VARIABLES ---------- //
     let mapShowed = false;
@@ -37,7 +49,7 @@ $(document).ready(function() {
     // 3: 1921px -    inf (wide)
     let screenType;
     // --------------------------------------- //
-
+    getPicture();
 
 
     // ------------- SCREEN SIZE ------------- // 
@@ -66,9 +78,10 @@ $(document).ready(function() {
             screenType = 3
         }
     }
-    $.get("/user/picture", function(data) {
-        $("#user-icon>img").attr("src", `data:image/jpeg;base64,${data}`);
-    });
+
+    $("#user-icon").click(function() {
+        window.location.href = "/user/profile.html";
+    })
     // --------------------------------------- //
 
 
@@ -719,17 +732,23 @@ function swapImages(event) {
     }
 }
 
-function sendMessage(e) {
+async function sendMessage(e) {
     // Find the popup id (which is the place._id)
     const placeID = e.target.parentNode.parentNode.id;
-    console.log("send message to " + placeID);           // <-------------- TODO
+    console.log("send message to " + placeID);
     const options = {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({message: message})
-    }
+        body: JSON.stringify({placeID: placeID})
+    };
+    const response = await fetch("/user/chat", options);
+    console.log(response);
+    if (response.status >= 400 && response.status < 500)
+        $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html">authenticate</a></div>`);
+    if (response.redirected)
+        window.open(response.url,'_blank');
 }
 
 async function book(e) {

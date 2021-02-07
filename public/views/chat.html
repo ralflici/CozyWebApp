@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messages</title>
+    <title>Chat</title>
     <link rel="icon" href="../../images/favicon.ico" sizes="16x16 32x32" type="image/png">
     <link rel="stylesheet" type="text/css" href="../stylesheets/greycliff.css">
-    <!--<link rel="stylesheet" href="../style/index_style.css">-->
     <link rel="stylesheet" href="../stylesheets/user_style.css">
+    <link rel="stylesheet" href="../stylesheets/chat_style.css">
 </head>
 <body>
     <div class="header">
@@ -21,12 +21,12 @@
                     </g>
                 </svg>
             </span>
-            <span class="name-container"><a href="../index" class="name">Cozy</a></span>
+            <span class="name-container"><a href="../index.html" class="name">Cozy</a></span>
         </span>
         <ul class="navbar-list">
-            <li class="selected" id="messages-item"><a style="cursor: default;" onclick="">Messages</a></li>
-            <li id="bookings-item"><a style="cursor: pointer;" href="bookings.html" title="User bookings">Bookings</a></li>
-            <li id="user-item"><a style="cursor: pointer;" href="profile.html" title="User profile">User</a></li>
+            <li id="messages-item"><a style="cursor: pointer;" href="../messages.html">Messages</a></li>
+            <li id="bookings-item"><a style="cursor: pointer;" href="../bookings.html" title="User bookings">Bookings</a></li>
+            <li id="user-item"><a style="cursor: pointer;" href="../profile.html" title="User profile">User</a></li>
             <li id="user-icon" title="User profile">
                 <img width="29px" height="29px" style="object-fit: cover; border-radius: 30px;"></img>
                 <div class="notification-icon"></div>
@@ -45,22 +45,30 @@
                 </span>
             </div>
             <ul class="menu-list">
-                <li class="menu-item selected" id="messages"><a href="#">Messages</a></li>
-                <li class="menu-item" id="bookings"><a href="bookings.html">Bookings</a></li>
-                <li class="menu-item" id="profile"><a href="profile.html">Profile</a></li>
+                <li class="menu-item" id="messages"><a href="../messages.html" style="cursor: pointer;">Messages</a></li>
+                <li class="menu-item" id="bookings"><a href="../bookings.html">Bookings</a></li>
+                <li class="menu-item" id="profile"><a href="../profile.html">Profile</a></li>
             </ul>
         </div>
         <div class="content-container">
-            <h1 class="page-title">Messages</h1>
-            <div class="main-messages-container">
+            <h1 class="page-title">Chat</h1>
+            <div class="main-chat-container">
+                <span class="chat-container">
+                    <div id="conversation-container"></div>
+                    <div id="message-form">
+                        <textarea type="text" name="message" id="message-input" rows="1">Write a message</textarea>
+                        <button id="send-button"><img src="../images/paperPlane.svg" alt="send"></button>
+                    </div>
+                </span>
+                <span class="place-slide-container"></span>
             </div>
         </div>
     </div>
     <div class="footer">
         <ul class="footer-list">
-            <li><a href="../index">Discover</a></li>
+            <li><a href="../index.html">Discover</a></li>
             <li id="login-footer">Log In</li>
-            <li id="homepage"><img src="../images/logoIcon.png" alt=""><a href="../index">Cozy</a></li>
+            <li id="homepage"><img src="../images/logoIcon.png" alt=""><a href="../index.html">Cozy</a></li>
             <li id="share">Share</li>
             <li id="contact">Contact</li>
         </ul>
@@ -68,5 +76,5 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../javascripts/user/user.js"></script>
-    <script src="../javascripts/user/messages.js"></script>
+    <script src="../javascripts/user/chat.js"></script>
 </body>

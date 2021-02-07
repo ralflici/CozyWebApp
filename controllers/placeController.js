@@ -72,7 +72,7 @@ exports.places_list_filter = function(req, res) {
 
 exports.getPlaceByID = async function(id) {
     try{
-        const place = await Place.findById(id).exec();
+        const place = await Place.findById(id).populate("location").exec();
         return place;
     } 
     catch(err) {

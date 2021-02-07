@@ -26,6 +26,7 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error: "));
 
 // Middleware
+/*
 let setCache = function (req, res, next) {
   // here you can define period in second
   const period = 31536000;
@@ -39,16 +40,18 @@ let setCache = function (req, res, next) {
     res.set('Cache-control', `no-cache`);
   }
   next();
-}
+}*/
 
 //app.use(setCache);
 app.use(logger('dev'));
-app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')), setCache)
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))//, setCache)
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname, 'public', 'images')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+/* COOKIE DEBUG
 app.use(function(req,res,next) {
   const cookie = req.cookies.jwt;
   if (cookie == null) {
@@ -60,6 +63,7 @@ app.use(function(req,res,next) {
     console.log("jwt cookie exists:", cookie);
   next();
 })
+*/
 
 // Routers
 

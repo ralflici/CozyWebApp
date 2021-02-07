@@ -325,13 +325,13 @@ ul {
     font-weight: 200;
 }
 
-.login-wrong {
+#login-wrong, #wrong-old-pass {
     color: #ef4923;
     font-size: 12px;
     font-weight: 400;
     margin: 0;
     text-align: right;
-    display: none;
+    opacity: 0;
 }
 
 #login-button, #signup-button {
@@ -396,7 +396,7 @@ ul {
 .no-messages-container {
     width: 275px;
     height: 207px;
-    background-image: url(http://127.0.0.1:5500/vignette.svg);
+    background-image: url(../images/vignette.svg);
     background-repeat: no-repeat;
     margin: 100px auto
 }
@@ -439,6 +439,8 @@ ul {
 .item-text {
     margin: 0 1px 0 6px;
     width: 100%;
+    display: flex;
+    flex-flow: row wrap;
 }
 
 .item-name {
@@ -450,8 +452,12 @@ ul {
     color:#707070;
 }
 
+.item-bottom {
+    width: 100%;
+    align-self: flex-end;
+}
+
 .item-open-icon {
-    margin-top: 8px;
     border-radius: 6px;
     border: 1px solid #cccccc;
     text-align: center;
@@ -462,6 +468,28 @@ ul {
     padding: 0 5px;
     float: right;
     cursor: pointer;
+}
+
+.item-delete-icon {
+    width: 21px;
+    height: 21px;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 4px;
+    /*border: 1px solid #ef4923;
+    background-color: #ef49231a;
+    color: #ef4923;*/
+    border: 1px solid #cccccc;
+    background-color: #fff;
+    color: #707070;
+    float: right;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+}
+
+.item-delete-icon:hover {
+    color: #000000;
 }
 
 .no-bookings-container {
@@ -538,6 +566,7 @@ ul {
     border: 1px solid #cccccc;
     color: #707070;
     font-size: 16px;
+    cursor: text;
 }
 
 .button-container {
@@ -579,7 +608,7 @@ ul {
     box-shadow: none;
 }
 
-.picture-container {
+.picture-container, .place-container {
     width: 31.35%;
 }
 
@@ -646,6 +675,7 @@ ul {
     font-size: 11px;
     font-weight: 400;
     cursor: pointer;
+    z-index: -1;
 }
 
 #homepage img {
@@ -716,6 +746,15 @@ ul {
     background-color: #ef4923;
     float: right;
     cursor: pointer;
+}
+
+#submit-pass-change.unavailable {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#submit-pass-change.unavailable:hover {
+    box-shadow: none;
 }
 
 #delete-account-popup-container {

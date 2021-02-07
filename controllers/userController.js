@@ -2,14 +2,45 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const fs = require("fs");
 const path = require("path");
+const Jimp = require("jimp");
+
+exports.verifyJWT = async function(req, res, next) {
+    const accessToken = req.cookies.jwt;
+
+    if(!accessToken) {
+        console.log("\x1b[31m", "jwt not found");
+        res.statusCode = 403;
+        next();
+        //res.send("You must <a href='log.html'>authenticate</a>");
+        //res.redirect("/user/log.html");
+    }
+    else {
+        let payload; 
+        try {
+            payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+            res.locals.userID = payload.id;
+            res.locals.user = await User.findById(payload.id);
+            console.log("\x1b[36m", "USER ID:", payload.id);
+            next();
+        }
+        catch(err) {
+            console.log("\x1b[31m", "jwt not valid");
+            res.statusCode = 401;
+            next();
+            //res.redirect(path.join(__dirname, "..", "public", "views", "log.html"));
+        }
+    }
+};
 
 exports.signup = async function(req, res, next) {
     const username = req.body.username;
     const password = req.body.password;
     console.log(username, password);
     const userInDB = await User.findOne({username: username});
-    if (userInDB != undefined)
+    if (userInDB != undefined) {
         res.status(401);
+        res.send("User already registered");
+    }
     else {
         const user = new User({
             username: username,
@@ -19,69 +50,32 @@ exports.signup = async function(req, res, next) {
             if (err) throw err;
         });
         res.status(200);
+        res.redirect("back");
     }
-    res.send();
-}
+};
 
 exports.login = async function(req, res, next){
     const username = req.body.username;
     const password = req.body.password;
     console.log("Request: " + username + " " + password);
-    let user = await User.findOne({username: username, password: password}, "_id refreshToken");
+    let user = await User.findOne({username: username, password: password}, "_id");
     console.log(user);
-    if (!user){
-        res.status(401).send();
-    }
-
-    //use the payload to store information about the user such as username, user role, etc.
-    let payload = {id: user._id};
-
-    //create the access token with the shorter lifespan
-    let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-        algorithm: "HS256",
-        expiresIn: process.env.ACCESS_TOKEN_LIFE
-    });
-
-    //create the refresh token with the longer lifespan
-    let refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-        algorithm: "HS256",
-        expiresIn: process.env.REFRESH_TOKEN_LIFE
-    });
-
-    //store the refresh token in the user array
-    //users[username].refreshToken = refreshToken;
-    user.refreshToken = refreshToken;
-    user.save();
-
-    //send the access token to the client inside a cookie
-    //res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
-    res.cookie("jwt", accessToken, {httpOnly: true});
-    res.send();
-    //res.redirect("profile");
-};
-
-exports.verifyJWT = function(req, res, next) {
-    const accessToken = req.cookies.jwt;
-    console.log("\x1b[36m", "accessToken", accessToken);
-
-    if(!accessToken) {
-        console.log("\x1b[31m", "jwt not found");
-        res.statusCode = 403;
-        res.send();
+    if (user == null) {
+        res.status(401).send({ message: "There are no users with those credentials" });
     }
     else {
-        let payload; 
-        try {
-            payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-            res.locals.userID = payload.id;
-            console.log("\x1b[34m", "payload.id: ", payload.id);
-            next();
-        }
-        catch(err) {
-            console.log("\x1b[31m", "jwt is not valid: ", err);
-            res.statusCode = 401;
-            res.send();
-        }
+        //use the payload to store information about the user such as username, user role, etc.
+        let payload = {id: user._id};
+
+        //create the access token with the shorter lifespan
+        let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: process.env.ACCESS_TOKEN_LIFE
+        });
+
+        //send the access token to the client inside a cookie
+        res.cookie("jwt", accessToken, {httpOnly: true});
+        res.redirect("profile.html");
     }
 };
 
@@ -89,110 +83,97 @@ exports.isLogged = function(req, res, next) {
     const accessToken = req.cookies.jwt;
     console.log("\x1b[31m", "accessToken", accessToken);
 
-    if(accessToken !== undefined) {
+    if(accessToken != undefined) {
         let payload; 
         try {
             payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-            res.redirect(301, "profile.html");
+            res.redirect("profile.html");
         }
         catch(err) {
             res.status(200);
         }
     }
-    else {
-        res.status(200);
-    }
     next();
-}
+};
 
-exports.refresh = async function(req, res, next) {
-    const accessToken = req.cookies.jwt;
-    if(!accessToken) {
-        res.status(403).send();
-    }
-    let payload;
-    try {
-        payload = jwt.verify(accessToken, process.env,ACCESS_TOKEN_SECRET);
-    }
-    catch(err) {
-        res.status(401).send();
-    }
+exports.getInfo = function(req, res, next) {
+    res.send(res.locals.user);
+};
 
-    let user = await User.findById(payload.id, "refreshToken");
-    const refreshToken = user.refreshToken;
-    try {
-        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-    }
-    catch(err) {
-        res.status(401).send();
-    }
-
-    const newToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-        algorithm: "HS256",
-        expiresIn: process.env.ACCESS_TOKEN_LIFE
-    });
-
-    res.cookie("jwt", newToken, {secure: true, httpOnly: true});
-    res.send();
-}
-
-exports.editProfile = async function(req, res, next) {
-    const token = req.cookies.jwt;
-    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
-    const user = await User.findById(payload.id, "username");
-    console.log(user);
+exports.editProfile = function(req, res, next) {
+    const user = res.locals.user;
+    //console.log(user);
     user.name = req.body.name;
     user.email = req.body.email;
     user.location = req.body.location;
     user.bio = req.body.bio;
     user.save();
-    res.send(user);
-}
+    res.redirect("back");
+};
 
-exports.editPicture = async function (req, res, next) {
-    console.log(req.file);
-    const img = fs.readFileSync(path.join(__dirname + "/..", "/uploads", req.file.filename));
-    const encode_image = img.toString("base64");
+exports.editPicture = function (req, res, next) {
+    const user = res.locals.user;
+    Jimp.read(path.join(__dirname + "/..", "/uploads", req.file.filename))
+    .then(async function(image) {
+        const data = await image.cover(250,250).quality(70).getBase64Async(req.file.mimetype);
+        user.pic = {
+            data: data,
+            contentType: req.file.mimetype,
+            filename: req.file.filename
+        }
+        await user.save();
+        fs.unlink('uploads/' + req.file.filename, (err) => {
+            if (err) throw err;
+        });
+        res.status(200);
+        res.redirect("./profile.html");
+    })
+    .catch(err => {throw err;}); 
+};
 
-    
-    const token = req.cookies.jwt;
-    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const user = await User.findById(payload.id);
-    console.log(user);
-    
-    user.pic = {
-        data: Buffer.from(encode_image, "base64"),
-        contentType: req.file.mimetype,
-        filename: req.file.filename
+exports.getPic = function(req, res, next) {
+    const user = res.locals.user;
+    if (user != null && user.pic.data != null) {
+        res.writeHead(200, {
+            'Content-Type': user.pic.contentType,
+            'Content-disposition': 'attachment;filename=' + user.pic.filename,
+            'Content-Length': user.pic.data.length
+        });
+        res.end(user.pic.data);
     }
-    user.save();
-
-    fs.unlink('uploads/' + req.file.filename, (err) => {
-        if (err) throw err;
-    });
-
-    res.status(200);
-    //res.send();
-    res.redirect("./profile.html");
-}
-
-exports.getPic = async function(req, res, next) {
-    const user = await User.findById("6018887ac0f599939545efa9", "pic");
-    res.writeHead(200, {
-        'Content-Type': user.pic.contentType,
-        'Content-disposition': 'attachment;filename=' + user.pic.filename,
-        'Content-Length': user.pic.data.length
-    });
-    res.end(user.pic.data.toString("base64"));
-}
-
-exports.getUserByID = async function(id) {
-    try{
-        const user = await User.findById(id).exec();
-        return user;
-    } 
-    catch(err) {
-        return null;
+    else {
+        res.sendStatus(401);
     }
+};
+
+exports.changePassword = async function(req, res, next) {
+    const user = res.locals.user;
+    if (req.body.oldPass === res.locals.user.password) {
+        user.password = req.body.newPass;
+        await user.save();
+        res.status(200);
+        res.send({ message: "Password changed succesfully" });
+    }
+    else {
+        res.status(401);
+        res.send({ message: "Invalid old password" });
+    }
+};
+
+exports.deleteAccount = function(req, res, next) {
+    User.findByIdAndDelete(res.locals.userID, function(err, doc) {
+        if (err) {
+            res.status(500);
+            res.send({ message: "Could not delete the account" });
+        }
+        else {
+            res.status(200);
+            res.redirect("log.html");
+        }
+    });
+}
+
+exports.signout = function(req, res, next) {
+    res.cookie("jwt", "signout", {httpOnly: true});
+    res.redirect("log.html");
 }

@@ -13,14 +13,15 @@
     <div class="user-popup" id="change-password-popup">
         <div class="user-popup-container" id="change-password-popup-container">
             <div class="close-icon">✖</div>
-            <form>
+            <form id="change-password-form">
                 <label for="old-pass">Old password</label><br>
-                <input type="password" id="old-pass" name="old-password" minlength="8" required><br><br>
+                <input type="password" id="old-pass" name="old-password" minlength="8" required><br>
+                <p id="wrong-old-pass" style="margin: 4px 0 10px 0;">Wrong old password</p>
                 <label for="old-pass">New password (min 8)</label><br>
                 <input type="password" id="new-pass1" name="new-password1" minlength="8" required><br><br>
                 <label for="old-pass">New password again</label><br>
                 <input type="password" id="new-pass2" name="new-password2" minlength="8" required><br><br>
-                <input class="big-button" id="submit-pass-change" type="submit" value="Change">
+                <input class="big-button unavailable" id="submit-pass-change" type="submit" value="Change">
             </form>
         </div>
     </div>
@@ -132,4 +133,5 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../javascripts/user/user.js"></script>
+    <script src="../javascripts/user/profile.js"></script>
 </body>
