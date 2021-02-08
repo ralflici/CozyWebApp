@@ -24,9 +24,9 @@ $(document).ready(function() {
         }
         const userData = {
             name: $("#name-input").val().replace(/^\s+|\s+$/g, ''),
-            email: $("#email-input").val(),
-            location: $("#location-input").val(),
-            bio: $("#bio-input").val()
+            email: $("#email-input").val().replace(/^\s+|\s+$/g, ''),
+            location: $("#location-input").val().replace(/^\s+|\s+$/g, ''),
+            bio: $("#bio-input").val().replace(/^\s+|\s+$/g, '')
         }
         const options = {
             method: "POST",
