@@ -87,7 +87,7 @@ exports.isLogged = function(req, res, next) {
         let payload; 
         try {
             payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-            res.statusCode = 200;
+            //res.statusCode = 200;
             res.redirect("profile.html");
         }
         catch(err) {
