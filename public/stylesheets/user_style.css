@@ -325,7 +325,7 @@ ul {
     font-weight: 200;
 }
 
-#login-wrong, #wrong-old-pass {
+#login-wrong, #signup-wrong, #wrong-old-pass {
     color: #ef4923;
     font-size: 12px;
     font-weight: 400;
@@ -545,6 +545,14 @@ ul {
     padding: 3px;*/
 }
 
+#wrong-email {
+    color: #ef4923;
+    font-size: 12px;
+    font-weight: 500;
+    float: right;
+    opacity: 0;
+}
+
 .section input, .small-container input {
     margin-top: 7px;
     padding: 4px 8px;
@@ -587,6 +595,13 @@ ul {
     cursor: pointer;
     float: right;
     clear: both;
+    box-shadow: none;
+}
+
+#edit-profile.unavailable {
+    color: #fff;
+    background-color: #ccc;
+    cursor: default;
 }
 
 #change-password, #delete-account, #signout {

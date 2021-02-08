@@ -48,7 +48,10 @@ $(document).ready(function() {
             body: JSON.stringify({username: username, password: password})
         }
         const response = await fetch("/user/signup", options);
-        console.log(response.status);
+        if (response.status == 403)
+            $("#signup-wrong").css("opacity", 1);
+        else 
+            $("#signup-wrong").css("opacity", 1);
         if (response.redirected)
                 window.location.href = response.url;
     });
@@ -61,12 +64,6 @@ $(document).ready(function() {
             $("#signup-button").addClass("unavailable");
     });
 
-    /*
-    $.get("/user/picture", function(data) {
-        //console.log(data);
-        $("#user-icon>img").attr("src", data);
-    });
-    */
     $.ajax({
         url: '/user/picture',
         type: 'GET',

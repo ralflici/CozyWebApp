@@ -64,3 +64,10 @@ $.ajax({
         console.warn('Could not load profile picture.');
     }
 });
+
+$.get("/user/profile-info", function(info) {
+    if (info.name != "")
+        $(".user-name").text(info.name);
+    else
+        $(".user-name").text("Name Surname");
+});

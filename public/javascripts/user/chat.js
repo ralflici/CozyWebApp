@@ -107,3 +107,10 @@ async function sendMessage() {
     if (response.redirected)
         window.location.href = response.url;
 };
+
+$.get("/user/profile-info", function(info) {
+    if (info.name != "")
+        $(".user-name").text(info.name);
+    else
+        $(".user-name").text("Name Surname");
+});

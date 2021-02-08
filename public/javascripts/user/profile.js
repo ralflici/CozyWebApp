@@ -4,8 +4,24 @@ $(document).ready(function() {
         $(".pic").css({"height" :$(".pic").width() + "px"});
     });
 
-    $("#profile-form").submit(async function(e) {
-        e.preventDefault();
+    $("#email-input").on("input", function() {
+        console.log(this.value)
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(!re.test(String(this.value).toLowerCase())) {
+            $("#edit-profile").addClass("unavailable");
+            $("#wrong-email").css("opacity", 1);
+        }
+        else {
+            $("#edit-profile").removeClass("unavailable");
+            $("#wrong-email").css("opacity", 0);
+        }
+    })
+
+    $("#profile-form").submit(async function(event) {
+        event.preventDefault();
+        if ($("#edit-profile").hasClass("unavailable")) {
+            return;
+        }
         const userData = {
             name: $("#name-input").val(),
             email: $("#email-input").val(),
@@ -89,6 +105,7 @@ $(document).ready(function() {
 });
 
 $.get("/user/profile-info", function(user) {
+    $(".user-name").text(user.name == "" ? "Name Surname" : user.name);
     $("#name-input").val(user.name);
     $("#email-input").val(user.email);
     $("#location-input").val(user.location);

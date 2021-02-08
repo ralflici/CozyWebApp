@@ -19,8 +19,7 @@ exports.bookPlace = async function(req, res, next) {
     }
     // Check if there is already another booking with the same data
     const book = await Booking.findOne({dates: req.body.dates, user: res.locals.userID, place: req.body.placeID});
-    console.log(book);
-    // If there are send error status code
+    // If it exists send error status code
     if (book != null) {
         res.statusCode = 403;
         res.send();

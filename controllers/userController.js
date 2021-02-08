@@ -39,8 +39,9 @@ exports.signup = async function(req, res, next) {
     console.log(username, password);
     const userInDB = await User.findOne({username: username});
     if (userInDB != undefined) {
-        res.statusCode = 401;
-        res.send("User already registered");
+        res.statusCode = 403;
+        res.send();
+        return;
     }
     else {
         const user = new User({

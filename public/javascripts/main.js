@@ -758,9 +758,9 @@ async function book(e) {
     const placeID = e.target.parentNode.parentNode.id;
     
     const dates = new Array(preferences.dates.start, preferences.dates.end);
-    console.log(dates);
-    console.log(new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()));
-    console.log("timezone offset:", preferences.dates.start.getTimezoneOffset(), preferences.dates.end.getTimezoneOffset());
+    //console.log(dates);
+    //console.log(new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()));
+    //console.log("timezone offset:", preferences.dates.start.getTimezoneOffset(), preferences.dates.end.getTimezoneOffset());
 
     const price = parseInt($(".popup-price").text().split(" ")[0]);
     const options = {
