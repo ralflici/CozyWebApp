@@ -29,7 +29,7 @@
                 </div>
                 <div class="scroll">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve" style="transform: rotate(-90deg);">
-                        <polyline fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" points="15.5,21 6.5,12 15.5,3 "/>
+                        <polyline fill="none" stroke="#707070" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" points="15.5,21 6.5,12 15.5,3 "/>
                     </svg>
                 </div>
                 <h1 class="left-header">Prepare for a lifetime experience and cruise with confidence!</h1>
@@ -41,18 +41,10 @@
         </div>
         <div class="right-container">
             <ul class="navbar-list">
-                <li id="menu-icon">
-                    <svg stroke="none" width="35px" height="27px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"/>
-                    </svg>
-                </li>
                 <li id="messages-item"><a style="cursor: pointer;" href="/user/messages.html" title="User messages">Messages</a></li>
                 <li id="bookings-item"><a style="cursor: pointer;" href="/user/bookings.html" title="User bookings">Bookings</a></li>
                 <li id="user-item"><a style="cursor: pointer;" href="/user/profile.html" title="User profile">User</a></li>
-                <li id="user-icon" title="User profile">
-                    <img width="29px" height="29px" style="object-fit: cover; border-radius: 30px;"></img>
-                    <div class="notification-icon"></div>
-                </li>
+                <li id="user-icon" title="User profile"><img></li>
             </ul>
             <div class="searchbar">
                 <span class="search-icon">
@@ -78,8 +70,7 @@
                 <li class="continent" id="Oceania">Oceania</li>
             </ul>
             
-            <div class="location-slideshow">
-            </div>
+            <div class="location-slideshow"></div>
             
             <h2 class="right-header">Type of place</h2>
             <div class="typeplace-list">
@@ -227,7 +218,7 @@
             <div class="range">
                 <span class="price" id="min">
                     <form class="price-container">
-                        <label>Minimum price</label>
+                        <label>Minimum</label>
                         <span class="price-input-container">
                             <input type="number" class="price-input" id="min-price" name="min-price" value="0" aria-label="min-price">
                             <p style="display: inline;">€</p>
@@ -236,7 +227,7 @@
                 </span>
                 <span class="price" id="max">
                     <form class="price-container">
-                        <label>Maximum price</label>
+                        <label>Maximum</label>
                         <span class="price-input-container">
                             <input type="number" class="price-input" id="max-price" name="max-price" value="0" aria-label="max-price">
                             <p style="display: inline;">€</p>

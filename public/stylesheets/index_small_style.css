@@ -1,6 +1,7 @@
-@media only screen and (max-width: 1365px) {
+@media only screen and (max-width: 1280px) {
     html {
         width: 100%;
+        font-size: 1vw;
     }
 
     .main-page-wrapper {
@@ -14,48 +15,68 @@
         height: 100vh;
     }
 
+    .result-number, .success-popup, .fail-popup {
+        font-size: min(16px, 2.783rem);
+    }
+
     .left-text {
         width: 100%;
         margin: 0;
-        padding: 30px 10px;
-        grid-template-columns: 40% 20% auto 60px;
-        grid-template-rows: 15% 13% 20% 10% auto;
+        padding: 60px 30px;
+        grid-template-columns: 25% auto auto 25%;
+        grid-template-rows: 10% 5% 25% 30% auto auto;
     }
 
     .logo {
-        width: 60px;
-        height: 60px;
+        width: 7.6rem;
+        height: 7.6rem;
+        position: initial;
     }
 
     .name {
         color: #000000;
-        font-size: 80px;
+        font-size: 10.8rem;
+        grid-column: 1 / 8;
+        position: initial;
     }
 
     .scroll {
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
         border-radius: 60px;
         background-color: transparent;
         padding: 10px;
-        border: 2px solid #000000;
+        border: 2px solid #707070;
         grid-column-start: 4;
         z-index: 20;
         display: initial;
+        justify-self:right;
     }
 
     .left-text > * {
         color: #000000;
     }
 
-    .left-header, .left-paragraph {
-        grid-column-start: 1;
-        grid-column-end: 3;
+    .left-header {
+        grid-column: 1 / 5;
+        grid-row: 3 / 4;
+        font-size: min(33px, 5.739vw);
+    }
+
+    .left-paragraph {
+        grid-column: 1 / 5;
+        grid-row: 4 / 5;
+        font-size: min(15px, 2.609rem);
     }
 
     #get-started-link {
-        grid-column: 1 / 5;
-        text-align: right;
+        grid-column: 2 / 4;
+        grid-row: 6 / 7;
+    }
+
+    #get-started {
+        height: min(15rem , 82px);
+        font-size: min(3.478rem, 20px);
     }
 
     #get-started-link > * {
@@ -64,10 +85,124 @@
 
     .right-container {
         width: 100%;
-        padding: 30px 10px 10px 10px;
+        padding: 30px 30px;
+    }
+
+    .navbar-list {
+        float: none;
+        width: 100%;
     }
 
     .navbar-list > li > * {
-        font-size: 16px;
+        font-size: min(23px , 4rem);
+        height: fit-content;
+    }
+
+    #user-icon * {
+        width: min(29px, 5.043rem);
+        height: min(29px, 5.043rem);
+    }
+
+    .right-main-header {
+        font-size: min(39px, 6.783rem);
+    }
+
+    .search-icon {
+        width: min(22px, 3.826rem);
+        height: min(22px, 3.826rem);
+    }
+
+    .search-form, .search-text, .search-result {
+        font-size: min(25px, 4.348rem);
+    }
+
+    .continent-list > *, .continent-list > .selected {
+        font-size: min(25px, 4.348rem);
+    }
+
+    .location-slideshow {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .location-image {
+        border-radius: min(19px, 3.3rem);
+        width: min(279px, 48.522rem);
+        height: min(412px, 71.653rem);
+    }
+
+    .location-text {
+        font-size: min(25px, 4.348rem);
+    }
+
+    .right-header {
+        font-size: min(25px, 4.348rem);
+    }
+
+    .type-text > h2 {
+        font-size: min(20px, 4.02rem);
+    }
+
+    .type-text > p {
+        display: none;
+        font-size: min(15px, 2.609rem);
+    }
+    
+    .control-icon {
+        width: min(25px, 4.348rem);
+        height: min(25px, 4.348rem);
+        font-size: min(20px, 3.478rem);
+        line-height: min(18px, 3.130rem);
+    }
+
+    .control-number {
+        font-size: min(20px, 3.478rem);
+    }
+
+    .calendar {
+        border-radius: min(19px, 3.3rem);
+    }
+
+    .calendar-container {
+        height: min(430px, 74.783rem);
+    }
+
+    .month-arrow {
+        width: min(50px, 8.7rem);
+        height: min(50px, 8.7rem);
+    }
+
+    .roundtrip-container {
+        height: min(82px, 14.261rem);
+    }
+
+    .reset-icon {
+        flex-basis: auto;
+    }
+
+    .reset-icon > img {
+        padding: min(13px, 1rem);
+    }
+
+    .date {
+        display: none;
+    }
+
+    .price-container > * {
+        font-size: min(20px, 3.478rem);
+    }
+
+    .price-input {
+        width: 10rem;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    #search-button {
+        width: 100%;
+    }
+
+    .typeplace-list {
+        width: 100%;
     }
 }

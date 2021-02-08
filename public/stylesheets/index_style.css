@@ -8,11 +8,11 @@
 
 html {
     font-size: 100%;
-    -webkit-font-smoothing: subpixel-antialiased;
+    /*-webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: subpixel-antialiased;
     text-rendering: optimizeLegibility;
-    font-feature-settings: "kern" 1;
-    /*scroll-behavior: smooth;*/
+    font-feature-settings: "kern" 1;*/
+    scroll-behavior: smooth;
 
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -227,7 +227,7 @@ ul {
     margin: 0;
     display: inline-block;
     left: 22px;
-    font: normal normal bold 40px/48px Greycliff CF;
+    font: normal normal bold 40px Greycliff CF;
     color: #000000;
 }
 
@@ -236,7 +236,7 @@ ul {
 }
 
 .left-header {
-    font: normal normal normal 33px/48px greycliff;
+    font: normal normal normal 33px greycliff;
     color: #000000;
     letter-spacing: 1.55px;
     margin: 0;
@@ -244,7 +244,7 @@ ul {
 }
 
 .left-paragraph {
-    font: normal normal normal 15px/25px greycliff;
+    font: normal normal normal 15px greycliff;
     color: #000000;
     letter-spacing: 0.81px;
     margin: 0;
@@ -289,7 +289,7 @@ ul {
 .slider-bar > p {
     display: inline-block;
     margin: 0px;
-    font: normal normal 500 20px/23px greycliff;
+    font: normal normal 500 20px greycliff;
     font-weight: 500;
     letter-spacing: 1.48px;
 }
@@ -355,12 +355,16 @@ ul {
 }
 
 .navbar-list > li {
-    font: normal normal 500 23px/27px greycliff;
+    font: normal normal 500 23px greycliff;
     color: #000000;
     cursor: pointer;
 }
 
 #user-icon * {
+    width: 29px;
+    height: 29px;
+    object-fit: cover;
+    border-radius: 29px;
     cursor: pointer;
 }
 
@@ -412,14 +416,14 @@ ul {
     width: calc(100% - 53px);
     margin-left: 27px;
     border: none;
-    font: normal normal 300 25px/30px greycliff;
+    font: normal normal 300 25px greycliff;
     color: #CCCCCC;
 }
 
 .search-text {
     display: inline;
     margin: 0px 0px 0px 25px;
-    font: normal normal 300 25px/30px greycliff;
+    font: normal normal 300 25px greycliff;
     color: #CCCCCC;
 }
 
@@ -447,7 +451,7 @@ ul {
     padding: 0px 5px;
     width: max-content;
     border-radius: 9px;
-    font: normal normal 500 25px/30px greycliff;
+    font: normal normal 500 25px greycliff;
     transition: all 0.1s ease-out;
 }
 
@@ -457,7 +461,7 @@ ul {
 }
 
 .right-main-header {
-    font: normal normal 700 39px/46px Greycliff CF;
+    font: normal normal 700 39px Greycliff CF;
     letter-spacing: 1px;
     color: #707070;
     margin: 71.8px 0 0 0;
@@ -471,13 +475,13 @@ ul {
 }
 
 .continent-list > * {
-    font: normal normal 400 25px/30px greycliff;
+    font: normal normal 400 25px greycliff;
     color: #cccccc;
     cursor: pointer;
 }
 
 .continent-list > .selected {
-    font: normal normal 500 25px/30px greycliff;
+    font: normal normal 500 25px greycliff;
     color: #EF4923;
 }
 
@@ -571,7 +575,7 @@ ul {
 
 .right-header {
     margin: 52.8px 0 0 0;
-    font: normal normal 500 25px/30px greycliff;
+    font: normal normal 500 25px greycliff;
     letter-spacing: 0px;
     color: #707070;
 }
@@ -682,7 +686,6 @@ ul {
     height: 100%;
     border-radius: 19px;
     border: 2px solid #cccccc;
-    position: relative;
     top: -54px;
     overflow: hidden;
 }
@@ -920,6 +923,10 @@ ul {
     border-radius: 9px;
     border: 2px solid #cccccc;
     padding: 12px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #beds > span > .control-number, #bedrooms > span > .control-number, #bathrooms > span > .control-number {
@@ -949,28 +956,22 @@ ul {
 }
 
 .type-text {
-    display: inline-block;
-    margin: auto;
-    height: 54px;
-    padding: 0px;
     color: #cccccc;
 }
 
 .type-text > h2 {
     margin: 0;
-    font: normal normal 500 20px/32px greycliff;
+    font: normal normal 500 20px greycliff;
 }
 
 .type-text > p {
     margin: 0;
-    font: normal normal 400 15px/22px greycliff;
+    font: normal normal 400 15px greycliff;
 }
 
 .type-control {
-    height: 54px;
     float: right;
-    padding: 14.5px 0;
-    vertical-align: center;
+    /*padding: 14.5px 0;*/
 }
 
 .control-number {
@@ -989,7 +990,7 @@ ul {
     border: 2px solid #cccccc;
     text-align: center;
     color: #cccccc;
-    font: normal normal 400 20px/18px greycliff;
+    font: normal normal 400 20px greycliff;
     transition: box-shadow 0.2s;
 }
 
@@ -1040,9 +1041,11 @@ ul {
 
 .price-container {
     display: flex;
+    flex-flow: row wrap;
     justify-content: space-between;
+    align-items: center;
     height: 100%;
-    padding: 26px 12px;
+    padding: 12px;
 }
 
 .price-container > * {
@@ -1064,11 +1067,11 @@ ul {
     border: none;
     border-bottom: 1px solid #cccccc;
 }
-
+/*
 #rooms-list > span > span > h2 {
     font: normal normal 500 20px/54px greycliff;
 }
-
+*/
 #search-button {
     margin-top: 52.8px;
     float: right;
