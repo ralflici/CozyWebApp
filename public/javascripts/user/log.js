@@ -51,7 +51,7 @@ $(document).ready(function() {
         if (response.status == 403)
             $("#signup-wrong").css("opacity", 1);
         else 
-            $("#signup-wrong").css("opacity", 1);
+            $("#signup-wrong").css("opacity", 0);
         if (response.redirected)
                 window.location.href = response.url;
     });
