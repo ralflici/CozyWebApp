@@ -23,7 +23,7 @@ $(document).ready(function() {
             return;
         }
         const userData = {
-            name: $("#name-input").val(),
+            name: $("#name-input").val().replace(/^\s+|\s+$/g, ''),
             email: $("#email-input").val(),
             location: $("#location-input").val(),
             bio: $("#bio-input").val()
