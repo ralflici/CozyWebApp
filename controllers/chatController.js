@@ -18,7 +18,7 @@ exports.getChatList = function(req,res,next) {
 };
 
 exports.getChat = async function(req, res, next) {
-    if (res.statusCode === 401 || res.statusCode === 403) {
+    if (res.statusCode === 401) {
         res.send();
         return;
     }

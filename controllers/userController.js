@@ -10,7 +10,7 @@ exports.verifyJWT = async function(req, res, next) {
 
     if(!accessToken) {
         console.log("\x1b[31m", "jwt not found");
-        res.statusCode = 403;
+        res.statusCode = 401;
         next();
         //res.send("You must <a href='log.html'>authenticate</a>");
         //res.redirect("/user/log.html");

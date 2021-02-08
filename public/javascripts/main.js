@@ -22,19 +22,7 @@ let preferences = {
         bathrooms: 0
     }
 };
-/*
-async function getPicture() {
-    const response = await fetch("/user/picture", { method: "GET", headers: { "Content-Type": "image/jpeg" }});
-    if (response.status === 401 || response.status === 403) {
-        console.warn("Could not load profile picture.");
-        $("#user-icon>img").attr("src", "../images/userIcon.svg");
-    }
-    else {
-        const src = await response.text();
-        $("#user-icon>img").attr("src", src);
-    }
-}
-*/
+
 $.ajax({
     url: '/user/picture',
     type: 'GET',
@@ -759,8 +747,8 @@ async function sendMessage(e) {
     };
     const response = await fetch("/user/chat", options);
     console.log(response);
-    if (response.status >= 400 && response.status < 500 && $(".auth-warn").length === 0)
-        $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html" target="_blank">authenticate</a></div>`);
+    if (response.status == 401 && $(".auth-popup").length === 0)
+        $(".left-container").append(`<div class="auth-popup">You must <a href="./user/log.html" target="_blank">authenticate</a></div>`);
     if (response.redirected)
         window.open(response.url,'_blank');
 }
@@ -783,8 +771,19 @@ async function book(e) {
         body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()), price: price})
     };
     const response = await fetch("/user/book-place", options);
-    if (response.status >= 400 && response.status < 500 && $(".auth-warn").length === 0)
-        $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html" target="_blank">authenticate</a></div>`);
+    if (response.status == 401 && $(".auth-popup").length === 0) {
+        $(".left-container").append(`<div class="auth-popup">You must <a href="./user/log.html" target="_blank">authenticate</a></div>`);
+    }
+    else if (response.status == 403) {
+        $(".success-popup").remove();
+        $(".fail-popup").remove();
+        $(".left-container").append(`<div class="fail-popup">This booking already exists</div>`);
+    }
+    else {
+        $(".success-popup").remove();
+        $(".fail-popup").remove();
+        $(".left-container").append(`<div class="success-popup">Succesfully booked</div>`);
+    }
 }
 
 $(window).on('focus', async function() {

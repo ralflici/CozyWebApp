@@ -13,18 +13,19 @@ exports.getBookingByID = async function(id) {
 }
 
 exports.bookPlace = async function(req, res, next) {
-    if (res.statusCode === 401 || res.statusCode === 403) {
+    if (res.statusCode === 401) {
         res.send();
         return;
     }
     // Check if there is already another booking with the same data
-    const book = await Booking.find({dates: req.body.dates, price: req.body.price}).populate().exec(function(err, bookings) {
-        for(let i in bookings)
-            if (bookings[i].user_id === res.locals.userID && bookings[i].place._id === req.body.placeID)
-                return bookings[i];
-    });
+    const book = await Booking.findOne({dates: req.body.dates, user: res.locals.userID, place: req.body.placeID});
+    console.log(book);
     // If there are send error status code
-    if (book != null) res.sendStatus(400);
+    if (book != null) {
+        res.statusCode = 403;
+        res.send();
+        return;
+    }
 
     // Otherwise create a new booking and save it in the database
     const user = res.locals.user;
@@ -44,7 +45,7 @@ exports.bookPlace = async function(req, res, next) {
             throw err;
         }
     });
-    res.sendStatus(200);
+    res.send();
     next();
 };
 
