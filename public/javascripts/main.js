@@ -771,8 +771,9 @@ async function book(e) {
         body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()), price: price})
     };
     const response = await fetch("/user/book-place", options);
-    if (response.status == 401 && $(".auth-popup").length === 0) {
-        $(".left-container").append(`<div class="auth-popup">You must <a href="./user/log.html" target="_blank">authenticate</a></div>`);
+    if (response.status == 401) {
+        if ($(".auth-popup").length === 0)
+            $(".left-container").append(`<div class="auth-popup">You must <a href="./user/log.html" target="_blank">authenticate</a></div>`);
     }
     else if (response.status == 403) {
         $(".success-popup").remove();
