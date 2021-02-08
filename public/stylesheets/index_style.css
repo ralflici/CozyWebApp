@@ -87,6 +87,7 @@ ul {
     margin: 0 40%;
     z-index: 20;
     animation: drop 0.5s ease-in-out forwards;
+    transition: all 0.5s ease-in-out;
 }
 
 @keyframes drop {
@@ -96,6 +97,10 @@ ul {
     100% {
         top: 30px
     }
+}
+
+.auth-warn.hide {
+    transform: translateY(-100px);
 }
 
 .auth-warn a {

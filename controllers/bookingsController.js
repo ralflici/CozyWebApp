@@ -71,3 +71,8 @@ exports.deleteBooking = async function(req, res, next) {
         throw err;
     }
 }
+
+exports.deleteUserBookings = async function(req, res, next) {
+    await Booking.deleteMany({ user: res.locals.userID })
+    next();
+}

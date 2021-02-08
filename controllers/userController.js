@@ -3,6 +3,7 @@ const User = require("../models/user");
 const fs = require("fs");
 const path = require("path");
 const Jimp = require("jimp");
+const SHA256 = require("crypto-js/sha256");
 
 exports.verifyJWT = async function(req, res, next) {
     const accessToken = req.cookies.jwt;
@@ -33,11 +34,12 @@ exports.verifyJWT = async function(req, res, next) {
 };
 
 exports.signup = async function(req, res, next) {
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = SHA256(req.body.username).toString();
+    const password = SHA256(req.body.password).toString();
+    console.log(username, password);
     const userInDB = await User.findOne({username: username});
     if (userInDB != undefined) {
-        res.status(401);
+        res.statusCode = 401;
         res.send("User already registered");
     }
     else {
@@ -54,8 +56,8 @@ exports.signup = async function(req, res, next) {
 };
 
 exports.login = async function(req, res, next){
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = SHA256(req.body.username).toString();
+    const password = SHA256(req.body.password).toString();
     let user = await User.findOne({username: username, password: password}, "_id");
     if (user == null) {
         res.status(401).send({ message: "There are no users with those credentials" });
@@ -168,7 +170,7 @@ exports.deleteAccount = function(req, res, next) {
         }
         else {
             res.cookie("jwt", "deleted", {httpOnly: true});
-            res.status(200);
+            res.statusCode = 200;
             res.redirect("log.html");
         }
     });

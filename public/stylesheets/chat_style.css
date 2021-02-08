@@ -24,6 +24,7 @@
 
 #start-conversation {
     grid-column: 1 / 7;
+    grid-row: 1 / 9999;
     margin: auto;
     font-size: 22px;
     font-weight: 400;
@@ -212,9 +213,9 @@
 
 .place-slide-image {
     margin: auto;
-    width: 114px;
-    height: 114px;
-    border-radius: 114px;
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
     overflow: hidden;
 }
 
@@ -236,4 +237,13 @@
     text-align: center;
     color: #707070;
     margin-bottom: 0;
+}
+
+#char-number {
+    font-size: 10px;
+    font-family: 300;
+    text-align: right;
+    margin-right: 7px;
+    margin-top: 4px;
+    color: #707070;
 }

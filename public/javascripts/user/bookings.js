@@ -4,16 +4,16 @@ $(document).ready(function() {
         if (list.length != 0) {
             $(".no-bookings-container").remove();
             for (let i in list) {
-                let start = new Date(list[i].dates[0]).toString().slice(4, 15);
+                let start = new Date(list[i].dates[0]).toString().slice(4, 15).split(" ");
                 //start = start.slice(0, 3) + "," + start.slice(3, start.length);
-                let end = new Date(list[i].dates[1]).toString().slice(4, 15);
+                let end = new Date(list[i].dates[1]).toString().slice(4, 15).split(" ");
                 //end = end.slice(0, 3) + "," + end.slice(3, end.length);
                 $(".main-bookings-container").append(`
                     <div class="item-container" id="${list[i]._id}" >
                         <span class="item-image-container" style="overflow: hidden;"><img src="${list[i].place.images[0]}" style="width: 100%; height: 100%; object-fit: cover;"></img></span>
                         <span class="item-text">
                             <div class="item-name">${list[i].place.name}</div>
-                            <div class="item-date">${start} - ${end}</div>
+                            <div class="item-date">${start[1]} ${start[0]} ${start[2]} - ${end[1]} ${end[0]} ${end[2]}</div>
                             <div class="item-bottom">
                                 <span class="item-price">${list[i].price}€</span>
                                 <span class="item-delete-icon">✖</span>

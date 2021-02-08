@@ -71,6 +71,7 @@ $('textarea').each(function () {
     this.style.height = 'auto';
     this.style.height = (this.scrollHeight) + 'px';
     $("#message-form").css("height", "auto").css("height", (this.scrollHeight + 13) + "px");
+    $("#char-number").text(this.value.length + "/500");
 }).focus(function() {
     $(this).css("color", "#000");
     if ($(this).val() === "Write a message")

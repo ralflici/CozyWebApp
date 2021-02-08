@@ -11,7 +11,7 @@ var userSchema = new Schema({
         contentType: String,
         filename: String
     },
-    username: {type: String, required: true, minlength: 8, maxlength: 20},
-    password: {type: String, required: true, minlength: 8, maxlength: 20}
+    username: {type: String, required: true, minlength: 8, maxlength: 64},
+    password: {type: String, required: true, minlength: 8, maxlength: 64}
 })
 module.exports = mongoose.model("user", userSchema);

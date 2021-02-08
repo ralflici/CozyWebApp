@@ -10,7 +10,7 @@ exports.getChatList = function(req,res,next) {
         if (err) throw err;
         let arr = [];
         for (let i in chats) {
-            if (chats[i].user._id == res.locals.userID)
+            if (chats[i].user != null && chats[i].user._id == res.locals.userID)
                 arr.push(chats[i]);
         }
         res.send(arr);

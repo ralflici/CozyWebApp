@@ -759,7 +759,7 @@ async function sendMessage(e) {
     };
     const response = await fetch("/user/chat", options);
     console.log(response);
-    if (response.status >= 400 && response.status < 500)
+    if (response.status >= 400 && response.status < 500 && $(".auth-warn").length === 0)
         $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html" target="_blank">authenticate</a></div>`);
     if (response.redirected)
         window.open(response.url,'_blank');
@@ -783,7 +783,7 @@ async function book(e) {
         body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()), price: price})
     };
     const response = await fetch("/user/book-place", options);
-    if (response.status >= 400 && response.status < 500)
+    if (response.status >= 400 && response.status < 500 && $(".auth-warn").length === 0)
         $(".left-container").append(`<div class="auth-warn">You must <a href="./views/log.html" target="_blank">authenticate</a></div>`);
 }
 
@@ -791,7 +791,8 @@ $(window).on('focus', async function() {
     //console.log("focus");
     const response = await fetch("/user/picture", {method: "GET", headers: { "Content-Type": "application/json" }});
     if (response.status === 200) {
-        $(".auth-warn").remove();
+        if ($(".auth-warn").length !== 0)
+            $(".auth-warn").addClass("hide");
         const img = await response.text();
         if (img == "")
             $("#user-icon>img").attr("src", "../images/userIcon.svg");

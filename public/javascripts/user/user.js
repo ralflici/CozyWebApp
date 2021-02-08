@@ -1,4 +1,11 @@
 $(document).ready(function() {
+    $.get("/user/profile-info", function(info) {
+        if (info.name != "")
+            $(".user-name").text(info.name);
+        else
+            $(".user-name").text("Name Surname");
+    });
+
     // ---------------- FOOTER --------------- //
     $("#contact").click(() => {window.alert("Function still in development");});
     $("#share").click(() => {
