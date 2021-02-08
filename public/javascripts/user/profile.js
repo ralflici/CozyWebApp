@@ -105,7 +105,6 @@ $(document).ready(function() {
 });
 
 $.get("/user/profile-info", function(user) {
-    console.log(user.name)
     $(".user-name").text((user.name == "" || user.name == undefined) ? "Name Surname" : user.name);
     $("#name-input").val(user.name);
     $("#email-input").val(user.email);
