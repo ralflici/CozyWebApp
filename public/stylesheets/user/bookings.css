@@ -1,0 +1,19 @@
+.no-bookings-text {
+    color: #cccccc;
+    font-size: 23px;
+    font-weight: 300;
+    width: 70%;
+    height:auto;
+    margin: 32px auto;
+    padding: 0px 0 0 0;
+    text-align: center;
+}
+
+.no-bookings-container {
+    width: 250px;
+    height: 195px;
+    background-image: url(../images/calendar.svg);
+    background-repeat: no-repeat;
+    margin: 100px auto;
+    padding-top: 63px;
+}

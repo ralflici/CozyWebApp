@@ -1,0 +1,284 @@
+.profile-container {
+    width: 100%;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-container {
+    width: 62.55%;
+}
+
+#profile-form {
+    overflow: auto;
+}
+
+.section {
+    margin-top: 30px;
+}
+
+.section#name {
+    margin: 0;
+}
+
+.section label, .small-container label {
+    font-size: 16px;
+    font-weight: 600;
+    /*position: relative;
+    top: 16px;
+    left: 8px;
+    background-color: #fff;
+    padding: 3px;*/
+}
+
+#wrong-email {
+    color: #ef4923;
+    font-size: 12px;
+    font-weight: 500;
+    float: right;
+    opacity: 0;
+}
+
+.section input, .small-container input {
+    margin-top: 7px;
+    padding: 4px 8px;
+    width: 100%;
+    height: 40px;
+    background-color: rgba(204, 204, 204, 0.1);
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    color: #707070;
+    font-size: 16px;
+}
+
+.section textarea {
+    margin-top: 7px;
+    padding: 4px 8px;
+    width: 100%;
+    background-color: rgba(204, 204, 204, 0.1);
+    border-radius: 9px;
+    border: 1px solid #cccccc;
+    color: #707070;
+    font-size: 16px;
+    cursor: text;
+}
+
+.button-container {
+    float: right;
+}
+
+#edit-profile {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    width: auto;
+    height: auto;
+    border-radius: 9px;
+    padding: 8px 22px;
+    letter-spacing: 0;
+    cursor: pointer;
+    float: right;
+    clear: both;
+    box-shadow: none;
+}
+
+#edit-profile.unavailable {
+    color: #fff;
+    background-color: #ccc;
+    cursor: default;
+}
+
+#change-password, #delete-account, #signout {
+    display: block;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    width: max-content;
+    height: auto;
+    border-radius: 9px;
+    border: 2px solid #ef4923;
+    background-color: #ef49231a;
+    color: #ef4923;
+    padding: 6px 22px;
+    letter-spacing: 0;
+    cursor: pointer;
+    float: right;
+    clear: both;
+    box-shadow: none;
+}
+
+.picture-container, .place-container {
+    width: 31.35%;
+}
+
+#pic-label {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.pic {
+    margin-top: 7px;
+    width: 100%;
+    border-radius: 100000px;
+    overflow: hidden;
+}
+
+.pic img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#input-picture {
+    color: #ffffff;
+    margin-top: 7px;
+    cursor: default;
+    width: 50%;
+    display: inline-block;
+}
+
+#input-picture {
+    display: none;
+}
+
+#edit-picture {
+    background-color: #ef4923;
+    border-radius: 9px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    width: auto;
+    height: auto;
+    padding: 8px 22px;
+    letter-spacing: 0;
+    float: left;
+}
+
+#edit-picture:hover {
+    box-shadow: none;
+}
+
+.user-popup {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    backdrop-filter: blur(3px);
+}
+
+#change-password-popup-container {
+    display: inline-block;
+    border-radius: 15px;
+    background-color: #ffffff;
+    width: 15vw;
+    height: auto;
+    padding: 30px;
+    margin: 33.35vh 42.5vw;
+}
+
+.close-icon {
+    content: "✖";
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+.user-popup-container form label {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.user-popup-container form input {
+    margin-top: 7px;
+    padding: 1px 8px;
+    width: 100%;
+    height: 32px;
+    background-color: rgba(204, 204, 204, 0.1);
+    border-radius: 9px;
+    border: 1px solid #cccccc;
+    color: #707070;
+    font-size: 16px;
+}
+
+#submit-pass-change {
+    font-size: 16px;
+    font-weight: 600;
+    width: auto;
+    height: auto;
+    border-radius: 9px;
+    padding: 8px 22px;
+    letter-spacing: 0;
+    border: none;
+    color: #ffffff;
+    background-color: #ef4923;
+    float: right;
+    cursor: pointer;
+}
+
+#submit-pass-change.unavailable {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#submit-pass-change.unavailable:hover {
+    box-shadow: none;
+}
+
+#delete-account-popup-container {
+    display: inline-block;
+    border-radius: 15px;
+    background-color: #ffffff;
+    width: 15vw;
+    padding: 30px;
+    padding-bottom: 40px;
+    margin: 40.74vh 42.5vw;
+}
+
+.user-popup-text {
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.user-popup-button-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+#no-delete {
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    width: auto;
+    height: auto;
+    border-radius: 9px;
+    border: 2px solid #ef4923;
+    background-color: #ef49231a;
+    color: #ef4923;
+    padding: 6px 30px;
+    letter-spacing: 0;
+    cursor: pointer;
+}
+
+#yes-delete {
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    width: auto;
+    height: auto;
+    border-radius: 9px;
+    padding: 8px 30px;
+    letter-spacing: 1px;
+}
+
+.user-popup-button-container > *:hover {
+    box-shadow: none;
+}

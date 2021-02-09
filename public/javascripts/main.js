@@ -373,7 +373,10 @@ $(document).ready(function() {
         let data = new Array(segments);
 
         for (let i = 1; i <= segments; i++) {
-            labels.push((basis*(i-1) + min).toFixed(2) + "€ - " + (basis*i + min).toFixed(2) + "€");
+            if (screenType < 2)
+                labels.push("");
+            else
+                labels.push((basis*(i-1) + min).toFixed(2) + "€ - " + (basis*i + min).toFixed(2) + "€");
             data[i-1] = 0;
             for (let j in places) {
                 if (places[j].price >= (basis*(i-1) + min) && places[j].price < (basis*i) + min) {
@@ -655,14 +658,20 @@ $(document).ready(function() {
         if (this.id === "next-month") {
             if (currentMonth < 9) {
                 currentMonth++;
-                currentMonthPos -= parseInt($(".month-container").width()) / 10;
+                if (screenType === 0)
+                    currentMonthPos -= parseInt($(".month-container").width()) / 5;
+                else
+                    currentMonthPos -= parseInt($(".month-container").width()) / 10;
                 $(".month").css("transform", "translate(" + currentMonthPos.toString() + "px");
             }
         }
         else {
             if (currentMonth > 1) {
                 currentMonth--;
-                currentMonthPos += parseInt($(".month-container").width()) / 10;
+                if (screenType === 0)
+                    currentMonthPos += parseInt($(".month-container").width()) / 5;
+                else
+                    currentMonthPos += parseInt($(".month-container").width()) / 10;
                 $(".month").css("transform", "translate(" + currentMonthPos.toString() + "px");
             }
         }
@@ -776,11 +785,13 @@ async function book(e) {
             $(".left-container").append(`<div class="auth-popup">You must <a href="./user/log.html" target="_blank">authenticate</a></div>`);
     }
     else if (response.status == 403) {
+        $(".auth-popup").remove();
         $(".success-popup").remove();
         $(".fail-popup").remove();
         $(".left-container").append(`<div class="fail-popup">This booking already exists</div>`);
     }
     else {
+        $(".auth-popup").remove();
         $(".success-popup").remove();
         $(".fail-popup").remove();
         $(".left-container").append(`<div class="success-popup">Succesfully booked</div>`);
@@ -791,8 +802,8 @@ $(window).on('focus', async function() {
     //console.log("focus");
     const response = await fetch("/user/picture", {method: "GET", headers: { "Content-Type": "application/json" }});
     if (response.status === 200) {
-        if ($(".auth-warn").length !== 0)
-            $(".auth-warn").addClass("hide");
+        if ($(".auth-popup").length !== 0)
+            $(".auth-popup").addClass("hide");
         const img = await response.text();
         if (img == "")
             $("#user-icon>img").attr("src", "../images/userIcon.svg");

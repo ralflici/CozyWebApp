@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    font-family: greycliff !important;
+    font-family: greycliff;
     font-weight: 400;
     outline: 0;
     cursor: default;
@@ -82,7 +82,7 @@ ul {
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
     position: absolute;
     top: 0;
-    width: 20%;
+    /*width: 20%;*/
     height: min-content;
     margin: 0 40%;
     z-index: 20;
@@ -92,7 +92,7 @@ ul {
 
 @keyframes drop1 {
     0% {
-        top: -100px;
+        top: -150px;
     }
     100% {
         top: 30px
@@ -100,7 +100,7 @@ ul {
 }
 
 .auth-popup.hide {
-    transform: translateY(-100px);
+    transform: translateY(-150px);
 }
 
 .auth-popup a {
@@ -119,7 +119,7 @@ ul {
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
     position: absolute;
     top: 30px;
-    width: 20%;
+    /*width: 20%;*/
     height: min-content;
     margin: 0 40%;
     z-index: 20;
@@ -128,7 +128,7 @@ ul {
 
 @keyframes drop2 {
     0% {
-        top: -100px;
+        top: -150px;
     }
     40% {
         top: 30px
@@ -163,8 +163,8 @@ ul {
     text-align: center;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
     position: absolute;
-    top: -40;
-    width: 20%;
+    top: -150px;
+    /*width: 20%;*/
     margin: 0 40%;
     z-index: 15;
     animation: show 3.5s ease-in-out forwards;
@@ -172,7 +172,7 @@ ul {
 
 @keyframes show {
     0% {
-        top: -100px;
+        top: -150px;
     }
     15% {
         top: 30px;
@@ -181,7 +181,7 @@ ul {
         top: 30px
     }
     100% {
-        top: -100px;
+        top: -150px;
         display: none;
     }
 }
@@ -497,8 +497,8 @@ ul {
 
 /* width */
 .location-slideshow::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: min(10px, 2vw);
+    height: min(10px, 2vw);
     border-radius: 10px;
 }
 
@@ -650,11 +650,13 @@ ul {
     width: 100%;
     height: 430px;
     margin-top: 23.8px;
+    position: relative;
 }
 
 .month-arrow {
     /*display: inline-block;*/
-    position: relative;
+    position: absolute;
+    top: 50%;
     margin: 0;
     width: 50px;
     height: 50px;
@@ -686,34 +688,34 @@ ul {
     height: 100%;
     border-radius: 19px;
     border: 2px solid #cccccc;
-    top: -54px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 #prev-month {
-    top: 50%;
-    right: 25px;
+    left: calc(25px * -1);
 }
 
 #next-month {
-    bottom: calc(50% + 50px);
-    left: calc(100% - 25px);
-    transform: rotate(180deg);;
+    right: calc(25px * -1);
+    transform: rotate(180deg);
 }
 
 .roundtrip-container {
+    width: 100%;
     height: 82px;
     border-bottom: 2px solid #cccccc;
     border-radius: 19px 19px 0 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 9px;
 }
 
 .reset-icon {
-    flex-basis: 30%;
-    flex-grow: 0;
-    flex-shrink: 2;
+    flex-basis: 100%;
     height: 100%;
 }
 
@@ -741,7 +743,7 @@ ul {
     min-width: 252px;
     flex-shrink: 0;
     flex-grow: 0;
-    padding: 17px 13px;
+    padding: 17px 10px;
     border: 2px solid #cccccc;
 }
 
@@ -835,17 +837,27 @@ ul {
     flex-basis: 10%;
     padding: 20px 30px;
     transition: transform 0.2s ease-out;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 15% 12% 73%;
+}
+
+.month * {
+    font-size: 16px;
 }
 
 .month-name {
-    display: inline-block;
+    font-size: 26px;
+    align-self: center;
     width: 100%;
-    margin: 0 0 15px 8px;
+    margin: 0;
     font-weight: 500;
     color: #707070;
+    padding-left: min(9px, 0.27vw);
 }
 
 .weekdays-name {
+    align-self: center;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -859,17 +871,16 @@ ul {
 }
 
 .days-table {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
 }
 
 .day, .dummy-day {
-    width: calc(100% / 7);
-    height: calc(215px / 6);
     font-weight: 500;
-    line-height: calc(215px / 6);
+    padding: 6px 0;
+    align-self: center;
     text-align: center;
     color: #707070;
     border-radius: 50px;
@@ -990,7 +1001,8 @@ ul {
     border: 2px solid #cccccc;
     text-align: center;
     color: #cccccc;
-    font: normal normal 400 20px greycliff;
+    font-size: 20px;
+    line-height: 20px;
     transition: box-shadow 0.2s;
 }
 

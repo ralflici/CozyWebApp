@@ -1,6 +1,5 @@
 @media only screen and (max-width: 1280px) {
     html {
-        width: 100%;
         font-size: 1vw;
     }
 
@@ -15,38 +14,43 @@
         height: 100vh;
     }
 
-    .result-number, .success-popup, .fail-popup {
+    .result-number, .auth-popup, .success-popup, .fail-popup {
         font-size: min(16px, 2.783rem);
     }
 
     .left-text {
         width: 100%;
         margin: 0;
-        padding: 60px 30px;
-        grid-template-columns: 25% auto auto 25%;
-        grid-template-rows: 10% 5% 25% 30% auto auto;
+        padding: min(50px, 8.7rem)  min(30px, 5.22rem);
+        grid-template-columns: 25% 25% 25% 25%;
+        grid-template-rows: 18% 25% auto auto auto;
+    }
+
+    .home {
+        grid-column: 1 / 8;
     }
 
     .logo {
-        width: 7.6rem;
-        height: 7.6rem;
+        width: min(30px, 7.6rem);
+        height: min(30px, 7.6rem);
         position: initial;
     }
 
     .name {
+        margin-left: 8px;
         color: #000000;
-        font-size: 10.8rem;
-        grid-column: 1 / 8;
+        font-size: min(40px, 10.8rem);
         position: initial;
     }
 
     .scroll {
-        width: 40px;
-        height: 40px;
+        width: min(30px, 7.6rem);
+        height: min(30px, 7.6rem);
         border-radius: 60px;
         background-color: transparent;
-        padding: 10px;
-        border: 2px solid #707070;
+        padding: 3px;
+        border: 2px solid #000;
+        grid-row: 1 / 1;
         grid-column-start: 4;
         z-index: 20;
         display: initial;
@@ -61,22 +65,25 @@
         grid-column: 1 / 5;
         grid-row: 3 / 4;
         font-size: min(33px, 5.739vw);
+        text-align: center;
     }
 
     .left-paragraph {
         grid-column: 1 / 5;
-        grid-row: 4 / 5;
         font-size: min(15px, 2.609rem);
+        display: none;
     }
 
     #get-started-link {
         grid-column: 2 / 4;
         grid-row: 6 / 7;
+        align-self: flex-end;
     }
 
     #get-started {
         height: min(15rem , 82px);
         font-size: min(3.478rem, 20px);
+        border-radius: min(17px, 3rem);
     }
 
     #get-started-link > * {
@@ -85,7 +92,7 @@
 
     .right-container {
         width: 100%;
-        padding: 30px 30px;
+        padding: min(50px, 8.7rem)  min(30px, 5.22rem);
     }
 
     .navbar-list {
@@ -103,8 +110,8 @@
         height: min(29px, 5.043rem);
     }
 
-    .right-main-header {
-        font-size: min(39px, 6.783rem);
+    .searchbar {
+        margin-top: min(67.8px, 11.8rem);
     }
 
     .search-icon {
@@ -116,27 +123,51 @@
         font-size: min(25px, 4.348rem);
     }
 
+    .search-line {
+        margin-top: min(18px, 3.13rem);
+    }
+
+    .right-main-header {
+        font-size: min(39px, 6.783rem);
+        margin-top: min(71.8px, 12.5rem);
+    }
+
+    .continent-list {
+        margin-top: min(37px, 6.435rem);
+    }
+
     .continent-list > *, .continent-list > .selected {
         font-size: min(25px, 4.348rem);
     }
 
     .location-slideshow {
-        padding-left: 0;
-        padding-right: 0;
+        padding: min(21.8px, 3.8rem) 0 min(10px, 1.74rem) 0;
     }
 
     .location-image {
-        border-radius: min(19px, 3.3rem);
-        width: min(279px, 48.522rem);
-        height: min(412px, 71.653rem);
+        border-radius: min(19px, 3rem);
+        width: min(279px, 42.1rem);/*48.522rem*/
+        height: min(412px, 62rem);/*71.653rem*/
+        margin-right: min(16px, 2.783rem);
+        padding: min(19px, 3.3rem);
+    }
+
+    .location-image.selected {
+        box-shadow: none;
     }
 
     .location-text {
-        font-size: min(25px, 4.348rem);
+        font-size: min(25px, 3.764rem);
+        bottom: min(19px, 3.3rem);
+    }
+
+    .location-country {
+        letter-spacing: min(1.5px, 0.26rem);
     }
 
     .right-header {
-        font-size: min(25px, 4.348rem);
+        font-size: min(25px, 6rem);
+        margin-top: min(52.8px, 9.2rem);
     }
 
     .type-text > h2 {
@@ -165,6 +196,7 @@
 
     .calendar-container {
         height: min(430px, 74.783rem);
+        margin-top: min(23.8px, 4.14rem);
     }
 
     .month-arrow {
@@ -172,20 +204,56 @@
         height: min(50px, 8.7rem);
     }
 
+    #prev-month {
+        left: calc( (calc( min(50px, 8.7rem) / 2)) * -1 );
+    }
+    
+    #next-month {
+        right: calc( (calc( min(50px, 8.7rem) / 2)) * -1 );
+    }
+
     .roundtrip-container {
         height: min(82px, 14.261rem);
     }
-
+/*
     .reset-icon {
         flex-basis: auto;
     }
-
+*/
     .reset-icon > img {
         padding: min(13px, 1rem);
     }
 
     .date {
         display: none;
+    }
+
+    .month-container {
+        height: calc(100% - min(82px, 14.261rem));
+    }
+
+    .moth {
+        padding: min(20px, 3.478rem) min(30px, 5.217rem);
+    }
+
+    .month * {
+        font-size: min(16px, 2.783rem);
+    }
+
+    .month-name {
+        font-size: min(26px, 4.522rem);
+    }
+
+    .day, .dummy-day {
+        padding: min(6px, 1.043rem) 0
+    }
+
+    .typeplace-list, .list, .chart-container {
+        margin-top: min(23.8px, 4.14rem);
+    }
+
+    .chart-text {
+        font-size: min(22px, 4rem);
     }
 
     .price-container > * {
@@ -195,14 +263,41 @@
     .price-input {
         width: 10rem;
     }
+
+    #search-button {
+        margin-top: min(52.8px, 9.2rem);
+        box-shadow: none;
+        height: min(15rem , 82px);
+        font-size: min(3.478rem, 20px);
+        border-radius: min(17px, 3rem);
+    }
 }
 
 @media only screen and (max-width: 425px) {
+    #get-started-link {
+        grid-column: 1 / 5;
+    }
+
+    #user-icon {
+        padding-top: 3px;
+    }
+
     #search-button {
         width: 100%;
+        float: none;
     }
 
     .typeplace-list {
         width: 100%;
+    }
+
+    .month-name {
+        padding-left: 1.65rem;
+    }
+
+    .month {
+        flex-basis: 20%;
+        flex-grow: 0;
+        flex-shrink: 0;
     }
 }
