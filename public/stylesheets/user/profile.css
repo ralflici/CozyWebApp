@@ -3,6 +3,7 @@
     padding-top: 15px;
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
 }
 
 .form-container {
@@ -39,7 +40,7 @@
     opacity: 0;
 }
 
-.section input, .small-container input {
+.section input {
     margin-top: 7px;
     padding: 4px 8px;
     width: 100%;
@@ -172,13 +173,12 @@
 }
 
 #change-password-popup-container {
-    display: inline-block;
     border-radius: 15px;
     background-color: #ffffff;
     width: 15vw;
     height: auto;
     padding: 30px;
-    margin: 33.35vh 42.5vw;
+    margin: auto;
 }
 
 .close-icon {
@@ -186,6 +186,13 @@
     cursor: pointer;
     text-align: right;
     margin-bottom: 5px;
+    font-size: 16px;
+}
+
+#wrong-old-pass {
+    color: #ef4923;
+    opacity: 0;
+    font-size: 10px;
 }
 
 .user-popup-container form label {
@@ -230,13 +237,12 @@
 }
 
 #delete-account-popup-container {
-    display: inline-block;
     border-radius: 15px;
     background-color: #ffffff;
     width: 15vw;
     padding: 30px;
     padding-bottom: 40px;
-    margin: 40.74vh 42.5vw;
+    margin: auto;
 }
 
 .user-popup-text {
@@ -281,4 +287,38 @@
 
 .user-popup-button-container > *:hover {
     box-shadow: none;
+}
+
+@media only screen and (max-width: 425px) {
+    .profile-container {
+        flex-wrap: wrap;
+        flex-flow: column;
+    }
+
+    .picture-container {
+        width: 50%;
+        order: 1;
+        margin-bottom: 28px;
+        margin: auto;
+    }
+
+    #pic-label {
+        display: none;
+    }
+
+    #edit-picture {
+        float: none;
+        margin: auto;
+        display: none;
+    }
+
+    .form-container {
+        width: 100%;
+        order: 2;
+    }
+
+    #change-password-popup-container, #delete-account-popup-container {
+        width: 70vw;
+        margin: auto;
+    }
 }

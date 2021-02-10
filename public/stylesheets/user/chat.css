@@ -1,16 +1,16 @@
 .main-chat-container {
-    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-top: 13px;
+    /*height: calc(100vh - 230px);*/
 }
 
 .chat-container {
     flex-basis: 65%;
     height: 365px;
-    flex-grow: 0;
-    flex-shrink: 0;
+    /*flex-grow: 0;
+    flex-shrink: 0;*/
 }
 
 #conversation-container {
@@ -19,7 +19,7 @@
     height: 100%;
     display: grid;
     grid-template-columns: 40px 16px auto 16px 40px;
-    grid-template-rows: auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    grid-template-rows: repeat(100, auto);
 }
 
 #start-conversation {
@@ -93,6 +93,7 @@
     position: relative;
     /*height: fit-content;*/
     flex-basis: calc(100% - 56px);
+    font-size: 16px;
     margin-left: 16px;
     padding: 8px 16px;
     background-color: #F9F9F9;
@@ -141,7 +142,7 @@
 
 .message-date {
     font-size: 10px;
-    font-family: 300;
+    font-weight: 300;
     width: 100%;
     text-align: right;
     margin-top: 2px;
@@ -246,4 +247,42 @@
     margin-right: 7px;
     margin-top: 4px;
     color: #707070;
+}
+
+@media only screen and (max-width: 768px) {
+    .home {
+        flex-basis: 10%;
+    }
+
+    #user-icon {
+        margin-top: 2px;
+    }
+
+    .main-container {
+        margin-top: min(20px, 3.478rem);
+        margin-bottom: min(20px, 3.478rem);
+    }
+
+    .place-slide-container {
+        display: none;
+    }
+    
+    .chat-container {
+        flex-basis: 100%;
+        height: calc(100vh - 330px);
+    }
+
+    #conversation-container::-webkit-scrollbar {
+        width: min(10px, 1.74rem);
+        height: min(10px, 1.74rem);
+        border-radius: min(10px, 1.74rem);
+    }
+
+    .message-content, #message-input {
+        font-size: min(16px, 4.2rem);
+    }
+
+    .message-date {
+        font-size: min(10px, 2.8rem);
+    }
 }

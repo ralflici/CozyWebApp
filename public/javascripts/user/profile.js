@@ -42,7 +42,8 @@ $(document).ready(function() {
     });
 
     $("#change-password").click(function() {
-        $("#change-password-popup").fadeIn(400);
+        $("#change-password-popup").css("display", "grid");
+        window.scrollTo(0,0);
         $("#new-pass2").on("input", function() {
             if ($(this).val() === $("#new-pass1").val())
                 $("#submit-pass-change").removeClass("unavailable");
@@ -70,23 +71,24 @@ $(document).ready(function() {
             else {
                 console.log(json.message);
                 $("#wrong-old-pass").css("opacity", "0");
-                $("#change-password-popup").fadeOut(400)
+                $("#change-password-popup").css("display", "none");
             }
         });
 
         $(".close-icon").click(function() {
-            $("#change-password-popup").fadeOut(400);
+            $("#change-password-popup").css("display", "none");
         });
     });
 
     $("#delete-account").click(function() {
-        $("#delete-account-popup").fadeIn(400);
+        $("#delete-account-popup").css("display", "grid");
+        window.scrollTo(0,0);
 
         $(".close-icon").click(function() {
-            $("#delete-account-popup").fadeOut(400);
+            $("#delete-account-popup").css("display", "none");
         });
         $("#no-delete").click(function() {
-            $("#delete-account-popup").fadeOut(400);
+            $("#delete-account-popup").css("display", "none");
         });
         $("#yes-delete").click(async function() {
             const response = await fetch("/user/delete-account", { method: "POST", headers: { "Content-Type": "applications/json" }});
@@ -102,14 +104,6 @@ $(document).ready(function() {
         if (response.redirected)
             window.location.href = response.url;
     })
-});
-
-$.get("/user/profile-info", function(user) {
-    $(".user-name").text((user.name == "" || user.name == undefined) ? "Name Surname" : user.name);
-    $("#name-input").val(user.name);
-    $("#email-input").val(user.email);
-    $("#location-input").val(user.location);
-    $("#bio-input").val(user.bio);
 });
 
 $.ajax({
@@ -138,6 +132,11 @@ $.ajax({
 });
 
 $("#edit-picture").click(function(event) {
+    event.preventDefault();
+    $("#input-picture").click();
+});
+
+$(".pic").click(function(event) {
     event.preventDefault();
     $("#input-picture").click();
 });

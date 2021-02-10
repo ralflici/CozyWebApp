@@ -47,8 +47,8 @@ $(document).ready(function() {
     let minPrice, maxPrice, min, max;
     
     // 0:    0px -  425px (mobile)
-    // 1:  426px - 1366px (small)
-    // 2: 1367px - 1920px (normal)
+    // 1:  426px - 1280px (small)
+    // 2: 1281px - 1920px (normal)
     // 3: 1921px -    inf (wide)
     let screenType;
     // --------------------------------------- //
@@ -67,7 +67,7 @@ $(document).ready(function() {
             screenType = 0;
             $(".left-container").css("border-radius", "0px");
         }
-        else if (windowWidth < 1367) {
+        else if (windowWidth < 1281) {
             $(".left-container").css("border-radius", "0px");
             screenType = 1;
         }
@@ -601,7 +601,6 @@ $(document).ready(function() {
             $(".left-container").css("transform", "translateY(" + scroll + "px)");
     })
 
-    // DO THIS!!!!!!!!!!!!!!!!
     $(".scroll").click(function() {
         window.scrollTo(0, $(".left-container").height());
     })

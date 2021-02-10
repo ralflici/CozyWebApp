@@ -13,7 +13,7 @@
 .no-messages-container {
     width: 275px;
     height: 207px;
-    background-image: url(../images/vignette.svg);
+    background-image: url(../../images/vignette.svg);
     background-repeat: no-repeat;
     margin: 100px auto
 }
