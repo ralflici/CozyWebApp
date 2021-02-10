@@ -211,6 +211,7 @@ $(document).ready(function() {
         }
         preferences.price.min = minPrice;
     });
+
     $("#max-price").change(function() {
         if ($(this).val() == "")
             $(this).val(maxPrice);
@@ -222,6 +223,11 @@ $(document).ready(function() {
             }
         }
         preferences.price.max = maxPrice;
+    });
+
+    $(".price-container").submit(function(e) {
+        e.preventDefault();
+        $("#search-button").click();
     });
     // --------------------------------------- //
 
