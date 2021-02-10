@@ -590,13 +590,13 @@ $(document).ready(function() {
             .then((res) => res.json())
             .then((json) => {
                 center = [json.results[0].geometry.lat, json.results[0].geometry.lng];
-                mymap.setView(center, 11);
+                mymap.setView(center, 13);
             })
             .catch((err) => console.log(err));
         }
         else {
             center = [(lat/data.length), (lon/data.length)];
-            mymap.setView(center, 13);
+            mymap.setView(center, 11);
         }
     }
 
