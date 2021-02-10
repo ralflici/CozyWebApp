@@ -114,7 +114,7 @@ const calendar = {
         }
         if (this.start !== undefined && this.end !== undefined) {
             this.fillDaysInRange();
-            return {start: this.start, end: this.end};
+            return {start: this.start.setHours(12), end: this.end.setHours(12)};
         }
     },
 
@@ -141,14 +141,14 @@ const calendar = {
                     let next = this.adjacentDate(this.start, add);
                     if (this.end === undefined || next.date < this.end) {
                         this.startDayLi.removeClass("selected");
-                        this.setDate(next.li, next.li.text(), next.li.parent().prevAll(".month-name").text(), "start");
+                        return this.setDate(next.li, next.li.text(), next.li.parent().prevAll(".month-name").text(), "start");
                     }
                 }
                 else {
                     let prev = this.adjacentDate(this.start, add);
                     if(!prev.li.hasClass("passed")) {
                         this.startDayLi.removeClass("selected");
-                        this.setDate(prev.li, prev.li.text(), prev.li.parent().prevAll(".month-name").text(), "start");
+                        return this.setDate(prev.li, prev.li.text(), prev.li.parent().prevAll(".month-name").text(), "start");
                     }
                 }
             }
@@ -157,19 +157,18 @@ const calendar = {
                     let next = this.adjacentDate(this.end, add)
                     if (next.li.length !== 0) {
                         this.endDayLi.removeClass("selected");
-                        this.setDate(next.li, next.li.text(), next.li.parent().prevAll(".month-name").text(), "end");
+                        return this.setDate(next.li, next.li.text(), next.li.parent().prevAll(".month-name").text(), "end");
                     }
                 }
                 else {
                     let prev = this.adjacentDate(this.end, add);
                     if(this.start === undefined || prev.date > this.start) {
                         this.endDayLi.removeClass("selected");
-                        this.setDate(prev.li, prev.li.text(), prev.li.parent().prevAll(".month-name").text(), "end");
+                        return this.setDate(prev.li, prev.li.text(), prev.li.parent().prevAll(".month-name").text(), "end");
                     }
                 }
             }
         }
-        return {start: this.startDate, end: this.endDate};
     },
 
     adjacentDate: function(referenceDate, add) {

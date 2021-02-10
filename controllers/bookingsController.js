@@ -1,5 +1,4 @@
 const Booking = require("../models/booking");
-const user_controller = require("./userController");
 const place_controller = require("./placeController");
 
 exports.getBookingByID = async function(id) {
@@ -29,9 +28,11 @@ exports.bookPlace = async function(req, res, next) {
     // Otherwise create a new booking and save it in the database
     const user = res.locals.user;
     const place = await place_controller.getPlaceByID(req.body.placeID);
-    const days = 1//(req.body.dates[1] - req.body.dates[0])/86400000;
+    res.locals.place = place;
+    const days = req.body.days;
 
-    dates = new Array(new Date(req.body.dates[0]), new Date(req.body.dates[1]));
+    const dates = new Array(new Date(req.body.dates[0]), new Date(req.body.dates[1]));
+    res.locals.dates = dates;
 
     const booking = new Booking({
         user: user,
@@ -44,7 +45,7 @@ exports.bookPlace = async function(req, res, next) {
             throw err;
         }
     });
-    res.send();
+    //res.send();
     next();
 };
 
@@ -60,19 +61,27 @@ exports.getBookingsList = async function(req, res, next) {
 
 exports.deleteBooking = async function(req, res, next) {
     try {
-        const b = await Booking.find({_id: req.body.bookingID});
+        const b = await Booking.findById(req.body.bookingID);
+        res.locals.place = [];
+        res.locals.place.push(b.place);
+        res.locals.dates = [];
+        res.locals.dates.push({start: b.dates[0], end: b.dates[1]});
         await Booking.deleteOne({_id: req.body.bookingID});
-        res.status(200);
-        res.redirect('back');
-        res.send();
     }
     catch(err) {
-        res.sendStatus(500);
         throw err;
     }
+    next();
 }
 
 exports.deleteUserBookings = async function(req, res, next) {
-    await Booking.deleteMany({ user: res.locals.userID })
+    const b = await Booking.find({ user: res.locals.userID });
+    res.locals.place = [];
+    res.locals.dates = [];
+    for (let i in b) {
+        res.locals.place.push(b[i].place);
+        res.locals.dates.push({start: b[i].dates[0], end: b[i].dates[1]});
+    }
+    await Booking.deleteMany({ user: res.locals.userID });
     next();
 }

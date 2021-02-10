@@ -4,6 +4,7 @@ const path = require('path');
 const user_controller = require("../controllers/userController");
 const chat_controller = require("../controllers/chatController");
 const bookings_controller = require("../controllers/bookingsController");
+const place_controller = require("../controllers/placeController");
 const multer  = require('multer');
 
 const storage = multer.diskStorage({
@@ -28,16 +29,16 @@ router.post("/edit-profile", user_controller.verifyJWT, user_controller.editProf
 router.post("/edit-picture", user_controller.verifyJWT, upload.single("picture"), user_controller.editPicture);
 router.get("/picture", user_controller.verifyJWT, user_controller.getPic);
 router.post("/change-password", user_controller.verifyJWT, user_controller.changePassword);
-router.post("/delete-account", user_controller.verifyJWT, bookings_controller.deleteUserBookings, chat_controller.deleteUserChats, user_controller.deleteAccount);
+router.post("/delete-account", user_controller.verifyJWT, bookings_controller.deleteUserBookings, place_controller.removeUnavailableDates, chat_controller.deleteUserChats, user_controller.deleteAccount);
 router.get("/signout", user_controller.verifyJWT, user_controller.signout);
 router.get("/chat-list", user_controller.verifyJWT, chat_controller.getChatList);
 router.post("/chat", user_controller.verifyJWT, chat_controller.getChat);
 router.get("/chat/:id", user_controller.verifyJWT, unauthRedirect, function(req, res, next) {res.sendFile(path.join(__dirname, '..', 'public', 'views', 'chat.html'))});
 router.get("/chat/:id/conversation", user_controller.verifyJWT, unauthRedirect, chat_controller.getConversation);
 router.post("/send-message", user_controller.verifyJWT, unauthRedirect, chat_controller.sendMessage)
-router.post("/book-place", user_controller.verifyJWT, bookings_controller.bookPlace);
+router.post("/book-place", user_controller.verifyJWT, bookings_controller.bookPlace, place_controller.AddUnavailableDates);
 router.get("/bookings-list", user_controller.verifyJWT, bookings_controller.getBookingsList);
-router.post("/delete-booking", user_controller.verifyJWT, bookings_controller.deleteBooking);
+router.post("/delete-booking", user_controller.verifyJWT, bookings_controller.deleteBooking, place_controller.removeUnavailableDates, function(req, res, next) {res.redirect("back");});
 router.use(express.static(path.join(__dirname, '..', 'public', 'views')));
 router.use(express.static(path.join(__dirname, '..', 'public')));
 

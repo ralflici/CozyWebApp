@@ -55,15 +55,19 @@ exports.places_list_filter = function(req, res) {
         });
         // Filter by date
         filteredList = filteredList.filter(place => {
-            const start = new Date(pref.dates.start).valueOf();
-            const end = new Date(pref.dates.end).valueOf();
-            for (let i in place.avail) {
-                const availStart = new Date(place.avail[i].start).valueOf();
-                const availEnd = new Date(place.avail[i].end).valueOf();
-                if (start >= availStart && end <= availEnd) {
-                    return place;
+            const start = pref.dates.start;
+            const end = pref.dates.end;
+
+            let intersection = false;
+            for (let i in place.unavail) {
+                console.log(i, start, end);
+                console.log(i, place.unavail[i].start, place.unavail[i].end);
+                if ((start <= place.unavail[i].start && place.unavail[i].start <= end) || (start <= place.unavail[i].end && place.unavail[i].end <= end)) {
+                    intersection = true;
+                    break;
                 }
             }
+            return !intersection;
         })
         res.send(filteredList);
     });
@@ -77,4 +81,19 @@ exports.getPlaceByID = async function(id) {
     catch(err) {
         throw err;
     } 
-}
+};
+
+exports.AddUnavailableDates = async function(req, res, next) {
+    res.locals.place.unavail.push({start: res.locals.dates[0], end: res.locals.dates[1]});
+    await res.locals.place.save();
+    res.send();
+};
+
+exports.removeUnavailableDates = async function (req, res, next) {
+    for (let i in res.locals.place) {
+        const place = await Place.findById(res.locals.place[i]);
+        place.unavail.splice(place.unavail.indexOf(res.locals.dates[i]), 1);
+        await place.save();
+    }
+    next();
+};

@@ -590,13 +590,13 @@ $(document).ready(function() {
             .then((res) => res.json())
             .then((json) => {
                 center = [json.results[0].geometry.lat, json.results[0].geometry.lng];
-                mymap.setView(center, 11);
+                mymap.setView(center, 12);
             })
             .catch((err) => console.log(err));
         }
         else {
             center = [(lat/data.length), (lon/data.length)];
-            mymap.setView(center, 11);
+            mymap.setView(center, 12);
         }
     }
 
@@ -770,19 +770,14 @@ async function sendMessage(e) {
 async function book(e) {
     // Find the popup id (which is the place._id)
     const placeID = e.target.parentNode.parentNode.id;
-    
-    const dates = new Array(preferences.dates.start, preferences.dates.end);
-    //console.log(dates);
-    //console.log(new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()));
-    //console.log("timezone offset:", preferences.dates.start.getTimezoneOffset(), preferences.dates.end.getTimezoneOffset());
-
+    const days = (preferences.dates.end - preferences.dates.start) / 86400000 ;
     const price = parseInt($(".popup-price").text().split(" ")[0]);
     const options = {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start.toUTCString(), preferences.dates.end.toUTCString()), price: price})
+        body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start, preferences.dates.end), price: price, days: days})
     };
     const response = await fetch("/user/book-place", options);
     if (response.status == 401) {
