@@ -90,22 +90,17 @@ ul {
     padding: 16px 32px;
 }
 
-.home {
-    display: block;
-}
-
-.logo {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-}
-
 .logo, .logo * {
     cursor: pointer;
 }
 
+.logo > a > img {
+    width: min(30px, 5.127rem);
+    height: min(30px, 5.127rem);
+}
+
 .name-container {
-    display: inline-block;
+    /*display: inline-block;*/
     padding-left: 20px;
 }
 
@@ -375,7 +370,7 @@ ul {
 
 .footer {
     margin: auto;
-    padding: 25px 5px 5px 5px;
+    padding: 25px 5px;
     width: 53.54vw;
     max-width: 1028px;
     border-top: 1px solid #cccccc;

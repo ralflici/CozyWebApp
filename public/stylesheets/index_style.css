@@ -215,24 +215,35 @@ ul {
     grid-row-start: 1;
     grid-row-end: 2;
 }
-
+/*
 .logo {
     display: inline-block;
     width: 30px;
     height: 30px;
 }
+*/
+.logo, .logo > a {
+    display: inline-block;
+}
+
+.logo > a > img {
+    width: 30px;
+    height: 30px;
+}
+
+.name-container {
+    display: inline-block;
+}
 
 .name {
-    position: relative;
-    margin: 0;
-    display: inline-block;
-    left: 22px;
+    margin-left: 12px;
     font: normal normal bold 40px Greycliff CF;
     color: #000000;
 }
 
 .scroll {
     display: none;
+    margin-top: 8px;
 }
 
 .left-header {
@@ -939,10 +950,10 @@ ul {
     justify-content: space-between;
     align-items: center;
 }
-
+/*
 #beds > span > .control-number, #bedrooms > span > .control-number, #bathrooms > span > .control-number {
     min-width: 16px;
-}
+}*/
 /*
 .type:nth-child(2) {
     margin: 0 12px;

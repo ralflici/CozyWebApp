@@ -30,17 +30,14 @@
         grid-column: 1 / 8;
     }
 
-    .logo {
+    .logo > a > img {
         width: min(30px, 7.6rem);
         height: min(30px, 7.6rem);
-        position: initial;
     }
 
     .name {
-        margin-left: 8px;
         color: #000000;
         font-size: min(40px, 10.8rem);
-        position: initial;
     }
 
     .scroll {
@@ -92,7 +89,7 @@
 
     .right-container {
         width: 100%;
-        padding: min(50px, 8.7rem)  min(30px, 5.22rem);
+        padding: min(50px, 5.22rem)  min(30px, 5.22rem);
     }
 
     .navbar-list {
@@ -111,7 +108,7 @@
     }
 
     .searchbar {
-        margin-top: min(67.8px, 11.8rem);
+        margin-top: min(67.8px, 9rem);
     }
 
     .search-icon {
@@ -180,14 +177,14 @@
     }
     
     .control-icon {
-        width: min(25px, 4.348rem);
-        height: min(25px, 4.348rem);
-        font-size: min(20px, 3.478rem);
+        width: min(25px, 5rem);
+        height: min(25px, 5rem);
+        font-size: min(20px, 4rem);
         line-height: min(18px, 3.130rem);
     }
 
     .control-number {
-        font-size: min(20px, 3.478rem);
+        font-size: min(20px, 4rem);
     }
 
     .calendar {
@@ -299,5 +296,13 @@
         flex-basis: 20%;
         flex-grow: 0;
         flex-shrink: 0;
+    }
+
+    .dummy-day, .day {
+        padding: 1px 0;
+    }
+
+    .type {
+        justify-content: center;
     }
 }

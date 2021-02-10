@@ -12,21 +12,13 @@
 <body>
     <div class="header">
         <span class="home">
-            <span class="logo" onclick="{window.location.href = '/'}">
-                <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g>
-                        <rect rx="2px" width="13" height="13" style="fill:#000000"/>
-                        <rect rx="2px" y=17 width="13" height="13" style="fill:#000000"/>
-                        <rect rx="2px" x=17 y=17 width="13" height="13" style="fill:#000000"/>
-                    </g>
-                </svg>
-            </span>
-            <span class="name-container"><a href="../../index.html" class="name">Cozy</a></span>
+            <span class="logo"><a href="/"><img src="../images/logoIcon.svg" alt=""></a></span>
+            <span class="name-container"><a href="/" class="name">Cozy</a></span>
         </span>
         <ul class="navbar-list">
-            <li id="messages-item"><a style="cursor: pointer;" href="../messages.html">Messages</a></li>
-            <li id="bookings-item"><a style="cursor: pointer;" href="../bookings.html" title="User bookings">Bookings</a></li>
-            <li id="user-item"><a style="cursor: pointer;" href="../profile.html" title="User profile">User</a></li>
+            <li id="messages-item"><a style="cursor: pointer;" href="/user/messages.html">Messages</a></li>
+            <li id="bookings-item"><a style="cursor: pointer;" href="/user/bookings.html" title="User bookings">Bookings</a></li>
+            <li id="user-item"><a style="cursor: pointer;" href="/user/profile.html" title="User profile">User</a></li>
             <li id="user-icon" title="User profile">
                 <img width="29px" height="29px" style="object-fit: cover; border-radius: 30px;"></img>
                 <div class="notification-icon"></div>
@@ -45,9 +37,9 @@
                 </span>
             </div>
             <ul class="menu-list">
-                <li class="menu-item" id="messages"><a href="../messages.html" style="cursor: pointer;">Messages</a></li>
-                <li class="menu-item" id="bookings"><a href="../bookings.html">Bookings</a></li>
-                <li class="menu-item" id="profile"><a href="../profile.html">Profile</a></li>
+                <li class="menu-item" id="messages"><a href="/user/messages.html" style="cursor: pointer;">Messages</a></li>
+                <li class="menu-item" id="bookings"><a href="/user/bookings.html">Bookings</a></li>
+                <li class="menu-item" id="profile"><a href="/user/profile.html">Profile</a></li>
             </ul>
         </div>
         <div class="content-container">
