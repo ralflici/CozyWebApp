@@ -28,7 +28,7 @@ router.post("/edit-profile", user_controller.verifyJWT, user_controller.editProf
 router.post("/edit-picture", user_controller.verifyJWT, upload.single("picture"), user_controller.editPicture);
 router.get("/picture", user_controller.verifyJWT, user_controller.getPic);
 router.post("/change-password", user_controller.verifyJWT, user_controller.changePassword);
-router.post("/delete-account", user_controller.verifyJWT, bookings_controller.deleteUserBookings, user_controller.deleteAccount);
+router.post("/delete-account", user_controller.verifyJWT, bookings_controller.deleteUserBookings, chat_controller.deleteUserChats, user_controller.deleteAccount);
 router.get("/signout", user_controller.verifyJWT, user_controller.signout);
 router.get("/chat-list", user_controller.verifyJWT, chat_controller.getChatList);
 router.post("/chat", user_controller.verifyJWT, chat_controller.getChat);

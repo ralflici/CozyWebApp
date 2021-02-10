@@ -75,3 +75,8 @@ exports.getConversation = async function(req, res, next) {
         res.send({chat: chat, place: place});
     }
 }
+
+exports.deleteUserChats = async function(req, res, next) {
+    await Chat.deleteMany({ user: res.locals.userID })
+    next();
+}
