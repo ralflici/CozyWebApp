@@ -20,7 +20,7 @@ exports.verifyJWT = async function(req, res, next) {
         try {
             payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
             res.locals.userID = payload.id;
-            res.locals.user = await User.findById(payload.id, "name email location bio pic");
+            res.locals.user = await User.findById(payload.id, "password name email location bio pic");
             res.statusCode = 200;
             next();
         }
@@ -151,8 +151,10 @@ exports.getPic = function(req, res, next) {
 
 exports.changePassword = async function(req, res, next) {
     const user = res.locals.user;
-    if (req.body.oldPass === res.locals.user.password) {
-        user.password = req.body.newPass;
+    console.log("Current pass:", res.locals.user.password);
+    console.log("Old pass:", SHA256(req.body.oldPass).toString());
+    if (SHA256(req.body.oldPass).toString() === res.locals.user.password) {
+        user.password = SHA256(req.body.newPass).toString();
         await user.save();
         res.status(200);
         res.send({ message: "Password changed succesfully" });

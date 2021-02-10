@@ -254,10 +254,6 @@
         flex-basis: 10%;
     }
 
-    #user-icon {
-        margin-top: 2px;
-    }
-
     .main-container {
         margin-top: min(20px, 3.478rem);
         margin-bottom: min(20px, 3.478rem);
