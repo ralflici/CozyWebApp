@@ -44,10 +44,12 @@ router.use(express.static(path.join(__dirname, '..', 'public', 'views')));
 router.use(express.static(path.join(__dirname, '..', 'public')));
 
 function unauthRedirect(req, res, next) {
-  if (res.statusCode === 401 || res.statusCode === 403)
+  if (res.statusCode == 401 || res.statusCode == 403) {
     res.redirect("/user/log.html");
-  else
+  }
+  else {
     next();
+  }
 }
 
 module.exports = router;

@@ -8,10 +8,11 @@ const SHA256 = require("crypto-js/sha256");
 exports.verifyJWT = async function(req, res, next) {
     const accessToken = req.cookies.jwt;
 
-    if(!accessToken) {
+    if(accessToken == undefined || accessToken == "0") {
         console.log("\x1b[31m", "jwt not found");
         res.statusCode = 401;
         next();
+        return;
         //res.send("You must <a href='log.html'>authenticate</a>");
         //res.redirect("/user/log.html");
     }
@@ -22,14 +23,14 @@ exports.verifyJWT = async function(req, res, next) {
             res.locals.userID = payload.id;
             res.locals.user = await User.findById(payload.id, "password name email location bio pic");
             res.statusCode = 200;
-            next();
         }
         catch(err) {
             console.log("\x1b[31m", "jwt not valid");
             res.statusCode = 401;
-            next();
             //res.redirect(path.join(__dirname, "..", "public", "views", "log.html"));
         }
+        next();
+        return;
     }
 };
 
@@ -91,8 +92,12 @@ exports.isLogged = function(req, res, next) {
             res.redirect("profile.html");
         }
         catch(err) {
-            //res.sendStatus(401);
+            //res.statusCode = 401;
+            next();
         }
+    }
+    else {
+        next();
     }
     //next();
 };
@@ -172,7 +177,7 @@ exports.deleteAccount = function(req, res, next) {
             res.send({ message: "Could not delete the account" });
         }
         else {
-            res.cookie("jwt", "deleted", {httpOnly: true});
+            res.cookie("jwt", "0", {httpOnly: true});
             res.statusCode = 200;
             res.redirect("log.html");
         }
@@ -180,6 +185,6 @@ exports.deleteAccount = function(req, res, next) {
 }
 
 exports.signout = function(req, res, next) {
-    res.cookie("jwt", "signout", {httpOnly: true});
+    res.cookie("jwt", "0", {httpOnly: true});
     res.redirect("log.html");
 }
