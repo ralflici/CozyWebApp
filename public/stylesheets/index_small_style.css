@@ -296,10 +296,11 @@
         flex-basis: 20%;
         flex-grow: 0;
         flex-shrink: 0;
+        padding: min(20px, 3.5rem) min(30px, 5.2rem);
     }
 
     .dummy-day, .day {
-        padding: 1px 0;
+        padding: 2px 0;
     }
 
     .type {
