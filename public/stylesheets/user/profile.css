@@ -320,5 +320,6 @@
     #change-password-popup-container, #delete-account-popup-container {
         width: 70vw;
         margin: auto;
+        padding: min(30px, 5.3rem);
     }
 }

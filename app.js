@@ -44,7 +44,7 @@ let setCache = function (req, res, next) {
 
 //app.use(setCache);
 app.use(logger('dev'));
-app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))//, setCache)
+app.use(favicon(path.join(__dirname, 'public', 'images', 'house.ico')))//, setCache)
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname, 'public', 'images')));
 app.use(express.json());
@@ -71,7 +71,7 @@ app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use("/locations", locationsRouter);
 app.use("/places", placesRouter);
-//app.use(/[\s\S]*/, errorRouter);
+app.use(/[\s\S]*/, errorRouter);
 
 
 // Importable by the /bin/www file

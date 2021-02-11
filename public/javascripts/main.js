@@ -799,7 +799,6 @@ async function book(e) {
 }
 
 $(window).on('focus', async function() {
-    //console.log("focus");
     const response = await fetch("/user/picture", {method: "GET", headers: { "Content-Type": "application/json" }});
     if (response.status === 200) {
         if ($(".auth-popup").length !== 0)

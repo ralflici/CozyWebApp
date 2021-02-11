@@ -64,6 +64,18 @@ exports.sendMessage = async function(req, res, next) {
     res.redirect("back");
 }
 
+exports.chatExists = async function(req, res, next) {
+    console.log(req.params.id);
+    try {
+        await Chat.findById(req.params.id);
+    }
+    catch(err) {
+        res.sendStatus(404);
+        return;
+    }
+    next();
+}
+
 exports.getConversation = async function(req, res, next) {
     const chat = await Chat.findById(req.params.id);
     const place = await place_controller.getPlaceByID(chat.place);

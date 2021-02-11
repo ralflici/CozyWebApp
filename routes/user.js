@@ -17,6 +17,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+router.get("/", function(req, res, next) {res.statusCode = 404; res.sendFile(path.join(__dirname, '..', 'public', 'views', 'error.html'))});
 router.get("/log.html", user_controller.isLogged);
 router.get("/profile.html", user_controller.verifyJWT, unauthRedirect);
 router.get("/messages.html", user_controller.verifyJWT, unauthRedirect);
@@ -33,7 +34,7 @@ router.post("/delete-account", user_controller.verifyJWT, bookings_controller.de
 router.get("/signout", user_controller.verifyJWT, user_controller.signout);
 router.get("/chat-list", user_controller.verifyJWT, chat_controller.getChatList);
 router.post("/chat", user_controller.verifyJWT, chat_controller.getChat);
-router.get("/chat/:id", user_controller.verifyJWT, unauthRedirect, function(req, res, next) {res.sendFile(path.join(__dirname, '..', 'public', 'views', 'chat.html'))});
+router.get("/chat/:id", user_controller.verifyJWT, unauthRedirect, chat_controller.chatExists, function(req, res, next) {res.sendFile(path.join(__dirname, '..', 'public', 'views', 'chat.html'));});
 router.get("/chat/:id/conversation", user_controller.verifyJWT, unauthRedirect, chat_controller.getConversation);
 router.post("/send-message", user_controller.verifyJWT, unauthRedirect, chat_controller.sendMessage)
 router.post("/book-place", user_controller.verifyJWT, bookings_controller.bookPlace, place_controller.AddUnavailableDates);
