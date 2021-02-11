@@ -92,14 +92,12 @@ exports.isLogged = function(req, res, next) {
             res.redirect("profile.html");
         }
         catch(err) {
-            //res.statusCode = 401;
             next();
         }
     }
     else {
         next();
     }
-    //next();
 };
 
 exports.getInfo = function(req, res, next) {
