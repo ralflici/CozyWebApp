@@ -79,7 +79,7 @@
 
     #get-started {
         height: min(15rem , 82px);
-        font-size: min(3.478rem, 20px);
+        font-size: min(5rem, 20px);
         border-radius: min(17px, 3rem);
     }
 
@@ -242,7 +242,7 @@
     }
 
     .day, .dummy-day {
-        padding: min(6px, 1.043rem) 0
+        padding: min(6px, 1.043rem) 0;
     }
 
     .typeplace-list, .list, .chart-container {
@@ -265,7 +265,7 @@
         margin-top: min(52.8px, 9.2rem);
         box-shadow: none;
         height: min(15rem , 82px);
-        font-size: min(3.478rem, 20px);
+        font-size: min(5rem, 20px);
         border-radius: min(17px, 3rem);
     }
 }
