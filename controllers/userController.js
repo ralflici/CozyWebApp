@@ -94,7 +94,7 @@ exports.isLogged = function(req, res, next) {
             //res.sendStatus(401);
         }
     }
-    next();
+    //next();
 };
 
 exports.getInfo = function(req, res, next) {
