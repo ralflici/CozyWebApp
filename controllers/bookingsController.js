@@ -29,7 +29,6 @@ exports.bookPlace = async function(req, res, next) {
     const user = res.locals.user;
     const place = await place_controller.getPlaceByID(req.body.placeID);
     res.locals.place = place;
-    const days = req.body.days;
 
     const dates = new Array(new Date(req.body.dates[0]), new Date(req.body.dates[1]));
     res.locals.dates = dates;
@@ -38,7 +37,7 @@ exports.bookPlace = async function(req, res, next) {
         user: user,
         place: place,
         dates: dates,
-        price: req.body.price*days
+        price: req.body.price*req.body.nights
     });
     booking.save(function(err) {
         if (err) {

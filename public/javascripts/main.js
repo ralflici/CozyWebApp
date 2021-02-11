@@ -770,14 +770,14 @@ async function sendMessage(e) {
 async function book(e) {
     // Find the popup id (which is the place._id)
     const placeID = e.target.parentNode.parentNode.id;
-    const days = (preferences.dates.end - preferences.dates.start) / 86400000 ;
+    const nights = (preferences.dates.end - preferences.dates.start) / 86400000 ;
     const price = parseInt($(".popup-price").text().split(" ")[0]);
     const options = {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start, preferences.dates.end), price: price, days: days})
+        body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start, preferences.dates.end), price: price, nights: nights})
     };
     const response = await fetch("/user/book-place", options);
     if (response.status == 401) {
