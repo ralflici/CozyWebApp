@@ -23,6 +23,13 @@ let preferences = {
     }
 };
 
+// 0:    0px -  425px (mobile)
+// 1:  426px - 1280px (small)
+// 2: 1281px - 1920px (normal)
+// 3: 1921px -    inf (wide)
+let screenType;
+
+/*
 $.ajax({
     url: '/user/picture',
     type: 'GET',
@@ -37,49 +44,50 @@ $.ajax({
         console.warn('Could not load profile picture.');
     }
 });
+*/
+let windowWidth = $(window).width();
+$(window).resize(function() {
+    windowWidth = $(window).width();
+    defineScreenSize();
+    if (screenType >= 2 && $("#get-started").text() == "Find you place ▼") {
+        $("#get-started").text("Find your place");
+    }
+    else if (screenType < 2 && $("#get-started").text() == "Find your place") {
+        $("#get-started").text("Find you place ▼");
+    }
+});
+
+defineScreenSize();
+
+function defineScreenSize() {
+    if (windowWidth < 426) {
+        screenType = 0;
+        $(".left-container").css("border-radius", "0px");
+    }
+    else if (windowWidth < 1281) {
+        $(".left-container").css("border-radius", "0px");
+        screenType = 1;
+    }
+    else if (windowWidth < 1921) {
+        $(".left-container").css("border-radius", "0 40px 40px 0");
+        screenType = 2
+    }
+    else {
+        $(".left-container").css("border-radius", "40px");
+        screenType = 3
+    }
+    return;
+}
 
 $(document).ready(function() {
     // ----------- GLOBAL VARIABLES ---------- //
     let mapShowed = false;
-    let windowWidth = $(window).width();
-    let windowHeight = $(window).height();
-
     let minPrice, maxPrice, min, max;
     
-    // 0:    0px -  425px (mobile)
-    // 1:  426px - 1280px (small)
-    // 2: 1281px - 1920px (normal)
-    // 3: 1921px -    inf (wide)
-    let screenType;
     // --------------------------------------- //
 
 
     // ------------- SCREEN SIZE ------------- // 
-    defineScreenSize();
-    $(window).resize(function() {
-        windowWidth = $(window).width();
-        windowHeight = $(window).height();
-        defineScreenSize();
-    })
-
-    function defineScreenSize() {
-        if (windowWidth < 426) {
-            screenType = 0;
-            $(".left-container").css("border-radius", "0px");
-        }
-        else if (windowWidth < 1281) {
-            $(".left-container").css("border-radius", "0px");
-            screenType = 1;
-        }
-        else if (windowWidth < 1921) {
-            $(".left-container").css("border-radius", "0 40px 40px 0");
-            screenType = 2
-        }
-        else {
-            $(".left-container").css("border-radius", "40px");
-            screenType = 3
-        }
-    }
 
     $("#user-icon").click(function() {
         window.location.href = "/user/profile.html";
@@ -432,10 +440,23 @@ $(document).ready(function() {
 
 
     // --------------- BUTTONS --------------- //
+    $("#get-started-link").click(function(e) {
+        if ($(this).text() != "Get started") {
+            e.preventDefault();
+            return;
+        }
+    });
+
     $(".big-button").click(function() {
         let id = this.id;
-        if (id === "get-started") {
-
+        if (id === "get-started" && $("#get-started").text() != "Get started") {
+            $("#search").focus();
+            if (screenType < 2) {
+                $(window).scrollTop($(".left-container").height());
+            }
+            else {
+                $(window).scrollTop(0);
+            }
         }
         else if (id === "search-button") {
             if ($(this).hasClass("unavailable")) {
@@ -548,8 +569,8 @@ $(document).ready(function() {
             let popup = L.popup().setContent(
                 `<div class="popup" id="${data[i]._id}">
                     <div class="popup-slide-container">
-                        <div class="popup-vignette" onclick="sendMessage(event)">💬</div>
-                        <div class="popup-checkmark" onclick="book(event)">✓</div>
+                        <div class="popup-vignette" onclick="sendMessage(event)" title="Send a message">💬</div>
+                        <div class="popup-checkmark" onclick="book(event)" title="Book this place">✓</div>
                         <img class="popup-image visible" src='${data[i].images[0]}' alt='interiors'>
                         <img class="popup-image" src='${data[i].images[1]}' alt='interiors'>
                         <img class="popup-image" src='${data[i].images[2]}' alt='interiors'>
@@ -788,7 +809,7 @@ async function book(e) {
         $(".auth-popup").remove();
         $(".success-popup").remove();
         $(".fail-popup").remove();
-        $(".left-container").append(`<div class="fail-popup">This booking already exists</div>`);
+        $(".left-container").append(`<div class="fail-popup">This place is not available anymore</div>`);
     }
     else {
         $(".auth-popup").remove();
@@ -798,9 +819,27 @@ async function book(e) {
     }
 }
 
-$(window).on('focus', async function() {
+loadPic();
+
+$(window).on('focus', loadPic);
+
+function changeButton(logged) {
+    if (logged) {
+        if (screenType < 2)
+            $("#get-started").text("Find you place ▼");
+        else
+            $("#get-started").text("Find you place");
+    }
+    else {
+        $("#get-started").text("Get started");
+        //$("#get-started-link").attr("href", "/user/log.html");
+    }
+}
+
+async function loadPic() {
     const response = await fetch("/user/picture", {method: "GET", headers: { "Content-Type": "application/json" }});
     if (response.status === 200) {
+        changeButton(true);
         if ($(".auth-popup").length !== 0)
             $(".auth-popup").addClass("hide");
         const img = await response.text();
@@ -810,7 +849,8 @@ $(window).on('focus', async function() {
             $("#user-icon>img").attr("src", img);
     }
     else {
+        changeButton(false);
         $("#user-icon>img").attr("src", "../images/userIcon.svg");
         console.warn('Could not load profile picture.');
     }
-});
+}

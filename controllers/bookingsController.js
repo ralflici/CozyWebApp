@@ -1,5 +1,4 @@
 const Booking = require("../models/booking");
-const place_controller = require("./placeController");
 
 exports.getBookingByID = async function(id) {
     try{
@@ -26,26 +25,15 @@ exports.bookPlace = async function(req, res, next) {
     }
 
     // Otherwise create a new booking and save it in the database
-    const user = res.locals.user;
-    const place = await place_controller.getPlaceByID(req.body.placeID);
-    res.locals.place = place;
-
-    const dates = new Array(new Date(req.body.dates[0]), new Date(req.body.dates[1]));
-    res.locals.dates = dates;
-
     const booking = new Booking({
-        user: user,
-        place: place,
-        dates: dates,
+        user: res.locals.user,
+        place: res.locals.place,
+        dates: res.locals.dates,
         price: req.body.price*req.body.nights
     });
-    booking.save(function(err) {
-        if (err) {
-            throw err;
-        }
-    });
-    //res.send();
-    next();
+    await booking.save();
+    res.send();
+    //next();
 };
 
 exports.getBookingsList = async function(req, res, next) {
