@@ -91,7 +91,7 @@
     cursor: default;
 }
 
-#change-password, #delete-account, #signout {
+#change-password, #delete-account, #logout {
     display: block;
     margin-top: 20px;
     font-size: 16px;
