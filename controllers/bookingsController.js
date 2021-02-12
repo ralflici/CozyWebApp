@@ -32,8 +32,8 @@ exports.bookPlace = async function(req, res, next) {
         price: req.body.price*req.body.nights
     });
     await booking.save();
-    res.send();
-    //next();
+    //res.send();
+    next();
 };
 
 exports.getBookingsList = async function(req, res, next) {

@@ -131,7 +131,6 @@ const calendar = {
         
         let next = this.adjacentDate(this.start, true);
         while(next.date < this.end) {
-            console.log(next.date);
             next.li.addClass("in-range");
             next = this.adjacentDate(next.date, true);
         }

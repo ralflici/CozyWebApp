@@ -83,7 +83,7 @@ exports.getPlaceByID = async function(id) {
     } 
 };
 
-exports.AddUnavailableDates = async function(req, res, next) {
+exports.isPlaceAvailable = async function(req, res, next) {
     const place = await Place.findById(req.body.placeID).populate("location").exec();
     const dates = new Array(new Date(req.body.dates[0]), new Date(req.body.dates[1]));
 
@@ -93,12 +93,16 @@ exports.AddUnavailableDates = async function(req, res, next) {
             return;
         }
     }
-
-    place.unavail.push({start: dates[0], end: dates[1]});
-    await place.save();
     res.locals.place = place;
     res.locals.dates = dates;
     next();
+}
+
+exports.AddUnavailableDates = async function(req, res, next) {
+    res.locals.place.unavail.push({start: res.locals.dates[0], end: res.locals.dates[1]});
+    await res.locals.place.save();
+    //next();
+    res.send();
 };
 
 exports.removeUnavailableDates = async function (req, res, next) {
