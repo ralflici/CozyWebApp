@@ -452,7 +452,7 @@ $(document).ready(function() {
         if (id === "get-started" && $("#get-started").text() != "Get started") {
             if (screenType < 2) {
                 $(window).scrollTop($(".left-container").height());
-                setTimeout(function() {$("#search").focus()}, 800);
+                //setTimeout(function() {$("#search").focus()}, 800);
             }
             else {
                 $(window).scrollTop(0);
