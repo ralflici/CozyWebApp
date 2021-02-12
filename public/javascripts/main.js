@@ -450,12 +450,13 @@ $(document).ready(function() {
     $(".big-button").click(function() {
         let id = this.id;
         if (id === "get-started" && $("#get-started").text() != "Get started") {
-            $("#search").focus();
             if (screenType < 2) {
                 $(window).scrollTop($(".left-container").height());
+                $("#search").focus();
             }
             else {
                 $(window).scrollTop(0);
+                $("#search").focus();
             }
         }
         else if (id === "search-button") {
