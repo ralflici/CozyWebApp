@@ -113,6 +113,8 @@ const calendar = {
             }
         }
         if (this.start !== undefined && this.end !== undefined) {
+            this.start.setHours(23);
+            this.end.setHours(0);
             this.fillDaysInRange();
             return {start: this.start.setHours(12), end: this.end.setHours(12)};
         }
@@ -129,12 +131,15 @@ const calendar = {
         
         let next = this.adjacentDate(this.start, true);
         while(next.date < this.end) {
+            console.log(next.date);
             next.li.addClass("in-range");
             next = this.adjacentDate(next.date, true);
         }
     },
 
     controlDate: function(dateSpan, add) {
+        this.start.setHours(23);
+        this.end.setHours(0);
         if (dateSpan.hasClass("selected")) {
             if (dateSpan[0].id == "start-date") {
                 if (add) {
