@@ -98,8 +98,8 @@ $(document).ready(function() {
         });
     });
 
-    $("#signout").click(async function() {
-        const response = await fetch("/user/signout", { method: "GET", headers: { "Content-Type": "application/json" }});
+    $("#logout").click(async function() {
+        const response = await fetch("/user/logout", { method: "GET", headers: { "Content-Type": "application/json" }});
         console.log(response);
         if (response.redirected)
             window.location.href = response.url;

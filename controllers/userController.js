@@ -182,7 +182,7 @@ exports.deleteAccount = function(req, res, next) {
     });
 }
 
-exports.signout = function(req, res, next) {
+exports.logout = function(req, res, next) {
     res.cookie("jwt", "0", {httpOnly: true});
     res.redirect("log.html");
 }

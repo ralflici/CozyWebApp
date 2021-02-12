@@ -31,7 +31,7 @@ router.post("/edit-picture", user_controller.verifyJWT, upload.single("picture")
 router.get("/picture", user_controller.verifyJWT, user_controller.getPic);
 router.post("/change-password", user_controller.verifyJWT, user_controller.changePassword);
 router.post("/delete-account", user_controller.verifyJWT, bookings_controller.deleteUserBookings, place_controller.removeUnavailableDates, chat_controller.deleteUserChats, user_controller.deleteAccount);
-router.get("/signout", user_controller.verifyJWT, user_controller.signout);
+router.get("/logout", user_controller.verifyJWT, user_controller.logout);
 router.get("/chat-list", user_controller.verifyJWT, chat_controller.getChatList);
 router.post("/chat", user_controller.verifyJWT, chat_controller.getChat);
 router.get("/chat/:id", user_controller.verifyJWT, unauthRedirect, chat_controller.chatExists, function(req, res, next) {res.sendFile(path.join(__dirname, '..', 'public', 'views', 'chat.html'));});
