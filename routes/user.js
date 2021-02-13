@@ -19,9 +19,10 @@ const upload = multer({ storage: storage });
 
 router.get("/", function(req, res, next) {res.statusCode = 404; res.sendFile(path.join(__dirname, '..', 'public', 'views', 'error.html'))});
 router.get("/log.html", user_controller.isLogged);
-router.get("/profile.html", user_controller.verifyJWT, unauthRedirect);
-router.get("/messages.html", user_controller.verifyJWT, unauthRedirect);
-router.get("/bookings.html", user_controller.verifyJWT, unauthRedirect);
+//router.get("/profile.html", user_controller.verifyJWT2 /*, user_controller.verifyJWT2, unauthRedirect*/);
+router.get("/:jwt/profile.html", user_controller.verifyJWT2 /*, user_controller.verifyJWT2,*/, unauthRedirect);
+router.get("/:jwt/messages.html", user_controller.verifyJWT2 /*, user_controller.verifyJWT,*/, unauthRedirect);
+router.get("/:jwt/bookings.html", user_controller.verifyJWT2 /*, user_controller.verifyJWT,*/, unauthRedirect);
 
 router.post("/signup", user_controller.signup);
 router.post("/login", user_controller.login);
@@ -40,7 +41,7 @@ router.post("/send-message", user_controller.verifyJWT, unauthRedirect, chat_con
 router.post("/book-place", user_controller.verifyJWT, place_controller.isPlaceAvailable, bookings_controller.bookPlace, place_controller.AddUnavailableDates);
 router.get("/bookings-list", user_controller.verifyJWT, bookings_controller.getBookingsList);
 router.post("/delete-booking", user_controller.verifyJWT, bookings_controller.deleteBooking, place_controller.removeUnavailableDates, function(req, res, next) {res.redirect("back");});
-router.use(express.static(path.join(__dirname, '..', 'public', 'views')));
+//router.use(express.static(path.join(__dirname, '..', 'public', 'views')));
 router.use(express.static(path.join(__dirname, '..', 'public')));
 
 function unauthRedirect(req, res, next) {
@@ -48,6 +49,9 @@ function unauthRedirect(req, res, next) {
     res.redirect("/user/log.html");
   }
   else {
+    console.log("Page to send", res.locals.dest);
+    console.log("Status code", res.statusCode);
+    res.sendFile(path.join(__dirname, '..', 'public', 'views', res.locals.dest));
     next();
   }
 }

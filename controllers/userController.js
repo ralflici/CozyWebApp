@@ -34,6 +34,45 @@ exports.verifyJWT = async function(req, res, next) {
     }
 };
 
+exports.verifyJWT2 = async function(req, res, next) {
+    let dest = req.url;
+    res.locals.dest = dest.slice(dest.lastIndexOf("/"));
+
+    let accessToken;
+    if (req.headers["authorization"]) {
+        //console.log("HEADER FOUND");
+        accessToken = req.headers["authorization"].split("Bearer ")[1];
+    }
+    else if (req.params.jwt) {
+        //console.log("PARAM FOUND");
+        accessToken = req.params.jwt;
+    }
+    //console.log("*** authorization", accessToken);
+
+    if(accessToken == undefined || accessToken == "0") {
+        console.log("\x1b[31m", "jwt not found");
+        res.statusCode = 401;
+        //return res.send("Access token not found");
+    }
+    else {
+        let payload; 
+        try {
+            payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+            console.log("\x1b[31m", "jwt valid");
+            res.locals.userID = payload.id;
+            res.locals.user = await User.findById(payload.id, "password name email location bio pic");
+            res.statusCode = 200;
+            //return res.send("Authorized");
+        }
+        catch(err) {
+            console.log("\x1b[31m", "jwt not valid");
+            res.statusCode = 401;
+            //return res.send("Access token not valid");
+        }
+    }
+    next();
+};
+
 exports.signup = async function(req, res, next) {
     const username = SHA256(req.body.username).toString();
     const password = SHA256(req.body.password).toString();
@@ -75,7 +114,7 @@ exports.login = async function(req, res, next){
         });
 
         //send the access token to the client inside a cookie
-        res.cookie("jwt", accessToken, {httpOnly: true});
+        res.cookie("jwt", accessToken);
         res.redirect("profile.html");
     }
 };
@@ -85,9 +124,8 @@ exports.isLogged = function(req, res, next) {
     console.log("\x1b[31m", "accessToken", accessToken);
 
     if(accessToken != undefined) {
-        let payload; 
         try {
-            payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+            jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
             //res.statusCode = 200;
             res.redirect("profile.html");
         }
