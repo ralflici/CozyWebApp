@@ -11,7 +11,8 @@ async function getChatsList() {
     const options = {
         mehod: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0]
         }
     }
     const response = await fetch("/user/chat-list", options);
@@ -32,42 +33,15 @@ async function getChatsList() {
                         <div class="item-name">${chats[i].place.name}</div>
                         <div class="item-bottom">
                             <span class="item-price">${chats[i].place.price}€/night</span>
-                            <span class="item-open-icon">···</span>
+                            <span class="item-open-icon"><a style="cursor: pointer;" href="chat/${chats[i]._id}">···</a></span>
                         </div>
                     </span>
                 </div>
             `);
         }
-        $(".item-container").click(function() {
+        /*$(".item-container").click(function() {
             const chatID = $(this).attr("id");
-                window.location.href = "/user/chat/" + chatID;
-        })
+            window.location.href = "/user/" + document.cookie.split("jwt=")[1].split(";")[0] + "/chat/" + chatID;
+        })*/
     }
 }
-
-$.ajax({
-    url: '/user/picture',
-    type: 'GET',
-    success: function(data){
-        if (data == "") {
-            $("#user-icon>img").attr("src", "../images/userIcon.svg");
-            $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-        }
-        else {
-            $("#user-icon>img").attr("src", data);
-            $(".user-info-image>img").attr("src", data);
-        }
-    },
-    error: function(data) {
-        $("#user-icon>img").attr("src", "../images/userIcon.svg");
-        $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-        console.warn('Could not load profile picture.');
-    }
-});
-
-$.get("/user/profile-info", function(info) {
-    if (info.name != "")
-        $(".user-name").text(info.name);
-    else
-        $(".user-name").text("Name Surname");
-});

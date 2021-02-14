@@ -18,6 +18,7 @@ exports.getChatList = function(req,res,next) {
 };
 
 exports.getChat = async function(req, res, next) {
+    console.log("url", req.url);
     if (res.statusCode === 401) {
         res.send();
         return;
@@ -37,7 +38,7 @@ exports.getChat = async function(req, res, next) {
         }
 
         if (chat != undefined)
-            res.redirect(chat.url);
+            res.redirect("/user" + req.url + "/" + chat._id);
         
         else {
             const place = await place_controller.getPlaceByID(req.body.placeID);
@@ -47,7 +48,7 @@ exports.getChat = async function(req, res, next) {
                 content: []
             });
             await newChat.save();
-            res.redirect(newChat.url);
+            res.redirect("/user" + req.url + "/" + newChat._id);
         }
     });
 }

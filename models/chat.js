@@ -13,7 +13,7 @@ var chatSchema = new Schema({
 });
 
 chatSchema.virtual("url").get(function() {
-    return "/user/chat/" + this._id;
+    return "/chat/" + this._id;
 });
 
 module.exports = mongoose.model("chat", chatSchema);

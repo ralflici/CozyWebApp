@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     $(window).resize(function(){
         $(".pic").css({"height" :$(".pic").width() + "px"});
     });
@@ -15,7 +14,9 @@ $(document).ready(function() {
             $("#edit-profile").removeClass("unavailable");
             $("#wrong-email").css("opacity", 0);
         }
-    })
+    });
+
+    $("#picture-container").attr("action", "/user/" + document.cookie.split("jwt=")[1].split(";")[0] + "/edit-picture");
 
     $("#profile-form").submit(async function(event) {
         event.preventDefault();
@@ -31,6 +32,7 @@ $(document).ready(function() {
         const options = {
             method: "POST",
             headers: {
+                "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0],
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(userData)
@@ -58,6 +60,7 @@ $(document).ready(function() {
             const options = {
                 method: "POST",
                 headers: {
+                    "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0],
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({oldPass: oldPass, newPass: newPass})
@@ -91,45 +94,23 @@ $(document).ready(function() {
             $("#delete-account-popup").css("display", "none");
         });
         $("#yes-delete").click(async function() {
-            const response = await fetch("/user/delete-account", { method: "POST", headers: { "Content-Type": "applications/json" }});
+            const response = await fetch("/user/delete-account", { method: "POST", headers: { "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0], "Content-Type": "applications/json" }});
             console.log(response);
-            if (response.redirected)
-                window.location.href = response.url;
+            //if (response.redirected)
+                //window.location.href = response.url;
         });
     });
 
-    $("#logout").click(async function() {
-        const response = await fetch("/user/logout", { method: "GET", headers: { "Content-Type": "application/json" }});
+    $("#logout").click(function() {
+        /*const response = await fetch("/user/logout", { method: "GET", headers: { "Content-Type": "application/json" }});
         console.log(response);
         if (response.redirected)
-            window.location.href = response.url;
+            window.location.href = response.url;*/
+        document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "/user/log.html";
     });
 });
 
-$.ajax({
-    url: '/user/picture',
-    type: 'GET',
-    success: function(data){
-        if (data == "") {
-            $("#user-icon>img").attr("src", "../images/userIcon.svg");
-            $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-            $(".pic>img").attr("src", "../images/userIcon.svg");
-        }
-        else {
-            $("#user-icon>img").attr("src", data);
-            $(".user-info-image>img").attr("src", data);
-            $(".pic>img").attr("src", data);
-        }
-        $(".pic").css({"height" :$(".pic").width() + "px"});
-    },
-    error: function(data) {
-        $("#user-icon>img").attr("src", "../images/userIcon.svg");
-        $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-        $(".pic>img").attr("src", "../images/userIcon.svg");
-        $(".pic").css({"height" :$(".pic").width() + "px"});
-        console.warn('Could not load profile picture.');
-    }
-});
 
 $("#edit-picture").click(function(event) {
     event.preventDefault();
@@ -144,5 +125,5 @@ $(".pic").click(function(event) {
 $("#input-picture").on("change", function() {
     console.log("uploading...");
     console.log(this);
-    $(".picture-container").submit();
+    $("#picture-container").submit();
 });

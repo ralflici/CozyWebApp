@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
     <link rel="icon" href="../../images/favicon.ico" sizes="16x16 32x32" type="image/png">
-    <link rel="stylesheet" type="text/css" href="../stylesheets/greycliff.css">
-    <link rel="stylesheet" href="../stylesheets/user/user.css">
-    <link rel="stylesheet" href="../stylesheets/user/chat.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/greycliff.css">
+    <link rel="stylesheet" href="../../stylesheets/user/user.css">
+    <link rel="stylesheet" href="../../stylesheets/user/chat.css">
 </head>
 <body>
     <div class="header">
         <span class="home">
-            <span class="logo"><a href="/"><img src="../images/house.svg" alt=""></a></span>
+            <span class="logo"><a href="/"><img src="../../images/house.svg" alt=""></a></span>
             <span class="name-container"><a href="/" class="name">Cozy</a></span>
         </span>
         <ul class="navbar-list">
-            <li id="messages-item"><a style="cursor: pointer;" href="/user/messages.html">Messages</a></li>
-            <li id="bookings-item"><a style="cursor: pointer;" href="/user/bookings.html" title="User bookings">Bookings</a></li>
-            <li id="user-item"><a style="cursor: pointer;" href="/user/profile.html" title="User profile">User</a></li>
+            <li id="messages-item"><a style="cursor: pointer;" href="../messages.html">Messages</a></li>
+            <li id="bookings-item"><a style="cursor: pointer;" href="../bookings.html" title="User bookings">Bookings</a></li>
+            <li id="user-item"><a style="cursor: pointer;" href="../profile.html" title="User profile">User</a></li>
             <li id="user-icon" title="User profile">
                 <img width="29px" height="29px" style="object-fit: cover; border-radius: 30px;"></img>
                 <div class="notification-icon"></div>
@@ -29,7 +29,7 @@
         <div class="menu-container">
             <div class="user-info">
                 <span class="user-info-image">
-                    <img src="../images/userIcon.svg" width="30px" height="30px" style="object-fit: cover; border-radius: 300px;"></img>
+                    <img src="../../images/userIcon.svg" width="30px" height="30px" style="object-fit: cover; border-radius: 300px;"></img>
                 </span>
                 <span class="user-info-text">
                     <div class="user-name"></div>
@@ -37,9 +37,9 @@
                 </span>
             </div>
             <ul class="menu-list">
-                <li class="menu-item" id="messages"><a href="/user/messages.html" style="cursor: pointer;">Messages</a></li>
-                <li class="menu-item" id="bookings"><a href="/user/bookings.html">Bookings</a></li>
-                <li class="menu-item" id="profile"><a href="/user/profile.html">Profile</a></li>
+                <li class="menu-item" id="messages"><a href="../messages.html" style="cursor: pointer;">Messages</a></li>
+                <li class="menu-item" id="bookings"><a href="../bookings.html">Bookings</a></li>
+                <li class="menu-item" id="profile"><a href="../profile.html">Profile</a></li>
             </ul>
         </div>
         <div class="content-container">
@@ -49,7 +49,7 @@
                     <div id="conversation-container"></div>
                     <div id="message-form">
                         <textarea type="text" name="message" id="message-input" rows="1">Write a message</textarea>
-                        <button id="send-button"><img src="../images/paperPlane.svg" alt="send"></button>
+                        <button id="send-button"><img src="../../images/paperPlane.svg" alt="send"></button>
                     </div>
                     <p id="char-number">0/500</p>
                 </span>
@@ -61,13 +61,13 @@
         <ul class="footer-list">
             <li><a href="/">Discover</a></li>
             <li id="login-footer"><a href="/user/log.html">Log In</a></li>
-            <li id="homepage"><img src="../images/house.svg" alt=""><a href="/">Cozy</a></li>
+            <li id="homepage"><img src="../../images/house.svg" alt=""><a href="/">Cozy</a></li>
             <li id="share">Share</li>
             <li id="contact">Contact</li>
         </ul>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../javascripts/user/user.js"></script>
-    <script src="../javascripts/user/chat.js"></script>
+    <script src="../../javascripts/user/user.js"></script>
+    <script src="../../javascripts/user/chat.js"></script>
 </body>

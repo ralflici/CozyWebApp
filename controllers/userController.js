@@ -39,15 +39,15 @@ exports.verifyJWT2 = async function(req, res, next) {
     res.locals.dest = dest.slice(dest.lastIndexOf("/"));
 
     let accessToken;
-    if (req.headers["authorization"]) {
-        //console.log("HEADER FOUND");
-        accessToken = req.headers["authorization"].split("Bearer ")[1];
+    if (req.headers.authorization) {
+        console.log("\x1b[35m", "HEADER FOUND");
+        accessToken = req.headers.authorization.split("Bearer ")[1];
     }
     else if (req.params.jwt) {
-        //console.log("PARAM FOUND");
+        console.log("\x1b[36m", "PARAM FOUND");
         accessToken = req.params.jwt;
     }
-    //console.log("*** authorization", accessToken);
+    console.log("\x1b[32m", "*** authorization", accessToken);
 
     if(accessToken == undefined || accessToken == "0") {
         console.log("\x1b[31m", "jwt not found");
@@ -78,7 +78,8 @@ exports.signup = async function(req, res, next) {
     const password = SHA256(req.body.password).toString();
     console.log(username, password);
     const userInDB = await User.findOne({username: username});
-    if (userInDB != undefined) {
+    console.log(userInDB);
+    if (userInDB != null) {
         res.statusCode = 403;
         res.send();
         return;
@@ -97,8 +98,10 @@ exports.signup = async function(req, res, next) {
 };
 
 exports.login = async function(req, res, next){
+    console.log(req.body.username, req.body.password);
     const username = SHA256(req.body.username).toString();
     const password = SHA256(req.body.password).toString();
+    console.log(SHA256(req.body.username).toString(), SHA256(req.body.password).toString());
     let user = await User.findOne({username: username, password: password}, "_id");
     if (user == null) {
         res.status(401).send({ message: "There are no users with those credentials" });
@@ -115,19 +118,19 @@ exports.login = async function(req, res, next){
 
         //send the access token to the client inside a cookie
         res.cookie("jwt", accessToken);
-        res.redirect("profile.html");
+        res.redirect("/user/" + accessToken + "/profile.html");
     }
 };
 
 exports.isLogged = function(req, res, next) {
     const accessToken = req.cookies.jwt;
-    console.log("\x1b[31m", "accessToken", accessToken);
+    console.log("\x1b[31m", "cookie", accessToken);
 
     if(accessToken != undefined) {
         try {
             jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
             //res.statusCode = 200;
-            res.redirect("profile.html");
+            res.redirect("/user/" + accessToken + "/profile.html");
         }
         catch(err) {
             next();
@@ -144,7 +147,6 @@ exports.getInfo = function(req, res, next) {
 
 exports.editProfile = function(req, res, next) {
     const user = res.locals.user;
-    //console.log(user);
     user.name = req.body.name;
     user.email = req.body.email;
     user.location = req.body.location;
@@ -213,7 +215,8 @@ exports.deleteAccount = function(req, res, next) {
             res.send({ message: "Could not delete the account" });
         }
         else {
-            res.cookie("jwt", "0", {httpOnly: true});
+            console.log("Account deleted");
+            res.cookie("jwt", "0");
             res.statusCode = 200;
             res.redirect("log.html");
         }
@@ -221,6 +224,6 @@ exports.deleteAccount = function(req, res, next) {
 }
 
 exports.logout = function(req, res, next) {
-    res.cookie("jwt", "0", {httpOnly: true});
+    res.cookie("jwt", "0");
     res.redirect("log.html");
 }

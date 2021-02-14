@@ -45,6 +45,7 @@ async function getList() {
     const options = {
         mehod: "GET",
         headers: {
+            "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0],
             "Content-Type": "application/json"
         }
     }
@@ -56,6 +57,7 @@ async function deleteBooking(id) {
     const options = {
         method: "POST",
         headers: {
+            "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0],
             "Content-Type": "application/json"
         },
         body: JSON.stringify({bookingID: id})
@@ -63,30 +65,3 @@ async function deleteBooking(id) {
     const response = await fetch("/user/delete-booking", options);
     return response;
 }
-
-$.ajax({
-    url: '/user/picture',
-    type: 'GET',
-    success: function(data){
-        if (data == "") {
-            $("#user-icon>img").attr("src", "../images/userIcon.svg");
-            $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-        }
-        else {
-            $("#user-icon>img").attr("src", data);
-            $(".user-info-image>img").attr("src", data);
-        }
-    },
-    error: function(data) {
-        $("#user-icon>img").attr("src", "../images/userIcon.svg");
-        $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-        console.warn('Could not load profile picture.');
-    }
-});
-
-$.get("/user/profile-info", function(info) {
-    if (info.name != "")
-        $(".user-name").text(info.name);
-    else
-        $(".user-name").text("Name Surname");
-});

@@ -63,24 +63,4 @@ $(document).ready(function() {
         else
             $("#signup-button").addClass("unavailable");
     });
-
-    $.ajax({
-        url: '/user/picture',
-        type: 'GET',
-        success: function(data){
-            if (data == "") {
-                $("#user-icon>img").attr("src", "../images/userIcon.svg");
-                $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-            }
-            else {
-                $("#user-icon>img").attr("src", data);
-                $(".user-info-image>img").attr("src", data);
-            }
-        },
-        error: function(data) {
-            $("#user-icon>img").attr("src", "../images/userIcon.svg");
-            $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-            console.warn('Could not load profile picture.');
-        }
-    });
 });

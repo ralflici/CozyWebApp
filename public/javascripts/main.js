@@ -482,17 +482,25 @@ function changeButton(logged) {
 }
 
 async function sendMessage(e) {
+    let jwt;
+    try {
+        jwt = document.cookie.split("jwt=")[1].split(";")[0];
+    }
+    catch(err) {
+        jwt = "0";
+    }
     // Find the popup id (which is the place._id)
     const placeID = e.target.parentNode.parentNode.id;
     console.log("send message to " + placeID);
     const options = {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + jwt
         },
         body: JSON.stringify({placeID: placeID})
     };
-    const response = await fetch("/user/chat", options);
+    const response = await fetch("/user/" + jwt + "/chat", options);
     console.log(response);
     if (response.status == 401 && $(".auth-popup").length === 0)
         $(".left-container").append(`<div class="auth-popup">You must <a href="./user/log.html" target="_blank">authenticate</a></div>`);
@@ -501,6 +509,13 @@ async function sendMessage(e) {
 }
 
 async function book(e) {
+    let jwt;
+    try {
+        jwt = document.cookie.split("jwt=")[1].split(";")[0];
+    }
+    catch(err) {
+        jwt = "0";
+    }
     // Find the popup id (which is the place._id)
     const placeID = e.target.parentNode.parentNode.id;
     const nights = (preferences.dates.end - preferences.dates.start) / 86400000 ;
@@ -508,7 +523,8 @@ async function book(e) {
     const options = {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + jwt
         },
         body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start, preferences.dates.end), price: price, nights: nights})
     };
@@ -532,7 +548,21 @@ async function book(e) {
 }
 
 async function loadPic() {
-    const response = await fetch("/user/picture", {method: "GET", headers: { "Content-Type": "application/json" }});
+    let jwt;
+    try {
+        jwt = document.cookie.split("jwt=")[1].split(";")[0];
+    }
+    catch(err) {
+        jwt = "0";
+    }
+    const options = {
+        method: "GET", 
+        headers: { 
+            "Authorization": "Bearer " + jwt,
+            "Content-Type": "image/jpeg"
+        }
+    };
+    const response = await fetch("/user/picture", options);
     if (response.status === 200) {
         changeButton(true);
         if ($(".auth-popup").length !== 0)
@@ -549,7 +579,6 @@ async function loadPic() {
         console.warn('Could not load profile picture.');
     }
 }
-loadPic();
 //$(window).on('focus', loadPic);
 
 function includeJWTInURLs() {
@@ -575,6 +604,8 @@ function includeJWTInURLs() {
 
 
 $(document).ready(function() {
+    loadPic();
+
     // ------------- SCREEN SIZE ------------- //
     defineScreenSize();
     /*$("#user-icon").click(function() {

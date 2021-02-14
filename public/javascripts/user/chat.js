@@ -1,28 +1,10 @@
 $.ajax({
-    url: '/user/picture',
-    type: 'GET',
-    success: function(data){
-        if (data == "") {
-            $("#user-icon>img").attr("src", "../images/userIcon.svg");
-            $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-        }
-        else {
-            $("#user-icon>img").attr("src", data);
-            $(".user-info-image>img").attr("src", data);
-        }
-    },
-    error: function(data) {
-        $("#user-icon>img").attr("src", "../images/userIcon.svg");
-        $(".user-info-image>img").attr("src", "../images/userIcon.svg");
-        console.warn('Could not load profile picture.');
-    }
-});
-
-$.ajax({
     url: window.location.href + "/conversation",
     type: 'GET',
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader("Authorization", "Bearer " + document.cookie.split("jwt=")[1].split(";")[0]);
+    },
     success: async function(data){
-        console.log(data);
         $(".place-slide-container").append(`
             <div class="place-slide-image"><img width="100%" height="100%" style="object-fit: cover;" src="${data.place.images[0]}"></img></div>
             <h2 class="place-slide-name">${data.place.name}</h2>
@@ -30,24 +12,18 @@ $.ajax({
             <p class="place-slide-price">${data.place.price}€/night</p>
         `);
 
+        const response = await fetch("/user/picture", { method: "GET", headers: { "Content-Type": "image/jpeg", "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0] }});
+        let image = await response.text();
+        if (image == "")
+            image = "../images/userIcon.svg";
+
         if (data.chat.content.length !== 0) {
             for (let i in data.chat.content) {
                 const message = data.chat.content[i];
                 const date = new Date(message.date).toString().substring(4,10).split(" ");
-                let image;
-                if (message.sender === "user") {
-                    const response = await fetch("/user/picture", {method: "GET", headers: { "Content-Type": "image/jpeg" }});
-                    image = await response.text();
-                    if (image == "") {
-                        image = "../images/userIcon.svg";
-                    }
-                }
-                else {
-                    image = data.place.images[0];
-                }
                 $("#conversation-container").append(`
                     <div class="message-item ${message.sender}">
-                        <span class="sender-image"><img src="${image}" alt=""></img></span>
+                        <span class="sender-image"><img src="${message.sender === "user" ? image : data.place.images[0]}" alt=""></img></span>
                         <span class="message-content">${message.message}</span>
                         <div class="message-date">${date[1] + " " + date[0]}</div>
                     </div>
@@ -63,6 +39,8 @@ $.ajax({
         console.log(data)
     }
 });
+
+
 
 $('textarea').each(function () {
     this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
@@ -99,7 +77,8 @@ async function sendMessage() {
     const options = {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0]
         },
         body: JSON.stringify({chatID: chatID, sender: "user", message: message})
     };
@@ -107,10 +86,3 @@ async function sendMessage() {
     if (response.redirected)
         window.location.href = response.url;
 };
-
-$.get("/user/profile-info", function(info) {
-    if (info.name != "")
-        $(".user-name").text(info.name);
-    else
-        $(".user-name").text("Name Surname");
-});
