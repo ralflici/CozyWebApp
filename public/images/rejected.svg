@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+  <g id="rejected" transform="translate(-227 -317)">
+    <g id="Ellisse_12" data-name="Ellisse 12" transform="translate(227 317)" fill="#fff" stroke="#707070" stroke-width="1">
+      <circle cx="10.5" cy="10.5" r="10.5" stroke="none"/>
+      <circle cx="10.5" cy="10.5" r="9.5" fill="none"/>
+    </g>
+    <path id="x" d="M-80,4l-4,4,4-4-4-4,4,4,4-4-4,4,4,4Z" transform="translate(317.5 323.5)" fill="none" stroke="#eb5555" stroke-width="2"/>
+  </g>
+</svg>

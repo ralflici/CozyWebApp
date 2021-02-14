@@ -1,0 +1,179 @@
+* {
+    box-sizing: border-box;
+    font-family: greycliff !important;
+    font-weight: 400;
+    outline: 0;
+    cursor: default;
+}
+
+html {
+    font-size: 100%;
+    /*-webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: subpixel-antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1;*/
+    scroll-behavior: smooth;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+body {
+    margin: 0;
+    padding: 0px;
+}
+
+.main-container {
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 16px;
+    width: max(53.54vw, 785px);
+    max-width: 1028px;
+}
+
+.title {
+    font-size: 36px;
+    font-weight: 300;
+    margin: 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #cccccc;
+}
+
+.item-container {
+    margin-top: 13px;
+    height: 80px;
+    flex-basis: 49%;
+    border-radius: 9px;
+    border: 1px solid #cccccc;
+    padding: 6px;
+    display: flex;
+    transition: box-shadow 0.1s ease-out;
+}
+
+.item-container:hover {
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.15);
+}
+
+.item-image-container {
+    width: 70px;
+    height: 66px;
+    border-radius: 9px;
+    border: 1px solid #cccccc;
+}
+
+.item-text {
+    margin: 0 1px 0 6px;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.item-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.item-bottom {
+    font-size: 16px;
+    width: 100%;
+    align-self: flex-end;
+    display: flex;
+    width: 100%;
+}
+
+.item-price, .item-date {
+    color:#707070;
+    font-size: 16px;
+    flex-basis: 80%;
+}
+
+.item-icons {
+    flex-basis: 20%;
+}
+
+.item-status {
+    display: inline-block;
+    height: 21px;
+}
+
+.item-open-icon {
+    border-radius: 6px;
+    border: 1px solid #cccccc;
+    text-align: center;
+    width: 30px;
+    height: 20px;
+    line-height: 15px;
+    font-weight: 800;
+    padding: 0 5px;
+    float: right;
+    cursor: pointer;
+}
+
+.item-delete-icon {
+    padding: 2px;
+    width: 21px;
+    height: 21px;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 4px;
+    /*border: 1px solid #ef4923;
+    background-color: #ef49231a;
+    color: #ef4923;*/
+    border: 1px solid #707070;
+    background-color: #fff;
+    float: right;
+    color: #707070;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+}
+
+
+
+
+@media only screen and (max-width: 1280px) {
+    html {
+        font-size: 1vw;
+    }
+
+    .main-container {
+        width: 100vw;
+        padding: 0 16px;
+    }
+
+    .content-container {
+        grid-column: 1 / 5;
+    }
+
+    .title {
+        font-size: min(36px, 8rem);
+    }
+
+    .item-container {
+        flex-basis: 49%;
+    }
+
+    .item-name, .item-date, .item-bottom * {
+        font-size: min(16px, 5rem);
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .item-container {
+        flex-basis: 100%;
+    }
+
+    .item-name, .item-date, .item-bottom * {
+        font-size: min(16px, 4.5rem);
+    }
+
+    .navbar-list > .selected > a::after {
+        width: 0;
+        height: 0;
+    }
+}
