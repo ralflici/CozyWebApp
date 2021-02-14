@@ -5,9 +5,21 @@ $(document).ready(function() {
             $(".no-bookings-container").remove();
             for (let i in list) {
                 let start = new Date(list[i].dates[0]).toString().slice(4, 15).split(" ");
-                //start = start.slice(0, 3) + "," + start.slice(3, start.length);
                 let end = new Date(list[i].dates[1]).toString().slice(4, 15).split(" ");
-                //end = end.slice(0, 3) + "," + end.slice(3, end.length);
+                let status, statusIcon;
+                if (list[i].status === "pending") {
+                    status = "Pending"
+                    statusIcon = "../../images/pending.svg";
+                }
+                else if (list[i].status === "approved") {
+                    status = "Approved";
+                    statusIcon = "../../images/approved.svg";
+                }
+                else {
+                    status = "Rejected";
+                    statusIcon = "../../images/rejected.svg";
+                }
+
                 $(".main-bookings-container").append(`
                     <div class="item-container" id="${list[i]._id}" >
                         <span class="item-image-container" style="overflow: hidden;"><img src="${list[i].place.images[0]}" style="width: 100%; height: 100%; object-fit: cover;"></img></span>
@@ -16,7 +28,10 @@ $(document).ready(function() {
                             <div class="item-date">${start[1]} ${start[0]} ${start[2]} - ${end[1]} ${end[0]} ${end[2]}</div>
                             <div class="item-bottom">
                                 <span class="item-price">${list[i].price}€</span>
-                                <span class="item-delete-icon">✖</span>
+                                <span class="item-icons">
+                                    <span class="item-status"><img src="${statusIcon}" title="${status}"></span>
+                                    <span class="item-delete-icon"><img style="cursor: pointer;" src="../../images/delete.svg" title="Delete booking"></span>
+                                </span>
                             </div>
                         </span>
                     </div>
@@ -25,7 +40,7 @@ $(document).ready(function() {
             $(".item-delete-icon").click(async function(event) {
                 const bookingID = $(this).parents(".item-container").attr("id");
                 const response = await deleteBooking(bookingID)
-                console.log("response:", response);
+                //console.log("response:", response);
                 if (response.redirected)
                     window.location.href = response.url;
             });

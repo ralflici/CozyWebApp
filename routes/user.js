@@ -18,16 +18,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get("/", function(req, res, next) {res.statusCode = 404; res.sendFile(path.join(__dirname, '..', 'public', 'views', 'error.html'))});
-router.get("/log.html", user_controller.isLogged ,function(req, res, next) {
-  res.sendFile(path.join(__dirname, '..', 'public', 'views', 'log.html'));
-});
-//router.get("/profile.html", user_controller.verifyJWT2 /*, user_controller.verifyJWT2, unauthRedirect*/);
-router.get("/:jwt/profile.html", user_controller.verifyJWT2 /*, user_controller.verifyJWT2,*/, unauthRedirect);
-router.get("/:jwt/messages.html", user_controller.verifyJWT2 /*, user_controller.verifyJWT,*/, unauthRedirect);
-router.get("/:jwt/bookings.html", user_controller.verifyJWT2 /*, user_controller.verifyJWT,*/, unauthRedirect);
-
-router.post("/signup", user_controller.signup);
-router.post("/login", user_controller.login);
+router.get("/log.html", function(req, res, next) {res.redirect("/log.html")})
+router.get("/:jwt/profile.html", user_controller.verifyJWT2, unauthRedirect);
+router.get("/:jwt/messages.html", user_controller.verifyJWT2, unauthRedirect);
+router.get("/:jwt/bookings.html", user_controller.verifyJWT2, unauthRedirect);
+router.get("/profile.html", function(req, res, next) {res.redirect("/user/" + (req.cookies.jwt ? req.cookies.jwt : "0") + "/profile.html"); });
+router.get("/messages.html", function(req, res, next) {res.redirect("/user/" + (req.cookies.jwt ? req.cookies.jwt : "0") + "/messages.html"); });
+router.get("/bookings.html", function(req, res, next) {res.redirect("/user/" + (req.cookies.jwt ? req.cookies.jwt : "0") + "/bookings.html"); });
 
 router.get("/profile-info", user_controller.verifyJWT2, user_controller.getInfo);
 
@@ -51,7 +48,7 @@ router.use(express.static(path.join(__dirname, '..', 'public')));
 
 function unauthRedirect(req, res, next) {
   if (res.statusCode == 401 || res.statusCode == 403) {
-    res.redirect("/user/log.html");
+    res.redirect("/log.html");
   }
   else {
     console.log("Page to send", res.locals.dest);

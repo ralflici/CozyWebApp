@@ -33,7 +33,9 @@ async function getChatsList() {
                         <div class="item-name">${chats[i].place.name}</div>
                         <div class="item-bottom">
                             <span class="item-price">${chats[i].place.price}€/night</span>
-                            <span class="item-open-icon"><a style="cursor: pointer;" href="chat/${chats[i]._id}">···</a></span>
+                            <span class="item-icons">
+                                <span class="item-open-icon"><a style="cursor: pointer;" href="chat/${chats[i]._id}">···</a></span>
+                            </span>
                         </div>
                     </span>
                 </div>

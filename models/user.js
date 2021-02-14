@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
+    admin: {type: Boolean, required: true},
     name: {type: String, maxlength: 100},
     email: {type: String, maxlength: 320}, // source: stackoverflow
     location: {type: String, maxlength: 100},

@@ -60,8 +60,13 @@ exports.verifyJWT2 = async function(req, res, next) {
             payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
             console.log("\x1b[31m", "jwt valid");
             res.locals.userID = payload.id;
-            res.locals.user = await User.findById(payload.id, "password name email location bio pic");
-            res.statusCode = 200;
+            const user = await User.findById(payload.id, "password name email location bio pic admin");
+            if (user.admin)
+                res.statusCode = 401;
+            else {
+                res.locals.user = user;
+                res.statusCode = 200;
+            }
             //return res.send("Authorized");
         }
         catch(err) {
@@ -87,7 +92,8 @@ exports.signup = async function(req, res, next) {
     else {
         const user = new User({
             username: username,
-            password: password
+            password: password,
+            admin: req.body.admin
         });
         user.save(function(err) {
             if (err) throw err;

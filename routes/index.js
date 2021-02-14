@@ -9,5 +9,20 @@ router.get("/", function(req, res, next) {
 });
 router.get('/index', function(req, res, next) {
   res.redirect("/");
-})
+});
+
+router.get("/log.html", isLogged ,function(req, res, next) { res.sendFile(path.join(__dirname, '..', 'public', 'views', 'log.html')); });
+router.post("/login", logIn);
+router.post("/signup", signUp);
+
+function isLogged(req, res, next) {
+  next();
+}
+function logIn(req, res, next) {
+
+}
+function signUp(req, res, next) {
+
+}
+
 module.exports = router;

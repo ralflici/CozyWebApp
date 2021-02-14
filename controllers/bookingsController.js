@@ -29,7 +29,8 @@ exports.bookPlace = async function(req, res, next) {
         user: res.locals.user,
         place: res.locals.place,
         dates: res.locals.dates,
-        price: req.body.price*req.body.nights
+        price: req.body.price*req.body.nights,
+        status: "pending"
     });
     await booking.save();
     //res.send();

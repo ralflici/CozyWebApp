@@ -4,7 +4,6 @@ $(document).ready(function() {
     });
 
     $("#email-input").on("input", function() {
-        console.log(this.value)
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(!re.test(String(this.value).toLowerCase())) {
             $("#edit-profile").addClass("unavailable");
@@ -38,7 +37,6 @@ $(document).ready(function() {
             body: JSON.stringify(userData)
         };
         const response = await fetch("/user/edit-profile", options);
-        console.log(response)
         if (response.redirected)
             window.location.href = response.url;
     });

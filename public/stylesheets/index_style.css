@@ -371,6 +371,12 @@ ul {
     cursor: pointer;
 }
 
+#user-icon {
+    display: inline-block;
+    height: 29px;
+    cursor: default;
+}
+
 #user-icon * {
     width: 29px;
     height: 29px;
