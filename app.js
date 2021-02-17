@@ -13,11 +13,11 @@ const mongoose = require("mongoose");
 const favicon = require('serve-favicon');
 
 const indexRouter = require('./routes/index');
+const adminRouter = require("./routes/admin");
 const userRouter = require('./routes/user');
 const locationsRouter = require("./routes/locations");
 const placesRouter = require("./routes/places")
 const errorRouter = require('./routes/error');
-const { signup } = require("./controllers/userController");
 
 const app = express();
 
@@ -68,9 +68,10 @@ app.use(function(req,res,next) {
 
 // Routers
 
-app.use('/', indexRouter);
+app.use("/", indexRouter);
 
-app.use('/user', userRouter);
+app.use("/admin", adminRouter);
+app.use("/user", userRouter);
 app.use("/locations", locationsRouter);
 app.use("/places", placesRouter);
 app.use(/[\s\S]*/, errorRouter);

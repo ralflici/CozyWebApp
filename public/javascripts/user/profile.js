@@ -105,7 +105,7 @@ $(document).ready(function() {
         if (response.redirected)
             window.location.href = response.url;*/
         document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = "/user/log.html";
+        window.location.href = "/log.html";
     });
 });
 

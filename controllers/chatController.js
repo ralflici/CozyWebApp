@@ -1,8 +1,13 @@
 const Chat = require("../models/chat");
-const user_controller = require("./userController");
+const User = require("../models/user");
 const place_controller = require("./placeController");
 
-exports.getChatList = function(req,res,next) {
+exports.chatsList = async function(req, res, next) {
+    const chats = await Chat.find({}).populate("user place").exec();
+    res.send(chats);
+}
+
+exports.getUserChats = function(req,res,next) {
     Chat
     .find({})
     .populate("user place")
@@ -80,12 +85,13 @@ exports.chatExists = async function(req, res, next) {
 exports.getConversation = async function(req, res, next) {
     const chat = await Chat.findById(req.params.id);
     const place = await place_controller.getPlaceByID(chat.place);
+    const user = await User.findById(chat.user, "pic");
     //chat.place.populate("location");
     if (chat == undefined) {
         res.sendStatus(500);
     }
     else {
-        res.send({chat: chat, place: place});
+        res.send({chat: chat, place: place, user: user});
     }
 }
 

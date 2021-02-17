@@ -27,6 +27,38 @@ body {
     padding: 0px;
 }
 
+button {
+    cursor: pointer;
+}
+
+input {
+    cursor: text;
+}
+
+svg {
+    overflow: visible;
+}
+
+img { 
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+    font-weight: inherit;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 .main-container {
     margin: auto;
     margin-top: 20px;
@@ -34,6 +66,10 @@ body {
     padding-left: 16px;
     width: max(53.54vw, 785px);
     max-width: 1028px;
+}
+
+.secondary-container {
+    margin-bottom: 30px;
 }
 
 .title {
@@ -44,11 +80,17 @@ body {
     border-bottom: 1px solid #cccccc;
 }
 
+.content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
 .item-container {
     margin-top: 13px;
     height: 80px;
     flex-basis: 49%;
-    border-radius: 9px;
+    border-radius: 6px;
     border: 1px solid #cccccc;
     padding: 6px;
     display: flex;
@@ -62,8 +104,7 @@ body {
 .item-image-container {
     width: 70px;
     height: 66px;
-    border-radius: 9px;
-    border: 1px solid #cccccc;
+    border-radius: 6px;
 }
 
 .item-text {
@@ -86,19 +127,24 @@ body {
     width: 100%;
 }
 
-.item-price, .item-date {
+.item-user, .item-date {
     color:#707070;
     font-size: 16px;
     flex-basis: 80%;
 }
 
 .item-icons {
-    flex-basis: 20%;
+    flex-basis: 26%;
+    text-align: right;
 }
 
-.item-status {
+.choice-icon {
     display: inline-block;
     height: 21px;
+}
+
+.approve {
+    margin-right: 6px;
 }
 
 .item-open-icon {
@@ -133,7 +179,232 @@ body {
     transition: all 0.2s ease-out;
 }
 
+.log-out {
+    display: block;
+    margin: 20px 0;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 9px;
+    border: 2px solid #ef4923;
+    background-color: #ef49231a;
+    color: #ef4923;
+    padding: 6px 22px;
+    cursor: pointer;
+    float: right;
+}
 
+.chat-popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(3px);
+    display: grid;
+}
+
+.chat {
+    border-radius: 6px;
+    background-color: #ffffff;
+    width: min(80vw, 500px);
+    padding: 20px;
+    margin: auto;
+}
+
+#close-icon {
+    float: right;
+    font-size:14px;
+    margin-left: 4px;
+}
+
+#conversation-container {
+    padding: 8px;
+    overflow: auto;
+    height: 400px;
+    display: grid;
+    grid-template-columns: 40px 16px auto 16px 40px;
+    grid-template-rows: repeat(100, auto);
+}
+
+/* width */
+#conversation-container::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+}
+
+/* Track */
+#conversation-container::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 10px;
+}
+
+/* Handle */
+#conversation-container::-webkit-scrollbar-thumb {
+    background: #cccccc;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+#conversation-container::-webkit-scrollbar-thumb:hover {
+    background: #707070;
+    border-radius: 10px;
+}
+
+.message-item {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    grid-column: 1 / 4;
+    /*overflow-wrap: break-word;*/
+    overflow-wrap: anywhere;
+}
+
+.message-item.user {
+    grid-column: 3 / 6;
+}
+
+.sender-image {
+    width: 40px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 40px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.message-item.user > .sender-image {
+    order: 2;
+}
+
+.sender-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.message-content {
+    position: relative;
+    /*height: fit-content;*/
+    flex-basis: calc(100% - 56px);
+    font-size: 16px;
+    margin-left: 16px;
+    padding: 8px 16px;
+    background-color: #F9F9F9;
+    border-radius: 0 9px 9px 9px;
+}
+
+.message-content::before {
+    content: " ";
+    /*display: inline-block;*/
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 0px;
+    left: -10px;
+    background-color: #f9f9f9;
+}
+.message-content::after {
+    content: " ";
+    /*display: inline-block;*/
+    width: 13px;
+    height: 15px;
+    position: absolute;
+    top: 1px;
+    left: -17px;
+    transform: rotate(-40deg);
+    background-color: #ffffff;
+}
+
+.message-item.user > .message-content {
+    order: 1;
+    margin-left: 0;
+    margin-right: 16px;
+    border-radius: 9px 0px 9px 9px;
+}
+
+.message-item.user > .message-content::before {
+    left: auto;
+    right: -10px;
+}
+.message-item.user > .message-content::after {
+    width: 14px;
+    left: auto;
+    right: -17px;
+    transform: rotate(310deg);
+}
+
+.message-date {
+    font-size: 10px;
+    font-weight: 300;
+    width: 100%;
+    text-align: right;
+    margin-top: 2px;
+    margin-right: 4px;
+    color: #707070;
+}
+
+.message-item.user > .message-date {
+    text-align: left;
+    margin-right: 0px;
+    margin-left: 4px;
+    order: 3;
+}
+
+#message-form {
+    margin-top: 13px;
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: #F9F9F9;
+    padding: 6px 6px 6px 18px;
+}
+
+#message-input {
+    display: inline;
+    border: none;
+    background-color: transparent;
+    width: calc(100% - 40px);
+    height: 100%;
+    margin: 0;
+    padding: 4px 0px;
+    font-size: 16px;
+    color: #707070;
+    border: 0 none white;
+    overflow: hidden;
+    outline: none;
+    resize: none;
+    cursor: text;
+}
+
+#send-button {
+    display: inline;
+    width: 28px;
+    height: 28px;
+    border-radius: 28px;
+    border: none;
+    background-color: #ef4923;
+    cursor: pointer;
+    float: right;
+    padding: 6px 4px 6px 8px;
+}
+
+#send-button img {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+#char-number {
+    font-size: 10px;
+    font-family: 300;
+    text-align: right;
+    margin-right: 7px;
+    margin-top: 4px;
+    color: #707070;
+}
 
 
 @media only screen and (max-width: 1280px) {
@@ -161,9 +432,22 @@ body {
     .item-name, .item-date, .item-bottom * {
         font-size: min(16px, 5rem);
     }
+
+    .chat {
+        padding: min(20px, 3.5rem);
+    }
+
+    .sender-image {
+        width: min(40px, 7.5rem);
+        height: min(40px, 7.5rem);
+    }
+
+    .message-content {
+        font-size: min(16px, 3.5rem);
+    }
 }
 
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 768px) {
     .item-container {
         flex-basis: 100%;
     }

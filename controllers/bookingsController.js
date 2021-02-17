@@ -1,5 +1,26 @@
 const Booking = require("../models/booking");
 
+exports.bookingsList = async function(req, res, next) {
+    const list = await Booking.find({}).populate("user place").exec();
+    res.send(list);
+}
+
+exports.approve = async function(req, res, next) {
+    const booking = await Booking.findById(req.body.bookingID);
+    console.log(booking);
+    booking.status = "approved";
+    await booking.save();
+    res.redirect("back");
+}
+
+exports.reject = async function(req, res, next) {
+    const booking = await Booking.findById(req.body.bookingID);
+    console.log(booking);
+    booking.status = "rejected";
+    await booking.save();
+    res.redirect("back");
+}
+
 exports.getBookingByID = async function(id) {
     try{
         const place = await Something.findById(id).exec();
@@ -37,7 +58,7 @@ exports.bookPlace = async function(req, res, next) {
     next();
 };
 
-exports.getBookingsList = async function(req, res, next) {
+exports.getUserBookings = async function(req, res, next) {
     Booking.find({}).populate("user place").exec(function(err, bookings) {
         if (err) throw err;
         const arr = bookings.filter((booking) => {

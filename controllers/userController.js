@@ -60,11 +60,12 @@ exports.verifyJWT2 = async function(req, res, next) {
             payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
             console.log("\x1b[31m", "jwt valid");
             res.locals.userID = payload.id;
-            const user = await User.findById(payload.id, "password name email location bio pic admin");
-            if (user.admin)
+            res.locals.user = await User.findById(payload.id, "password name email location bio pic admin");
+            if (res.locals.user.admin) {
+                res.locals.jwt = accessToken;
                 res.statusCode = 401;
+            }
             else {
-                res.locals.user = user;
                 res.statusCode = 200;
             }
             //return res.send("Authorized");

@@ -31,8 +31,10 @@
                 <input type="password" id="signup-password1" name="signup-password1" minlength="8" required><br><br>
                 <label for="signup-password">Confirm password</label><br>
                 <input type="password" id="signup-password2" name="signup-password2" minlength="8" required><br><br>
-                <p id="signup-wrong">Username not available</p><br>
-                <label class="switch">Admin<input type="checkbox"><span class="slider round"></span></label><br>
+                <label class="switch">Admin<input type="checkbox"><span class="slider round"></span></label>
+                <!--<label for="admin-code">Private code</label><br>-->
+                <input type="password" id="admin-code" name="admin-code">
+                <p id="signup-wrong">Something is wrong</p><br>
                 <input class="big-button unavailable" id="signup-button" type="submit" value="Sign up">
             </form>
             <button class="log-switch" id="login-switch"><p style="transform: rotateY(180deg); display: inline-block;">➜</p> Log in</button>

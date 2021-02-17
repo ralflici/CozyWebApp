@@ -191,7 +191,7 @@ ul {
 }
 
 .menu-container {
-    border-radius: 9px;
+    border-radius: 6px;
     border: 1px solid #cccccc;
 }
 
@@ -292,7 +292,7 @@ ul {
     margin-top: 13px;
     height: 80px;
     flex-basis: 49%;
-    border-radius: 9px;
+    border-radius: 6px;
     border: 1px solid #cccccc;
     padding: 6px;
     display: flex;
@@ -306,8 +306,7 @@ ul {
 .item-image-container {
     width: 70px;
     height: 66px;
-    border-radius: 9px;
-    border: 1px solid #cccccc;
+    border-radius: 6px;
 }
 
 .item-text {
@@ -330,14 +329,19 @@ ul {
     width: 100%;
 }
 
-.item-price, .item-date {
+.item-date {
+    color:#707070;
+    font-size: 16px;
+}
+
+.item-price {
     color:#707070;
     font-size: 16px;
     flex-basis: 80%;
 }
 
 .item-icons {
-    flex-basis: 20%;
+    flex-basis: 50px;
 }
 
 .item-status {

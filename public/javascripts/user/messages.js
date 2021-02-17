@@ -15,7 +15,7 @@ async function getChatsList() {
             "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0]
         }
     }
-    const response = await fetch("/user/chat-list", options);
+    const response = await fetch("/user/user-chats-list", options);
     const chats = await response.json();
     if (chats.length === 0) {
         $(".main-messages-container").append(`

@@ -64,7 +64,7 @@ async function getList() {
             "Content-Type": "application/json"
         }
     }
-    const response = await fetch("/user/bookings-list", options);
+    const response = await fetch("/user/user-bookings-list", options);
     return await response.json();
 }
 

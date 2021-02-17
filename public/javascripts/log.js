@@ -1,3 +1,5 @@
+let adminChecked = false;
+
 $(document).ready(function() {
 
     $("#signup-switch").click(function() {
@@ -41,12 +43,13 @@ $(document).ready(function() {
         const username = $("#signup-username").val();
         const password = $("#signup-password1").val();
         const admin = $('.switch>input').prop('checked');
+        const adminCode = $("#admin-code").val();
         const options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({username: username, password: password, admin: admin})
+            body: JSON.stringify({username: username, password: password, admin: admin, adminCode: adminCode})
         }
         const response = await fetch("/signup", options);
         if (response.status == 403)
@@ -64,4 +67,14 @@ $(document).ready(function() {
         else
             $("#signup-button").addClass("unavailable");
     });
+
+    $(".switch>input").click(function() {
+        if (!adminChecked) {
+            $("#admin-code").fadeIn(0);
+        }
+        else {
+            $("#admin-code").fadeOut(0);
+        }
+        adminChecked = !adminChecked;
+    })
 });
