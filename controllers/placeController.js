@@ -3,11 +3,12 @@ const Place = require("../models/place");
 exports.places_list = function(req, res) {
     Place
     .find({})
+    .populate("location")
     .exec(function (err, listPlaces) {
         if (err) {return next(err);}
         res.send(listPlaces);
     });
-}
+};
 
 exports.outmost_price = function(req, res) {
     Place
@@ -26,7 +27,7 @@ exports.outmost_price = function(req, res) {
             max_price: Math.max(...prices)
         });
     });
-}
+};
 
 exports.places_list_filter = function(req, res) {
     const pref = req.body;
@@ -73,9 +74,14 @@ exports.places_list_filter = function(req, res) {
     });
 };
 
+exports.placeByID = async function(req, res, next) {
+    const place = await Place.findById(req.params.id).populate("location");
+    res.send(place);
+}
+
 exports.getPlaceByID = async function(id) {
     try{
-        const place = await Place.findById(id).populate("location").exec();
+        const place = await Place.findById(id).populate("location");
         return place;
     } 
     catch(err) {
@@ -84,7 +90,7 @@ exports.getPlaceByID = async function(id) {
 };
 
 exports.isPlaceAvailable = async function(req, res, next) {
-    const place = await Place.findById(req.body.placeID).populate("location").exec();
+    const place = await Place.findById(req.body.placeID).populate("location");
     const dates = new Array(new Date(req.body.dates[0]), new Date(req.body.dates[1]));
 
     for (let i in place.unavail) {
@@ -107,9 +113,69 @@ exports.AddUnavailableDates = async function(req, res, next) {
 
 exports.removeUnavailableDates = async function (req, res, next) {
     for (let i in res.locals.place) {
-        const place = await Place.findById(res.locals.place[i]);
-        place.unavail.splice(place.unavail.indexOf(res.locals.dates[i]), 1);
-        await place.save();
+        if(!res.locals.skip[i]) {
+            const place = await Place.findById(res.locals.place[i]);
+            //console.log("***PLACE", place);
+            //console.log("+++INDEX", place.unavail.indexOf(res.locals.dates[i]));
+            place.unavail.splice(place.unavail.indexOf(res.locals.dates[i]), 1);
+            await place.save();
+        }
     }
     next();
 };
+
+exports.editPlace = async function(req, res, next) {
+    const place = await Place.findById(req.body.placeID);
+    if (place == null) {
+        res.send(403, "Place not found in database");
+        return;
+    }
+    place.name = req.body.name;
+    place.guests = {
+        adults: req.body.adults,
+        children: req.body.children,
+        infants: req.body.infants
+    };
+    place.price = req.body.price;
+    place.rooms = {
+        beds: req.body.beds,
+        bedrooms: req.body.bedrooms,
+        bathrooms: req.body.bathrooms
+    };
+    place.images = [req.body.image0, req.body.image1, req.body.image2];
+    place.coordinates = [parseFloat(req.body.lon), parseFloat(req.body.lat)];
+    place.location = res.locals.location;
+    await place.save();
+    res.redirect("back");
+}
+
+exports.insertPlace = async function(req, res, next) {
+    const placeInDB = await Place.find({ name: req.body.name });
+    console.log(placeInDB);
+    if (placeInDB.length !== 0) {
+        res.statusCode = 403;
+        next();
+        return;
+    }
+    const place = new Place({
+        name: req.body.name,
+        type: req.body.type,
+        guests: {
+            adults: req.body.adults,
+            children: req.body.children,
+            infants: req.body.infants
+        },
+        price: req.body.price,
+        rooms: {
+            beds: req.body.beds,
+            bedrooms: req.body.bedrooms,
+            bathrooms: req.body.bathrooms
+        },
+        location: res.locals.location,
+        images: [req.body.image0, req.body.image1, req.body.image2],
+        coordinates: [parseFloat(req.body.lon), parseFloat(req.body.lat)]
+    });
+    console.log(place.coordinates);
+    await place.save();
+    next();
+}

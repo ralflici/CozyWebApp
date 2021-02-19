@@ -3,6 +3,7 @@ var router = express.Router();
 var place_controller = require("../controllers/placeController");
 
 router.get("/", place_controller.places_list);
+router.get("/:id", place_controller.placeByID);
 router.post("/outmost_price", place_controller.outmost_price);
 router.post("/submit", place_controller.places_list_filter);
 

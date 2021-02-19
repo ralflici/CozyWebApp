@@ -15,10 +15,16 @@ exports.approve = async function(req, res, next) {
 
 exports.reject = async function(req, res, next) {
     const booking = await Booking.findById(req.body.bookingID);
-    console.log(booking);
     booking.status = "rejected";
     await booking.save();
-    res.redirect("back");
+    res.locals.place = [];
+    res.locals.place.push(booking.place);
+    res.locals.dates = [];
+    res.locals.dates.push({ start: booking.dates[0], end: booking.dates[1] });
+    res.locals.skip = [];
+    res.locals.skip.push(false);
+    console.log("RES.LOCALS", res.locals);
+    next();
 }
 
 exports.getBookingByID = async function(id) {
@@ -39,7 +45,7 @@ exports.bookPlace = async function(req, res, next) {
     // Check if there is already another booking with the same data
     const book = await Booking.findOne({dates: req.body.dates, user: res.locals.userID, place: req.body.placeID});
     // If it exists send error status code
-    if (book != null) {
+    if (book != null && book.status !== "rejected") {
         res.statusCode = 403;
         res.send();
         return;
@@ -75,6 +81,11 @@ exports.deleteBooking = async function(req, res, next) {
         res.locals.place.push(b.place);
         res.locals.dates = [];
         res.locals.dates.push({start: b.dates[0], end: b.dates[1]});
+        res.locals.skip = [];
+        if(b.status === "rejected") // If the booking was already rejected we don't need to remove the unavailable dates
+            res.locals.skip.push(true);
+        else
+            res.locals.skip.push(false);
         await Booking.deleteOne({_id: req.body.bookingID});
     }
     catch(err) {
@@ -87,9 +98,14 @@ exports.deleteUserBookings = async function(req, res, next) {
     const b = await Booking.find({ user: res.locals.userID });
     res.locals.place = [];
     res.locals.dates = [];
+    res.locals.skip = [];
     for (let i in b) {
         res.locals.place.push(b[i].place);
         res.locals.dates.push({start: b[i].dates[0], end: b[i].dates[1]});
+        if(b[i].status === "rejected") // If the booking was already rejected we don't need to remove the unavailable dates
+            res.locals.skip.push(true);
+        else
+            res.locals.skip.push(false);
     }
     await Booking.deleteMany({ user: res.locals.userID });
     next();

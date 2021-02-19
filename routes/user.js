@@ -34,13 +34,13 @@ router.get("/picture", user_controller.verifyJWT2, user_controller.getPic);
 router.post("/change-password", user_controller.verifyJWT2, unauthRedirect, user_controller.changePassword);
 router.post("/delete-account", user_controller.verifyJWT2, unauthRedirect, bookings_controller.deleteUserBookings, place_controller.removeUnavailableDates, chat_controller.deleteUserChats, user_controller.deleteAccount);
 
-router.post("/:jwt/chat", user_controller.verifyJWT2, unauthRedirect, chat_controller.getChat);
+router.post("/:jwt/chat", user_controller.verifyJWT2, chat_controller.getChat);
 router.get("/user-chats-list", user_controller.verifyJWT2, chat_controller.getUserChats);
 router.get("/:jwt/chat/:id", user_controller.verifyJWT2, unauthRedirect, chat_controller.chatExists, function(req, res, next) {res.sendFile(path.join(__dirname, '..', 'public', 'views', 'chat.html'));});
 router.get("/:jwt/chat/:id/conversation", user_controller.verifyJWT2, chat_controller.getConversation);
 router.post("/send-message", user_controller.verifyJWT2, unauthRedirect, chat_controller.sendMessage);
 
-router.post("/book-place", user_controller.verifyJWT2, unauthRedirect, place_controller.isPlaceAvailable, bookings_controller.bookPlace, place_controller.AddUnavailableDates);
+router.post("/book-place", user_controller.verifyJWT2, place_controller.isPlaceAvailable, bookings_controller.bookPlace, place_controller.AddUnavailableDates);
 router.get("/user-bookings-list", user_controller.verifyJWT2, bookings_controller.getUserBookings);
 router.post("/delete-booking", user_controller.verifyJWT2, unauthRedirect, bookings_controller.deleteBooking, place_controller.removeUnavailableDates, function(req, res, next) {res.redirect("back");});
 router.use(express.static(path.join(__dirname, '..', 'public', 'views')));

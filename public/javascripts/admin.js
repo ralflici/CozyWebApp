@@ -2,8 +2,10 @@ let selectedPlaceImage;
 
 $(document).ready(function() {
     displayChats();
-
     displayBookings();
+    displayPlaces();
+
+    $("a").attr("href", window.location.href + "/new-place");
 
     $(".log-out").click(function() {
         document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -236,3 +238,30 @@ async function sendMessage(chatID) {
         $("textarea").css("color", "#707070");
     }
 };
+
+async function displayPlaces() {
+    const response = await fetch("/places");
+    const list = await response.json();
+
+    for (let i in list) {
+        $("#places-container>.content").append(`
+            <div class="item-container" id="${list[i]._id}" onclick="openPlace(this)">
+                <span class="item-image-container" style="overflow: hidden;"><img src="${list[i].images[0]}" style="width: 100%; height: 100%; object-fit: cover;"></img></span>
+                <span class="item-text">
+                    <div class="item-name">${list[i].name}</div>
+                    <div class="item-location">${list[i].location.name}, ${list[i].location.country}</div>
+                    <div class="item-bottom">
+                        <span class="item-location">${list[i].price}€/night</span>
+                    </div>
+                </span>
+            </div>
+        `);
+    }
+}
+
+async function openPlace(elem) {
+    console.log(elem.id);
+    const response = await fetch("/admin/" + document.cookie.split("jwt=")[1].split(";")[0] + "/place/" + elem.id);
+    console.log(response)
+    window.location.href = response.url
+}

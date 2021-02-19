@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place</title>
+    <link rel="stylesheet" type="text/css" href="../../../stylesheets/greycliff.css">
+    <link rel="stylesheet" href="../../../stylesheets/place.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="head">
+            <h1 class="title">Place</h1><a id="back-link" href="/admin" style="display: inline-block;" title="Back to the admin page"><span id="back">🡠</span></a>
+        </div>
+        <form class="content" action="insert-place" method="POST">
+            <input type="hidden" id="placeID" name="placeID" value="">
+
+            <h2 for="name"><label for="name">Name</label></h2>
+            <input type="text" id="name" name="name"><br>
+
+            <h2 for="type">Type</h2>
+            <input type="radio" id="entire-place" name="type" value="entire place" checked style="cursor: default;">
+            <label for="entire-place">Entire place</label><br>
+            <input type="radio" id="private-room" name="type" value="private room" style="cursor: default;">
+            <label for="private-room">Private room</label><br>
+            <input type="radio" id="shared-room" name="type" value="shared room" style="cursor: default;">
+            <label for="shared-room">Shared room</label><br>
+
+            <h2 for="guests">Guests</h2>
+            <label for="adults">Adults</label>
+            <input type="number" id="adults" name="adults" min="1" max="10" value="1">
+            <label for="children">Children</label>
+            <input type="number" id="children" name="children" min="0" max="10" value="0">
+            <label for="infants">Infants</label>
+            <input type="number" id="infants" name="infants" min="0" max="10" value="0">
+
+            <h2 for="price"><label for="price">Price</label></h2>
+            <input type="number" id="price" name="price" min="1" value="1"><br>
+
+            <h2 for="rooms">Rooms</h2>
+            <label for="beds">Beds</label>
+            <input type="number" id="beds" name="beds" min="1" max="10" value="1">
+            <label for="bedrooms">Bedrooms</label>
+            <input type="number" id="bedrooms" name="bedrooms" min="1" max="10" value="1">
+            <label for="bathrooms">Bathrooms</label>
+            <input type="number" id="bathrooms" name="bathrooms" min="0" max="10" value="0">
+
+            <h2 for="coordinates">Coordinates</h2>
+            <label for="lon">Longitude</label>
+            <input type="number" id="lon" name="lon" min="-180" max="180" step="0.0000000000000001" value="0">
+            <label for="lat">Latitude</label>
+            <input type="number" id="lat" name="lat" min="-90" max="90" step="0.0000000000000001" value="0">
+
+            <h2 for="image"><label for="image">Image URLs</label></h2>
+            <input type="text" id="image0" name="image0"><br>
+            <input type="text" id="image1" name="image1"><br>
+            <input type="text" id="image2" name="image2"><br>
+
+            <h2 for="location" style="display: inline-block; margin-right: 22px;"><label for="location">Location</label></h2>
+            <select name="location" id="location"></select>
+
+            <div id="new-location" style="display: none;">
+                <h2 for="newLocationName"><label for="newLocationName">Location name</label></h2>
+                <input type="text" id="newLocationName" name="newLocationName"><br>
+
+                <h2 for="newLocationCountry"><label for="newLocationCountry">Location country</label></h2>
+                <input type="text" id="newLocationCountry" name="newLocationCountry"><br>
+
+                <h2 for="newLocationContinent" style="display: inline-block; margin-right: 22px;"><label for="newLocationContinent">Location continent</label></h2>
+                <select name="newLocationContinent" id="newLocationContinent">
+                    <option value="America">America</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Africa">Africa</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Oceania">Oceania</option>
+                </select>
+
+                <h2 for="newLocationImage"><label for="newLocationImage">Location image URL</label></h2>
+                <input type="text" id="newLocationImage" name="newLocationImage"><br>
+            </div>
+
+            <input type="submit" id="button" value="Save place">
+        </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../../../javascripts/place.js"></script>
+</body>

@@ -101,6 +101,10 @@ ul {
     box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.15);
 }
 
+#places-container > .content > .item-container, #places-container > .content > .item-container * {
+    cursor: pointer;
+}
+
 .item-image-container {
     width: 70px;
     height: 66px;
@@ -127,7 +131,7 @@ ul {
     width: 100%;
 }
 
-.item-user, .item-date {
+.item-user, .item-date, .item-location {
     color:#707070;
     font-size: 16px;
     flex-basis: 80%;
@@ -179,18 +183,21 @@ ul {
     transition: all 0.2s ease-out;
 }
 
-.log-out {
-    display: block;
-    margin: 20px 0;
+.end {
+    text-align: right;
+    margin-bottom: 40px;
+}
+
+#new-place, #log-out {
+    margin: 10px 0;
     font-size: 16px;
     font-weight: 600;
-    border-radius: 9px;
+    border-radius: 6px;
     border: 2px solid #ef4923;
     background-color: #ef49231a;
     color: #ef4923;
     padding: 6px 22px;
     cursor: pointer;
-    float: right;
 }
 
 .chat-popup {
@@ -429,7 +436,7 @@ ul {
         flex-basis: 49%;
     }
 
-    .item-name, .item-date, .item-bottom * {
+    .item-name, .item-date, .item-location, .item-bottom * {
         font-size: min(16px, 5rem);
     }
 
@@ -452,7 +459,7 @@ ul {
         flex-basis: 100%;
     }
 
-    .item-name, .item-date, .item-bottom * {
+    .item-name, .item-date, .item-location, .item-bottom * {
         font-size: min(16px, 4.5rem);
     }
 
