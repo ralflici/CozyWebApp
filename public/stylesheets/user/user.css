@@ -327,6 +327,7 @@ ul {
     align-self: flex-end;
     display: flex;
     width: 100%;
+    justify-content: space-between;
 }
 
 .item-date {

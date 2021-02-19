@@ -34,7 +34,7 @@ async function getChatsList() {
                         <div class="item-bottom">
                             <span class="item-price">${chats[i].place.price}€/night</span>
                             <span class="item-icons">
-                                <span class="item-open-icon"><a style="cursor: pointer;" href="chat/${chats[i]._id}">···</a></span>
+                            <a style="cursor: pointer;" href="/user/${document.cookie.split("jwt=")[1].split(";")[0]}/chat/${chats[i]._id}"><span class="item-open-icon">···</span></a>
                             </span>
                         </div>
                     </span>

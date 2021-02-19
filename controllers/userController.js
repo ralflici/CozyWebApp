@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const Jimp = require("jimp");
 const SHA256 = require("crypto-js/sha256");
-
+/*
 exports.verifyJWT = async function(req, res, next) {
     const accessToken = req.cookies.jwt;
 
@@ -33,7 +33,7 @@ exports.verifyJWT = async function(req, res, next) {
         return;
     }
 };
-
+*/
 exports.verifyJWT2 = async function(req, res, next) {
     let dest = req.url;
     res.locals.dest = dest.slice(dest.lastIndexOf("/"));
@@ -103,7 +103,7 @@ exports.signup = async function(req, res, next) {
         res.redirect("back");
     }
 };
-
+/*
 exports.login = async function(req, res, next){
     console.log(req.body.username, req.body.password);
     const username = SHA256(req.body.username).toString();
@@ -127,8 +127,9 @@ exports.login = async function(req, res, next){
         res.cookie("jwt", accessToken);
         res.redirect("/user/" + accessToken + "/profile.html");
     }
-};
+};*/
 
+/*
 exports.isLogged = function(req, res, next) {
     const accessToken = req.cookies.jwt;
     console.log("\x1b[31m", "cookie", accessToken);
@@ -146,7 +147,7 @@ exports.isLogged = function(req, res, next) {
     else {
         next();
     }
-};
+};*/
 
 exports.getInfo = function(req, res, next) {
     res.send(res.locals.user);
@@ -229,8 +230,8 @@ exports.deleteAccount = function(req, res, next) {
         }
     });
 }
-
+/*
 exports.logout = function(req, res, next) {
     res.cookie("jwt", "0");
     res.redirect("log.html");
-}
+}*/

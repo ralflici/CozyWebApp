@@ -22,9 +22,9 @@ router.get("/log.html", function(req, res, next) {res.redirect("/log.html")})
 router.get("/:jwt/profile.html", user_controller.verifyJWT2, unauthRedirect, function(req, res, next) { res.sendFile(path.join(__dirname, '..', 'public', 'views', res.locals.dest)); });
 router.get("/:jwt/messages.html", user_controller.verifyJWT2, unauthRedirect, function(req, res, next) { res.sendFile(path.join(__dirname, '..', 'public', 'views', res.locals.dest)); });
 router.get("/:jwt/bookings.html", user_controller.verifyJWT2, unauthRedirect, function(req, res, next) { res.sendFile(path.join(__dirname, '..', 'public', 'views', res.locals.dest)); });
-router.get("/profile.html", function(req, res, next) { res.redirect("/user/" + (req.cookies.jwt ? req.cookies.jwt : "0") + "/profile.html"); });
-router.get("/messages.html", function(req, res, next) { res.redirect("/user/" + (req.cookies.jwt ? req.cookies.jwt : "0") + "/messages.html"); });
-router.get("/bookings.html", function(req, res, next) { res.redirect("/user/" + (req.cookies.jwt ? req.cookies.jwt : "0") + "/bookings.html"); });
+//router.get("/profile.html", function(req, res, next) { res.redirect("/user/" + (req.cookies.jwt ? req.cookies.jwt : "0") + "/profile.html"); });
+//router.get("/messages.html", function(req, res, next) { res.redirect("/user/" + (req.cookies.jwt ? req.cookies.jwt : "0") + "/messages.html"); });
+//router.get("/bookings.html", function(req, res, next) { res.redirect("/user/" + (req.cookies.jwt ? req.cookies.jwt : "0") + "/bookings.html"); });
 
 router.get("/profile-info", user_controller.verifyJWT2, user_controller.getInfo);
 

@@ -225,7 +225,7 @@ async function sendMessage(chatID) {
     const response = await fetch("/admin/send-message", options);
     if (response.status === 200) {
         let date = new Date();
-        date = date.toDateString().slice(4,9).split(" ");
+        date = date.toDateString().slice(4,11).split(" ");
         $("#conversation-container").append(`
             <div class="message-item place">
                 <span class="sender-image"><img src="${selectedPlaceImage}" alt=""></img></span>

@@ -16,6 +16,7 @@ router.post("/approve-booking", admin_controller.verify, unauthRedirect, booking
 router.post("/reject-booking", admin_controller.verify, unauthRedirect, bookings_controller.reject, place_controller.removeUnavailableDates, function(req, res, next) { res.redirect("back"); });
 
 router.get("/:jwt/place/:id", admin_controller.verify, unauthRedirect, function(req, res, next) {
+    // Send a cookie to indicate that the admin wants to edit an existing place with that id
     res.cookie("place", req.params.id);
     res.sendFile(path.join(__dirname, '..', 'public', 'views', 'place.html'));
 });
