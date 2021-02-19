@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     $("a").attr("href", window.location.href + "/new-place");
 
-    $(".log-out").click(function() {
+    $("#log-out").click(function() {
         document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         window.location.href = "/log.html";
     });
