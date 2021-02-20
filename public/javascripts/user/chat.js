@@ -1,3 +1,5 @@
+"use strict";
+
 $(window).ready(function() {
     loadConversation();
 });

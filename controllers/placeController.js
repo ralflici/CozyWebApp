@@ -1,3 +1,5 @@
+"use strict";
+
 const Place = require("../models/place");
 
 exports.places_list = function(req, res) {
@@ -74,11 +76,6 @@ exports.places_list_filter = function(req, res) {
         res.send(filteredList);
     });
 };
-
-exports.placeByID = async function(req, res, next) {
-    const place = await Place.findById(req.params.id).populate("location");
-    res.send(place);
-}
 
 exports.getPlaceByID = async function(id) {
     try{

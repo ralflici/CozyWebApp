@@ -1,3 +1,5 @@
+"use strict";
+
 let adminChecked = false;
 
 $(document).ready(function() {

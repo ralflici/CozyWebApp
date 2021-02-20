@@ -913,6 +913,7 @@ $(document).ready(function() {
             // allowed only if there is a following month to show
             if (currentMonth < 9) {
                 currentMonth++;
+                // calculate the translation amount
                 // on small screeen display only one month in the calendar
                 if (screenType === 0)
                     currentMonthPos -= parseInt($(".month-container").width()) / 5;
@@ -927,6 +928,7 @@ $(document).ready(function() {
             // allowed only if there is a previous month to show
             if (currentMonth > 1) {
                 currentMonth--;
+                // calculate the translation amount
                 // on small screeen display only one month in the calendar
                 if (screenType === 0)
                     currentMonthPos += parseInt($(".month-container").width()) / 5;

@@ -1,3 +1,5 @@
+"use strict";
+
 let selectedPlaceImage;
 
 $(document).ready(function() {
@@ -67,6 +69,7 @@ async function displayBookings() {
         let end = new Date(list[i].dates[1]).toString().slice(4, 15).split(" ");
 
         // set the right status icon
+        let icons;
         if (list[i].status === "approved") {
             icons = `<span class="status-icon"><img src="../images/approved.svg" title="Approved"></span>`;
         }

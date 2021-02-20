@@ -1,3 +1,5 @@
+"use strict";
+
 var Location = require("../models/location");
 
 exports.locationsList = function(req, res) {

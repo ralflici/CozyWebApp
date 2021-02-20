@@ -1,3 +1,5 @@
+"use strict";
+
 const Booking = require("../models/booking");
 
 exports.bookingsList = async function(req, res, next) {
@@ -27,6 +29,7 @@ exports.reject = async function(req, res, next) {
     next();
 }
 
+// this function is not used
 exports.getBookingByID = async function(id) {
     try{
         const place = await Something.findById(id);

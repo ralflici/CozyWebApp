@@ -1,3 +1,5 @@
+"use strict";
+
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const fs = require("fs");
@@ -67,6 +69,16 @@ exports.verifyJWT = function(req, res, next) {
 
 exports.getInfo = function(req, res, next) {
     res.send(res.locals.user);
+};
+
+exports.getUserByID = async function(id) {
+    try{
+        const user = await User.findById(id);
+        return user;
+    } 
+    catch(err) {
+        throw err;
+    } 
 };
 
 exports.editProfile = function(req, res, next) {

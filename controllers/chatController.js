@@ -1,5 +1,7 @@
+"use strict";
+
 const Chat = require("../models/chat");
-const User = require("../models/user");
+const user_controller = require("./userController");
 const place_controller = require("./placeController");
 
 exports.chatsList = async function(req, res, next) {
@@ -87,8 +89,8 @@ exports.chatExists = async function(req, res, next) {
 exports.getConversation = async function(req, res, next) {
     const chat = await Chat.findById(req.params.id);
     const place = await place_controller.getPlaceByID(chat.place);
-    const user = await User.findById(chat.user, "pic");
-    //chat.place.populate("location");
+    const user = await user_controller.getUserByID(chat.user);
+
     if (chat == undefined) {
         res.sendStatus(500);
     }

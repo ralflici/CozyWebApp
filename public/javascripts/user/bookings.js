@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(function() {
     // load all the user's bookings
     getList()

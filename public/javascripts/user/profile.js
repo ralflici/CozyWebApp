@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(function() {
     // resize the user's picture when the window is resized
     $(window).resize(function(){
