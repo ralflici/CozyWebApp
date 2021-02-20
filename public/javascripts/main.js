@@ -516,6 +516,7 @@ function resetCalendar() {
 // if a user is already logged in change the text of the big button on the left
 function changeButton(logged) {
     if (logged) {
+        $("#get-started-link").attr("href", "#");
         // (for small screens) add an arrow since there no left and right container and the clicking the button will make the window scroll down
         if (screenType < 2)
             $("#get-started").text("Find you place ▼");
@@ -527,6 +528,7 @@ function changeButton(logged) {
     }
 }
 
+// function used to open a chat
 async function sendMessage(e) {
     let jwt;
     try {
@@ -546,14 +548,17 @@ async function sendMessage(e) {
         },
         body: JSON.stringify({placeID: placeID})
     };
+    // send the request
     const response = await fetch("/user/" + jwt + "/chat", options);
-    console.log(response);
+    // if the response is 401 (user not authenticated) display a popup redirecting to the login page
     if (response.status == 401 && $(".auth-popup").length === 0)
-        $(".left-container").append(`<div class="auth-popup">You must <a href="./user/log.html" target="_blank">authenticate</a></div>`);
+        $(".left-container").append(`<div class="auth-popup">You must <a href="/log.html" target="_blank">authenticate</a></div>`);
+    // if the response is ok open the chat in a new page
     if (response.redirected)
         window.open(response.url,'_blank');
 }
 
+// function used to make a booking
 async function book(e) {
     let jwt;
     try {
@@ -574,17 +579,21 @@ async function book(e) {
         },
         body: JSON.stringify({placeID: placeID, dates: new Array(preferences.dates.start, preferences.dates.end), price: price, nights: nights})
     };
+    // send the request
     const response = await fetch("/user/book-place", options);
+    // if server responded with 401 (user not authenticated) display a popup redirecting to the login page
     if (response.status == 401) {
         if ($(".auth-popup").length === 0)
-            $(".left-container").append(`<div class="auth-popup">You must <a href="./user/log.html" target="_blank">authenticate</a></div>`);
+            $(".left-container").append(`<div class="auth-popup">You must <a href="/log.html" target="_blank">authenticate</a></div>`);
     }
+    // if server responded with 403 (place not available) remove all popups and display a popup showing the error
     else if (response.status == 403) {
         $(".auth-popup").remove();
         $(".success-popup").remove();
         $(".fail-popup").remove();
         $(".left-container").append(`<div class="fail-popup">This place is not available anymore</div>`);
     }
+    // otherwise remove all popups and display a successfull message
     else {
         $(".auth-popup").remove();
         $(".success-popup").remove();
@@ -609,24 +618,37 @@ async function loadPic() {
         }
     };
     const response = await fetch("/user/picture", options);
+    // if the server responded ok (user is authenticated)
     if (response.status === 200) {
+        // this means that the user has already logged in so the left container's button should have the value "Find your place"
         changeButton(true);
-        if ($(".auth-popup").length !== 0)
-            $(".auth-popup").addClass("hide");
+
+        //if ($(".auth-popup").length !== 0)
+        //    $(".auth-popup").addClass("hide");
+        
+        // convert the body to text
         const img = await response.text();
+        // if the user hasn't set an image load the default user icon
         if (img == "")
             $("#user-icon>img").attr("src", "../images/userIcon.svg");
+        // otherwise load the image
         else
             $("#user-icon>img").attr("src", img);
     }
+    // otherwise load the default user icon (user in not authenticated)
     else {
+        // this means that the user has not logged in so the left container's button should have the value "Get started"
         changeButton(false);
         $("#user-icon>img").attr("src", "../images/userIcon.svg");
         console.warn('Could not load profile picture.');
     }
 }
+
+// this function checks if the user is authenticated everytime the window has focus
 //$(window).on('focus', loadPic);
 
+// this function adjusts the a tag's 'href' so that it includes the user's jwt since there is no way of setting the headers
+// when requesting a static html page through a direct link 
 function includeJWTInURLs() {
     let jwt;
     try {
@@ -639,6 +661,7 @@ function includeJWTInURLs() {
         let index = $($("a")[i]).attr("href").indexOf("user/");
         let path = $($("a")[i]).attr("href");
         
+        // if the original href include the substring "user/" the url should be modified
         if (index != -1 && $($("a")[i]).attr("href").indexOf("log") == -1) {
             path = "/user/" + jwt + "/" + path.split("user/")[1];
             $($("a")[i]).attr("href", path);
@@ -653,41 +676,37 @@ $(document).ready(function() {
     loadPic();
     defineScreenSize();
 
-
-
-    // ---------------- FORMS ---------------- //
+    // set some event listeners to give a bettere user experience by changing the search form style on user interaction
     $(".search-form").focus(function() {
         if (this.value === "Search") {
             this.value="";
-            $(this)
-                .css("color", "#000000")
-                .css("font-weight", "500");
+            $(this).css("color", "#000000").css("font-weight", "500");
         }
     });
-
     $(".search-form").focusout(function() {
         if (this.value == "") {
             this.value = "Search";
-            $(this)
-                .css("color", "#cccccc")
-                .css("font-weight", "300");
+            $(this).css("color", "#cccccc").css("font-weight", "300");
             $("search-result").remove();
             $(".search-dropdown").fadeOut(0);
         }
     });
-
     $(".search-form").on("input", function() {
-        if (this.value !== "" && this.value.replace(/\s/g, '').length)
+        if (this.value !== "")
             searchLocation(this.value)
                 .then((locs) => dropdownResults(locs))
                 .catch(err => console.log(err));
     });
 
+    // get the outmost prices of all the places in the database
     getOutmostPrices();
 
+    // set the event listeners of the price form
     $("#min-price").change(function() {
+        // if the value is empty fill it with min price
         if ($(this).val() == "")
             $(this).val(minPrice);
+        // if not check if it's less that the max price otherwise set it to the min price
         else {
             if (parseInt($(this).val()) < maxPrice && parseInt($(this).val()) >= min)
                 minPrice = parseInt($(this).val());
@@ -695,12 +714,14 @@ $(document).ready(function() {
                 $(this).val(minPrice);
             }
         }
+        // finally set the preference accordingly
         preferences.price.min = minPrice;
     });
-
     $("#max-price").change(function() {
+        // if the value is empty fill it with max price
         if ($(this).val() == "")
             $(this).val(maxPrice);
+        // if not check if it's greater that the min price otherwise set it to the max price
         else {
             if (parseInt($(this).val()) > minPrice && parseInt($(this).val()) <= max)
                 maxPrice = parseInt($(this).val());
@@ -708,20 +729,20 @@ $(document).ready(function() {
                 $(this).val(maxPrice);
             }
         }
+        // finally set the preference accordingly
         preferences.price.max = maxPrice;
     });
 
+    // if the use presses 'enter' in the price form prevent default submission and trigger a click event on the search button
     $(".price-container").submit(function(e) {
         e.preventDefault();
         $("#search-button").click();
     });
 
-
-    // -------------- LOCATION -------------- //
     getLocationsContinent("")
         .then((locs) => displayLocationSlides(locs))
         .catch((err) => console.log(err));
-
+    // if a continent is selected hide the locations that don't have that continent as a class
     $(".continent").click(function () {
         if ($(this).hasClass("selected")) {
             $(this).removeClass("selected");
@@ -738,9 +759,7 @@ $(document).ready(function() {
         }
     });
 
-
-
-    // ------------ TYPE OF PLACE ------------ //
+    // set an event listener to handle the selection of the type of place
     $(".typeplace").click(function() {
         if (!$(this).hasClass("selected")) {
             $(this).addClass("selected");
@@ -752,50 +771,56 @@ $(document).ready(function() {
         }
     });
 
-
-
-    // ------------ CONTROL ICONS ------------ //
+    // set event listeners for the "control icons" (small circular buttons containing either '+' or '-')
     $(".control-icon").click(function() {
+        // minus button
         if ($(this).text() == "-") {
-            
             let parent = $(this).parents(".date");
-            // Date button
+            // date button
             if (parent.length !== 0) {
+                // subtract a day to the current date
                 preferences.dates = calendar.controlDate(parent, false);
             }
-            // Guests or rooms button
+            // guests or rooms button
             else {
                 parent = $(this).parents(".type");
                 let number = parseInt($(this).next().text());
                 
+                // if the number is 1 change the item's style
                 if ($(parent).hasClass("selected")) {
                     if (number === 1)
                         $(parent).removeClass("selected");
+                    // or the number is greater or equal then 1 subtract 1 
                     $(this).next().text(--number);
                 }
             }
             
         }
+        // plus button
         else if ($(this).text() == "+") {
             
             let parent = $(this).parents(".date");
-            // Date
+            // date
             if (parent.length !== 0) {
+                // add a day to the current date
                 preferences.dates = calendar.controlDate(parent, true);
             }
-            // Guests or rooms button
+            // guests or rooms button
             else {
                 parent = $(this).parents(".type");
                 let number = parseInt($(this).prev().text());
 
+                // if the number is 0 change the item's style
                 if (parent) {
                     if (!$(parent).hasClass("selected")) {
                         $(parent).addClass("selected");
                     }
+                    // add 1
                     $(this).prev().text(++number);
                 }
             }
         }
+        // set the preferences accordingly
         preferences.guests = {
             adults: parseInt($("#number-adults").text()),
             children: parseInt($("#number-children").text()),
@@ -808,28 +833,21 @@ $(document).ready(function() {
         };
     });
 
-
-
-    // --------------- BUTTONS --------------- //
-    $("#get-started-link").click(function(e) {
-        if ($(this).text() != "Get started") {
-            e.preventDefault();
-            return;
-        }
-    });
-
     $(".big-button").click(function() {
         let id = this.id;
+        // if the user clicks on the left-container button and it's "Find your place" (and not "Get started")
         if (id === "get-started" && $("#get-started").text() != "Get started") {
+            // (for small screens) scroll down to the filters
             if (screenType < 2) {
                 $(window).scrollTop($(".left-container").height());
-                //setTimeout(function() {$("#search").focus()}, 800);
             }
+            // focus the search bar
             else {
                 $(window).scrollTop(0);
                 $("#search").focus();
             }
         }
+        // if the user clicks on the search button and it it available submit his preferences to the server
         else if (id === "search-button") {
             if ($(this).hasClass("unavailable")) {
                 return;
@@ -838,7 +856,7 @@ $(document).ready(function() {
         }
     });
 
-
+    // when scrolling, if the screen is not small, the left container always stays visible
     $(window).scroll((e) => {
         if (screenType < 2) return;
         let scroll = $(window).scrollTop();
@@ -846,66 +864,80 @@ $(document).ready(function() {
             $(".left-container").css("transform", "translateY(" + scroll + "px)");
     })
 
+    // (for small screens) scroll down when the user click the arrow down element
     $(".scroll").click(function() {
         window.scrollTo(0, $(".left-container").height());
     })
 
 
-    // --------------- CALENDAR -------------- //
+    // initialize calendar
     calendar.initCalendar();
-
+    // clicking a day which is not passed, marks it as selected/unselected 
     $(".day").click(function() {
         let thisLi = $(this);
         if (thisLi.hasClass("passed")) return;
         let day = thisLi.text();
         let month = thisLi.parents().prevAll(".month-name").text();
 
+        // if the start date is not defined then mark that day as the start date
         if (calendar.startDate == undefined) {
             calendar.setDate(thisLi, day, month, "start");
         }
-
+        // if the end date is not defined
         else if (calendar.endDate == undefined) {
+            // if the clicked day is the same as the start reset the start date
             if (thisLi[0] === calendar.startDayLi[0]) {
                 calendar.start = undefined;
                 calendar.startDate = undefined;
                 resetCalendar();
             }
+            // otherwise mark that day as the end date 
             else {
                 preferences.dates = calendar.setDate(thisLi, day, month, "end");
-                if (preferences.location !== undefined) $("#search-button").removeClass("unavailable");
+                // if the location was already selected make the search button available
+                if (preferences.location !== undefined)
+                    $("#search-button").removeClass("unavailable");
             }
         }
-
+        // if both start and end date were set reset the calendar and mark the clicked day as the start date
         else {
             resetCalendar();
             calendar.setDate(thisLi, day, month, "start");
         }
     });
-
+    // slide months
     var currentMonthPos = 0, currentMonth = 1;
     $(".month-arrow").click(function() {
+        // next month
         if (this.id === "next-month") {
+            // allowed only if there is a following month to show
             if (currentMonth < 9) {
                 currentMonth++;
+                // on small screeen display only one month in the calendar
                 if (screenType === 0)
                     currentMonthPos -= parseInt($(".month-container").width()) / 5;
+                // on bigger screen display 2 months
                 else
                     currentMonthPos -= parseInt($(".month-container").width()) / 10;
                 $(".month").css("transform", "translate(" + currentMonthPos.toString() + "px");
             }
         }
+        // previous month
         else {
+            // allowed only if there is a previous month to show
             if (currentMonth > 1) {
                 currentMonth--;
+                // on small screeen display only one month in the calendar
                 if (screenType === 0)
                     currentMonthPos += parseInt($(".month-container").width()) / 5;
+                // on bigger screen display 2 months
                 else
                     currentMonthPos += parseInt($(".month-container").width()) / 10;
                 $(".month").css("transform", "translate(" + currentMonthPos.toString() + "px");
             }
         }
     });
-
+    // clicking the reset icon will reset the calendar
     $(".reset-icon>img").click(resetCalendar);
 
     includeJWTInURLs();
