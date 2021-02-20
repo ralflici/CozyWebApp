@@ -41,6 +41,8 @@ exports.verifyJWT = function(req, res, next) {
             if(err) {
                 console.log("\x1b[31m", "jwt not valid");
                 res.statusCode = 401;
+                next();
+                return;
                 //return res.send("Access token not valid");
             }
             

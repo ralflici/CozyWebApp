@@ -32,10 +32,12 @@ let preferences = {
 // 3: 1921px -    inf (wide)
 let screenType;
 
+// define window width
 let windowWidth = $(window).width();
 $(window).resize(function() {
     windowWidth = $(window).width();
     defineScreenSize();
+    // change button text when resizing
     if (screenType >= 2 && $("#get-started").text() == "Find you place ▼") {
         $("#get-started").text("Find your place");
     }
@@ -44,6 +46,7 @@ $(window).resize(function() {
     }
 });
 
+// function to define the screen size and adjust the left container's border radius
 function defineScreenSize() {
     if (windowWidth < 426) {
         screenType = 0;
@@ -61,10 +64,9 @@ function defineScreenSize() {
         $(".left-container").css("border-radius", "40px");
         screenType = 3
     }
-    return;
 }
 
-function searchLocation(text) {
+async function searchLocation(text) {
     const options = {
         method: "POST",
         headers: {
@@ -72,16 +74,14 @@ function searchLocation(text) {
         },
         body: JSON.stringify({location : text})
     }
-    async function communicate() {
-        const response = await fetch("/locations/name", options);
-        const json = await response.json();
-        return json; //this return a promise so in order to get it when it's resolved we have to use '.then()' 
-    }
-    return communicate()
+    const response = await fetch("/locations/name", options);
+    return response.json();
 }
 
 function dropdownResults(locs) {
+    // remove previously added elements
     $(".search-result").remove();
+    // if there are results append them to the dropdown element
     if (locs.length !== 0) {
         $(".search-dropdown")
             .css("width", $(".right-container").width() + "px")
@@ -90,14 +90,20 @@ function dropdownResults(locs) {
             $(".search-dropdown").append(`<div class="search-result" id="${locs[i].name}">${locs[i].name}</div>`);
         }
 
+        // bind click event to the location elements to select them
         $(".search-result").click(function() {
+            // get the location name
             const choosen = $(this).text();
-            document.getElementById("search").value = choosen;
+            // insert it in the search bar
+            $("#search").val(choosen);
+            // remove all other results
             $("search-result").remove();
+            // hide the dropdown element
             $(".search-dropdown").fadeOut(0);
+            // search the location by it's name
             searchLocation(choosen)
                 .then((res) => {
-                    //console.log(res[0].continent);
+                    // trigger the click events to select the right continent and location's slide
                     const continent = $(`.continent#${res[0].continent}`)[0];
                     const location = $(`span[id="${res[0].name}"]`)[0];
                     const click = new MouseEvent('click');
@@ -108,14 +114,16 @@ function dropdownResults(locs) {
                 .catch((err) => console.log(err));
         });
     }
+    // otherwise show the "No results" message
     else {
         $(".search-dropdown").append(`<div class="search-result" style="color: #cccccc; font-style: italic; font-weight: 300">No results</div>`);
     }
 }
 
-
+// function to retrieve the minimum and maximum price
 async function getOutmostPrices(loc) {
     let location;
+    // if the argument is not set then get the absolute minimum and maximum prices of all the places
     if (loc === undefined)
         location = {location: ""};
     else
@@ -131,16 +139,19 @@ async function getOutmostPrices(loc) {
     const response = await fetch("/places/outmost_price", options);
     const json = await response.json();
 
+    // store the data in global variables
     min = json.min_price;
     max = json.max_price;
     minPrice = min;
     maxPrice = max;
+
+    // adjust the form parameters based on the retrieved data
     $("#min-price").attr("min", json.min_price);
     if (preferences.price.min < 0)
         $("#min-price").val(json.min_price);
     else
         $("#min-price").val(preferences.price.min);
-        
+    
     $("#max-price").attr("max", json.max_price);
     if (preferences.price.max > 10000)
         $("#max-price").val(json.max_price);
@@ -157,12 +168,11 @@ async function getLocationsContinent(continent) {
         body: JSON.stringify({continent : continent})
     }
     const response = await fetch("/locations/continent", options);
-    const json = await response.json();
-    return json; //this return a promise so in order to get it when it's resolved we have to use '.then()' 
+    return response.json();
 }
 
 function displayLocationSlides(locations) {
-    $(".location-image").remove();
+    // append the location's slides
     for (let i in locations) {
         $(".location-slideshow").append(
             `<span class="location-image ${locations[i].continent}" id="${locations[i].name}">
@@ -173,58 +183,75 @@ function displayLocationSlides(locations) {
             </span>`);
         $(`span[id="${locations[i].name}"]`).css("background-image", `url(${locations[i].image})`);
     }
+    // bind the event listener to each slide in order make them selectable
     $(".location-image").click(function() {
-        // initialise everything
+        // initialize everything
         if($(this).hasClass("selected")) return;
         $(".location-image.unselected").removeClass("unselected");
         $(".location-image.selected").removeClass("selected");
 
+        // get the selected location's name
         const thisName = $(this).attr("id");
+        // add the right classes to all location's slides
         $(`.location-image:not([id="${thisName}"])`).addClass("unselected");
         $(this).addClass("selected");
+        // save the choosen location in the prference global variable
         preferences.location = thisName;
-        //const click = new MouseEvent('click');
         
+        // initialize the price preference back to default values
         preferences.price = {min: -1, max: 1000000};
+        // if the dates are also selected make the search-button available
         if (preferences.dates.start !== undefined && preferences.dates.end !== undefined)
             $("#search-button").removeClass("unavailable");
     });
 }
 
 function submit() {
+    // (for small screens) change the scroll element style
     $(".scroll").css("background-color", "#ffffff");
-    
-    if (!mapShowed) $(".map").fadeIn(100);
+    // show the map element is it was hidden
+    if (!mapShowed)
+        $(".map").fadeIn(100);
     mapShowed = true;
     
+    // remove any marker
     for (let i in markers)
         mymap.removeLayer(markers[i]);
     markers = [];
     
+    // remove previosly inserted popups
     $(".left-container").find(".result-number").remove();
+    
+    // submit preferences to the server
     submitPreferences()
         .then((data) => {
+            // display a popup showing the number of results
             if (data.length > 1)
                 $(".left-container").append(`<div class="result-number">There are ${data.length} results</div>`);
             else if (data.length === 1)
                 $(".left-container").append(`<div class="result-number">There is ${data.length} result</div>`);
             else
                 $(".left-container").append(`<div class="result-number">Sorry, there are no results.</div>`);
-
+            // (for small screens) delay the popup fade-in because the window has to scroll up smoothly to the top first
             if (screenType < 2)
                 $(".result-number").css("animation-delay", "0.6s");
 
+            // get the outmost prices for that specific location and use them to draw the price chart
             getOutmostPrices(preferences.location)
                 .then((res) => {
+                    // remove the standard "Submit your preferences text"
                     $(".chart-text").remove();
+                    // load tha map with the places
                     initMap(data);
-                    if(myChart) myChart.destroy();
+                    // remove previous charts and draw the new one
+                    if(myChart)
+                        myChart.destroy();
                     initChart(data);
                 })
                 .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
-    
+    // (for small screens) scroll to the top to see the map
     if (screenType < 2) {
         window.scrollTo(0, 0);
     }
@@ -239,23 +266,31 @@ async function submitPreferences() {
         body: JSON.stringify(preferences)
     }
     const response = await fetch("/places/submit", options);
-    const json = await response.json();
-    return json;
+    return response.json();
 }
 
 const ctx = document.getElementById('chart-canvas').getContext('2d');
 let myChart;
 function initChart(places) {
+    // set the basic variables for the chart
+    // segments stores the number of sub-ranges in which the main price prange is divided
     const segments = 8;
+    // basis stores the sub-range value (a little offset is added to avoid counting the same place in two different subranges)
     const basis = (max + 0.001 - min)/segments;
+    // labels stores the text info of the sub-range value
     let labels = [];
+    // data stores the amount of places for each sub-range
     let data = new Array(segments);
 
     for (let i = 1; i <= segments; i++) {
+        // (for small screens) since the small space available, avoid labels
         if (screenType < 2)
             labels.push("");
+        // get only 2 decimal numbers
         else
             labels.push((basis*(i-1) + min).toFixed(2) + "€ - " + (basis*i + min).toFixed(2) + "€");
+        
+        // set the amount of places for each sub-range
         data[i-1] = 0;
         for (let j in places) {
             if (places[j].price >= (basis*(i-1) + min) && places[j].price < (basis*i) + min) {
@@ -264,6 +299,7 @@ function initChart(places) {
         }
     }
 
+    // draw the chart
     myChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -302,6 +338,7 @@ function initChart(places) {
 }
 
 let markers = [];
+// initialize the leafletJS map by loading a tile layer and adding it to the map html element
 let mymap = L.map('map');
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZmluZ2VycHJpbnRsYWIiLCJhIjoiY2traWlrcHYwMW5yZDJ3cXRjeW9uOTl1NSJ9.7bIbZx0Mar8v-fyKmjq7hg', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -312,6 +349,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
         accessToken: 'pk.eyJ1IjoiZmluZ2VycHJpbnRsYWIiLCJhIjoiY2traWlrcHYwMW5yZDJ3cXRjeW9uOTl1NSJ9.7bIbZx0Mar8v-fyKmjq7hg'
 }).addTo(mymap);
 
+// define the custom icons and their properties
 const entirePlaceIcon = L.icon({
     iconUrl: "../images/entire_place_icon.svg",
     iconSize: [51, 45],
@@ -331,12 +369,15 @@ const sharedRoomIcon = L.icon({
     popupAnchor: [0, -44]
 });
 
+// show the places in the map
 function initMap(data) {
     let lon = 0, lat = 0;
     for (let i in data) {
+        // set the coordinates
         lon += data[i].coordinates[0];
         lat += data[i].coordinates[1];
         
+        // set the right icon for that type of place and add it to the map
         let icon;
         if (data[i].type === "entire place") icon = entirePlaceIcon;
         else if (data[i].type === "private room") icon = privateRoomIcon;
@@ -348,6 +389,8 @@ function initMap(data) {
             alt: data[i]._id
         }
         let marker = L.marker([data[i].coordinates[1], data[i].coordinates[0]], markerOptions).addTo(mymap);
+        
+        // define the main popup with all the information about the place and bind it to the corresponding marker
         let popup = L.popup().setContent(
             `<div class="popup" id="${data[i]._id}">
                 <div class="popup-slide-container">
@@ -386,7 +429,7 @@ function initMap(data) {
         markers.push(marker);
     }
     let center = [0,0];
-    // If there are no results, get the coordinates of the location form the opencage API
+    // if there are no places, get the coordinates of the location form the opencage API
     if (data.length === 0) {
         const location = preferences.location.replace(/\s/g, "+");
         fetch(`https://api.opencagedata.com/geocode/v1/json?q=${location}&key=664cf514e86f4b389007b11e68f15ccb`)
@@ -397,12 +440,14 @@ function initMap(data) {
         })
         .catch((err) => console.log(err));
     }
+    // otherwise center the view on the average value of the places coordinates
     else {
         center = [(lat/data.length), (lon/data.length)];
         mymap.setView(center, 12);
     }
 }
 
+// function to swap the place's popup images (in a perpetual fashion)
 function swapImages(event) {
     const target = $(event.target).parents(".popup-image-arrow");
     let visible = $(".popup-slide-container").children(".visible");
@@ -450,6 +495,7 @@ function swapImages(event) {
     }
 }
 
+// function triggered by the reset-icon
 function resetCalendar() {
     calendar.start = undefined;
     calendar.startDate = undefined;
@@ -462,12 +508,15 @@ function resetCalendar() {
         .removeClass("end")
         .removeClass("in-range");
     preferences.dates = {start: undefined, end: undefined};
+    // make search-button unavailable since there are no selected dates
     if (!$("#search-button").hasClass("unavailable"))
         $("#search-button").addClass("unavailable")
 }
 
+// if a user is already logged in change the text of the big button on the left
 function changeButton(logged) {
     if (logged) {
+        // (for small screens) add an arrow since there no left and right container and the clicking the button will make the window scroll down
         if (screenType < 2)
             $("#get-started").text("Find you place ▼");
         else
@@ -475,7 +524,6 @@ function changeButton(logged) {
     }
     else {
         $("#get-started").text("Get started");
-        //$("#get-started-link").attr("href", "/user/log.html");
     }
 }
 
@@ -603,12 +651,7 @@ function includeJWTInURLs() {
 
 $(document).ready(function() {
     loadPic();
-
-    // ------------- SCREEN SIZE ------------- //
     defineScreenSize();
-    /*$("#user-icon").click(function() {
-        window.location.href = "/user/profile.html";
-    });*/
 
 
 
