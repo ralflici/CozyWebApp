@@ -2,3 +2,4 @@ node_modules
 utilities
 .env
 uploads
+public/data
