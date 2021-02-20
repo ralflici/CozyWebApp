@@ -100,7 +100,8 @@
                     </div>
                     
                 </span>
-                <form id="picture-container" enctype="multipart/form-data" action="/user/edit-picture" method="post">
+                <form id="picture-container" action="/user/edit-picture" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="jwt" name="jwt" value="">
                     <label id="pic-label" for="picture">Profile picture</label>
                     <div class="pic"><img id="picture" alt="Profile picture"></div>
                     <input type="file" id="input-picture" name="picture" accept="image/jpeg"></input>

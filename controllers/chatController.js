@@ -3,7 +3,7 @@ const User = require("../models/user");
 const place_controller = require("./placeController");
 
 exports.chatsList = async function(req, res, next) {
-    const chats = await Chat.find({}).populate("user place").exec();
+    const chats = await Chat.find({}).populate("user place");
     res.send(chats);
 }
 
@@ -23,7 +23,6 @@ exports.getUserChats = function(req,res,next) {
 };
 
 exports.getChat = async function(req, res, next) {
-    console.log("url", req.url);
     if (res.statusCode === 401) {
         res.send();
         return;
@@ -34,6 +33,7 @@ exports.getChat = async function(req, res, next) {
     .exec(async function(err, chats) {
         if (err) throw err;
 
+        // find the chat that contains the requested user and place
         let chat;
         for (let i in chats) {
             if (chats[i].user._id == res.locals.userID && chats[i].place._id == req.body.placeID) {
@@ -42,9 +42,10 @@ exports.getChat = async function(req, res, next) {
             }
         }
 
+        // if it was found, redirect to the chat's page 
         if (chat != undefined)
             res.redirect("/user" + req.url + "/" + chat._id);
-        
+        // otherwise create a new chat and redirect to its page
         else {
             const place = await place_controller.getPlaceByID(req.body.placeID);
             const newChat = new Chat({
@@ -60,6 +61,7 @@ exports.getChat = async function(req, res, next) {
 
 exports.sendMessage = async function(req, res, next) {
     const chat = await Chat.findById(req.body.chatID);
+    // create the content object with the required variables and push it to the chat document
     const content = {
         sender: req.body.sender,
         message: req.body.message,

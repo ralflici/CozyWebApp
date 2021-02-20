@@ -10,6 +10,7 @@ exports.places_list = function(req, res) {
     });
 };
 
+// this function returns the minimum and maximum price for places in a certain location
 exports.outmost_price = function(req, res) {
     Place
     .find({}, "location price")
@@ -17,6 +18,7 @@ exports.outmost_price = function(req, res) {
     .exec(function (err, listPrices) {
         if (err) {return next(err);}
 
+        // obtain an array made only of the prices of the places of the desired location (if a location was sent by the client)
         let prices = listPrices.map(place => {
             if (req.body.location === "" || place.location.name === req.body.location)
                 return place.price
@@ -33,6 +35,7 @@ exports.places_list_filter = function(req, res) {
     const pref = req.body;
     Place
     .find({
+        // find places with values greater or equal then those requested by the client
         "guests.adults": { $gte: pref.guests.adults },
         "guests.children": { $gte: pref.guests.children },
         "guests.infants": { $gte: pref.guests.infants },
@@ -44,25 +47,23 @@ exports.places_list_filter = function(req, res) {
     .populate("location")
     .exec(function(err, list) {
         if (err) {return next(err);}
-        // Filter by location
+        // filter by location
         let filteredList = list.filter(place => {
             if (place.location.name === pref.location)
                 return place
         });
-        // Filter by type
+        // filter by type
         filteredList = filteredList.filter(place => {
             if (pref.type.length === 0 || pref.type.length === 3 || pref.type.indexOf(place.type) !== -1)
                 return place;
         });
-        // Filter by date
+        // filter by date
         filteredList = filteredList.filter(place => {
             const start = pref.dates.start;
             const end = pref.dates.end;
 
             let intersection = false;
             for (let i in place.unavail) {
-                console.log(i, start, end);
-                console.log(i, place.unavail[i].start, place.unavail[i].end);
                 if ((start <= place.unavail[i].start && place.unavail[i].start <= end) || (start <= place.unavail[i].end && place.unavail[i].end <= end)) {
                     intersection = true;
                     break;
@@ -99,6 +100,7 @@ exports.isPlaceAvailable = async function(req, res, next) {
             return;
         }
     }
+    // save the following variables for later use
     res.locals.place = place;
     res.locals.dates = dates;
     next();
@@ -107,7 +109,6 @@ exports.isPlaceAvailable = async function(req, res, next) {
 exports.AddUnavailableDates = async function(req, res, next) {
     res.locals.place.unavail.push({start: res.locals.dates[0], end: res.locals.dates[1]});
     await res.locals.place.save();
-    //next();
     res.send();
 };
 
@@ -115,8 +116,6 @@ exports.removeUnavailableDates = async function (req, res, next) {
     for (let i in res.locals.place) {
         if(!res.locals.skip[i]) {
             const place = await Place.findById(res.locals.place[i]);
-            //console.log("***PLACE", place);
-            //console.log("+++INDEX", place.unavail.indexOf(res.locals.dates[i]));
             place.unavail.splice(place.unavail.indexOf(res.locals.dates[i]), 1);
             await place.save();
         }

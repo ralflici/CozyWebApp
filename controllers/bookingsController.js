@@ -1,13 +1,12 @@
 const Booking = require("../models/booking");
 
 exports.bookingsList = async function(req, res, next) {
-    const list = await Booking.find({}).populate("user place").exec();
+    const list = await Booking.find({}).populate("user place");
     res.send(list);
 }
 
 exports.approve = async function(req, res, next) {
     const booking = await Booking.findById(req.body.bookingID);
-    console.log(booking);
     booking.status = "approved";
     await booking.save();
     res.redirect("back");
@@ -17,19 +16,20 @@ exports.reject = async function(req, res, next) {
     const booking = await Booking.findById(req.body.bookingID);
     booking.status = "rejected";
     await booking.save();
+    // save the following variables in order to remove the unavailable dates from the place since the booking was rejected
     res.locals.place = [];
     res.locals.place.push(booking.place);
     res.locals.dates = [];
     res.locals.dates.push({ start: booking.dates[0], end: booking.dates[1] });
+    // skip is required in the following function (place_controller.removeUnavailableDates)
     res.locals.skip = [];
     res.locals.skip.push(false);
-    console.log("RES.LOCALS", res.locals);
     next();
 }
 
 exports.getBookingByID = async function(id) {
     try{
-        const place = await Something.findById(id).exec();
+        const place = await Something.findById(id);
         return place;
     } 
     catch(err) {
@@ -42,7 +42,7 @@ exports.bookPlace = async function(req, res, next) {
         res.send();
         return;
     }
-    // Check if there is already another booking with the same data
+    // check if there is already another booking with the same data
     const book = await Booking.findOne({dates: req.body.dates, user: res.locals.userID, place: req.body.placeID});
     // If it exists send error status code
     if (book != null && book.status !== "rejected") {
@@ -51,7 +51,7 @@ exports.bookPlace = async function(req, res, next) {
         return;
     }
 
-    // Otherwise create a new booking and save it in the database
+    // Otherwise create a new booking and save it in the database as pending
     const booking = new Booking({
         user: res.locals.user,
         place: res.locals.place,
@@ -60,7 +60,6 @@ exports.bookPlace = async function(req, res, next) {
         status: "pending"
     });
     await booking.save();
-    //res.send();
     next();
 };
 
@@ -77,6 +76,7 @@ exports.getUserBookings = async function(req, res, next) {
 exports.deleteBooking = async function(req, res, next) {
     try {
         const b = await Booking.findById(req.body.bookingID);
+        // save the following variables in order to remove the unavailable dates from the place since the booking is going to be deleted
         res.locals.place = [];
         res.locals.place.push(b.place);
         res.locals.dates = [];
@@ -96,6 +96,7 @@ exports.deleteBooking = async function(req, res, next) {
 
 exports.deleteUserBookings = async function(req, res, next) {
     const b = await Booking.find({ user: res.locals.userID });
+    // save the following variables in order to remove the unavailable dates from the places since the bookings are going to be deleted
     res.locals.place = [];
     res.locals.dates = [];
     res.locals.skip = [];

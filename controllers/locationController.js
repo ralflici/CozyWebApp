@@ -1,6 +1,6 @@
 var Location = require("../models/location");
 
-exports.locations_list = function(req, res) {
+exports.locationsList = function(req, res) {
     Location
     .find({})
     .exec(function (err, listLocations) {
@@ -9,8 +9,10 @@ exports.locations_list = function(req, res) {
     });
 }
 
-exports.locations_name = function(req, res) {
+// this function returns all the locations wich contain the string sent by the client
+exports.locationsName = function(req, res) {
     const name = req.body.location;
+    // create a case insensitive regular expression
     const regexp = new RegExp(name, "i");
     Location
     .find({name: {$regex: regexp}})
@@ -20,7 +22,7 @@ exports.locations_name = function(req, res) {
     })
 }
 
-exports.locations_continent = function(req, res) {
+exports.locationsContinent = function(req, res) {
     const continent = req.body.continent;
     const regexp = new RegExp(continent, "i");
     Location
@@ -32,6 +34,7 @@ exports.locations_continent = function(req, res) {
 }
 
 exports.insertLocation = async function(req, res, next) {
+    // if a new location is required create and save the location
     if (req.body.location === "new-location") {
         const location = new Location({
             name: req.body.newLocationName,
@@ -43,6 +46,7 @@ exports.insertLocation = async function(req, res, next) {
         res.locals.location = location;
         next();
     }
+    // otherwise find it in the database and save it for later use
     else {
         res.locals.location = await Location.findOne({ name: req.body.location });
         next();

@@ -1,29 +1,40 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
-exports.verify = async function(req, res, next) {
+exports.verify = function(req, res, next) {
     let accessToken;
+    // search for the authorization header
     if (req.headers.authorization) {
-        console.log("\x1b[35m", "HEADER FOUND");
+        //console.log("\x1b[35m", "HEADER FOUND");
         accessToken = req.headers.authorization.split("Bearer ")[1];
     }
+    // otherwise search in the URL parameters
     else if (req.params.jwt) {
-        console.log("\x1b[36m", "PARAM FOUND");
+        //console.log("\x1b[36m", "PARAM FOUND");
         accessToken = req.params.jwt;
     }
-    console.log("\x1b[32m", "*** authorization", accessToken);
-
+    
+    // jwt not found or overridden
     if(accessToken == undefined || accessToken == "0") {
-        console.log("\x1b[31m", "jwt not found");
+        //console.log("\x1b[31m", "jwt not found");
         res.statusCode = 401;
-        //return res.send("Access token not found");
     }
+    // jwt found
     else {
-        let payload; 
-        try {
-            payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-            console.log("\x1b[31m", "jwt valid");
+        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, async function(err, payload) {
+            // jwt not valid
+            if (err) {
+                //console.log("\x1b[31m", "jwt not valid");
+                res.statusCode = 401;
+                return;
+            }
+            
+            // jwt valid
+            // save user's id for later use
             res.locals.userID = payload.id;
+            //console.log("\x1b[31m", "jwt valid");
+            
+            // find the user and check if he's admin
             const user = await User.findById(payload.id, "password name email location bio pic admin");
             if (!user.admin)
                 res.statusCode = 401;
@@ -31,13 +42,7 @@ exports.verify = async function(req, res, next) {
                 res.locals.user = user;
                 res.statusCode = 200;
             }
-            //return res.send("Authorized");
-        }
-        catch(err) {
-            console.log("\x1b[31m", "jwt not valid");
-            res.statusCode = 401;
-            //return res.send("Access token not valid");
-        }
+        });
     }
     next();
 }

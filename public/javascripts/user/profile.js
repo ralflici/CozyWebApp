@@ -15,7 +15,8 @@ $(document).ready(function() {
         }
     });
 
-    $("#picture-container").attr("action", "/user/" + document.cookie.split("jwt=")[1].split(";")[0] + "/edit-picture");
+    //$("#picture-container").attr("action", "/user/" + document.cookie.split("jwt=")[1].split(";")[0] + "/edit-picture");
+    $("#jwt").val("Bearer " + document.cookie.split("jwt=")[1].split(";")[0]);
 
     $("#profile-form").submit(async function(event) {
         event.preventDefault();

@@ -67,13 +67,12 @@ app.use(function(req,res,next) {
 */
 
 // Routers
-
 app.use("/", indexRouter);
-
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 app.use("/locations", locationsRouter);
 app.use("/places", placesRouter);
+// if none of the previous worked then send the error page
 app.use(/[\s\S]*/, errorRouter);
 
 // Importable by the /bin/www file
