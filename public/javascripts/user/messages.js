@@ -1,9 +1,4 @@
 $(document).ready(function() {
-
-    $("item-open-icon").click(function() {
-        const chat = $(this).parents(".item-container");
-        console.log("opening chat:", chat.id);
-    });
     getChatsList();
 });
 
@@ -11,12 +6,13 @@ async function getChatsList() {
     const options = {
         mehod: "GET",
         headers: {
-            "Content-Type": "application/json",
             "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0]
         }
     }
+    // get user's chats
     const response = await fetch("/user/user-chats-list", options);
     const chats = await response.json();
+    // if there aren't signal it to the user
     if (chats.length === 0) {
         $(".main-messages-container").append(`
             <div class="no-messages-container">
@@ -24,6 +20,7 @@ async function getChatsList() {
             </div>
         `)
     }
+    // otherwise append the elements relative to the chats
     else {
         for (let i in chats) {
             $(".main-messages-container").append(`
@@ -41,9 +38,5 @@ async function getChatsList() {
                 </div>
             `);
         }
-        /*$(".item-container").click(function() {
-            const chatID = $(this).attr("id");
-            window.location.href = "/user/" + document.cookie.split("jwt=")[1].split(";")[0] + "/chat/" + chatID;
-        })*/
     }
 }

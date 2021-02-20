@@ -74,7 +74,7 @@ async function signUp(req, res, next) {
   // search user with same username
   const userInDB = await User.findOne({username: username});
   // if such user exists or the admin code inserted is wrong send error
-  if (userInDB != null || req.body.adminCode != process.env.ADMIN_CODE) {
+  if (userInDB != null || (req.body.admin && req.body.adminCode != process.env.ADMIN_CODE)) {
     res.statusCode = 403;
     res.send();
     return;

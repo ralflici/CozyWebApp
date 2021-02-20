@@ -5,7 +5,7 @@ const path = require("path");
 const Jimp = require("jimp");
 const SHA256 = require("crypto-js/sha256");
 
-exports.verifyJWT = async function(req, res, next) {
+exports.verifyJWT = function(req, res, next) {
     // save the destination url for later use
     let dest = req.url;
     res.locals.dest = dest.slice(dest.lastIndexOf("/"));
@@ -32,10 +32,11 @@ exports.verifyJWT = async function(req, res, next) {
     if(accessToken == undefined || accessToken == "0") {
         //console.log("\x1b[31m", "jwt not found");
         res.statusCode = 401;
+        next();
     }
     // jwt found
     else {
-        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, function(err, payload) {
+        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, async function(err, payload) {
             // jwt not valid
             if(err) {
                 console.log("\x1b[31m", "jwt not valid");
@@ -57,36 +58,11 @@ exports.verifyJWT = async function(req, res, next) {
             else {
                 res.statusCode = 200;
             }
+            next();
         });
-    }
-    next();
-};
-/*
-exports.signup = async function(req, res, next) {
-    const username = SHA256(req.body.username).toString();
-    const password = SHA256(req.body.password).toString();
-    console.log(username, password);
-    const userInDB = await User.findOne({username: username});
-    console.log(userInDB);
-    if (userInDB != null) {
-        res.statusCode = 403;
-        res.send();
-        return;
-    }
-    else {
-        const user = new User({
-            username: username,
-            password: password,
-            admin: req.body.admin
-        });
-        user.save(function(err) {
-            if (err) throw err;
-        });
-        res.status(200);
-        res.redirect("back");
     }
 };
-*/
+
 exports.getInfo = function(req, res, next) {
     res.send(res.locals.user);
 };

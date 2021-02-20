@@ -1,7 +1,5 @@
 "use strict";
 
-//let jwt = document.cookie.split("jwt=")[1].split(";")[0];
-
 let mapShowed = false;
 let minPrice, maxPrice, min, max;
 

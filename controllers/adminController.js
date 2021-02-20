@@ -18,6 +18,7 @@ exports.verify = function(req, res, next) {
     if(accessToken == undefined || accessToken == "0") {
         //console.log("\x1b[31m", "jwt not found");
         res.statusCode = 401;
+        next();
     }
     // jwt found
     else {
@@ -42,7 +43,7 @@ exports.verify = function(req, res, next) {
                 res.locals.user = user;
                 res.statusCode = 200;
             }
+            next();
         });
     }
-    next();
 }

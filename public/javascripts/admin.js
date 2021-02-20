@@ -1,14 +1,18 @@
 let selectedPlaceImage;
 
 $(document).ready(function() {
+    // retrieve the info from the server and display it
     displayChats();
     displayBookings();
     displayPlaces();
 
+    // adjust the link to include the admin's jwt
     $("a").attr("href", window.location.href + "/new-place");
 
     $("#log-out").click(function() {
+        // override the cookie
         document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        // redirect to login page
         window.location.href = "/log.html";
     });
 });
@@ -26,7 +30,6 @@ async function loadChats() {
 
 async function displayChats() {
     const chats = await loadChats();
-    //console.log(chats);
     for (let i in chats) {
         $("#messages-container>.content").append(`
             <div class="item-container" id="${chats[i]._id}">
@@ -59,9 +62,11 @@ async function loadBookings() {
 async function displayBookings() {
     const list = await loadBookings();
     for (let i in list) {
+        // adjust the date format
         let start = new Date(list[i].dates[0]).toString().slice(4, 15).split(" ");
         let end = new Date(list[i].dates[1]).toString().slice(4, 15).split(" ");
 
+        // set the right status icon
         if (list[i].status === "approved") {
             icons = `<span class="status-icon"><img src="../images/approved.svg" title="Approved"></span>`;
         }
@@ -90,19 +95,12 @@ async function displayBookings() {
             </div>
         `);
     }
-
-    $(".item-delete-icon").click(async function(event) {
-        const bookingID = $(this).parents(".item-container").attr("id");
-        const response = await deleteBooking(bookingID)
-        //console.log("response:", response);
-        if (response.redirected)
-            window.location.href = response.url;
-    });
 }
 
+// function triggered by the approve icon
 async function approve(elem) {
+    // get the booking id from the container
     const id = $(elem).parents(".item-container")[0].id;
-    console.log(id);
     const options = {
         method: "POST",
         headers: {
@@ -112,13 +110,15 @@ async function approve(elem) {
         body: JSON.stringify({bookingID: id})
     };
     const response = await fetch("/admin/approve-booking", options);
+    // refresh the page
     if (response.redirected)
         window.location.href = response.url;
 }
 
+// function triggered by the reject icon
 async function reject(elem) {
+    // get the booking id from the container
     const id = $(elem).parents(".item-container")[0].id;
-    console.log(id);
     const options = {
         method: "POST",
         headers: {
@@ -128,14 +128,17 @@ async function reject(elem) {
         body: JSON.stringify({bookingID: id})
     };
     const response = await fetch("/admin/reject-booking", options);
+    // refresh the page
     if (response.redirected)
         window.location.href = response.url;
 }
 
 async function openConversation(elem) {
+    // get the chat's id
     const chatID = $(elem).parents(".item-container")[0].id;
+    // get the conversation
     const conversation = await loadConversation(chatID);
-    console.log(conversation);
+    // append the chat popup
     $(".main-container").append(`
         <div class="chat-popup">
             <div class="chat" id="${chatID}">
@@ -149,9 +152,9 @@ async function openConversation(elem) {
             </div>
         </div>
     `);
-    
+    // store the place's image
     selectedPlaceImage = conversation.place.images[0];
-
+    // load all the messages
     for (let i in conversation.chat.content) {
         const message = conversation.chat.content[i];
         const date = new Date(message.date).toString().substring(4,10).split(" ");
@@ -162,27 +165,34 @@ async function openConversation(elem) {
                 <div class="message-date">${date[1] + " " + date[0]}</div>
             </div>
         `);
+        // scroll to the end of the chat to see the latest messages
         $("#conversation-container").scrollTop(999999999);
     }
-
+    // bind the event to the close icon
     $("#close-icon").click(function() {
+        // erase the place's image for later user in a different chat
         selectedPlaceImage = undefined;
         $(".chat-popup").remove();
     });
-
+    
+    // dinamically resize the textarea on input
     $('textarea').each(function () {
         this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
-        //$("#message-form").setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
-    }).on('input', function () {
+    })
+    .on('input', function () {
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
         $("#message-form").css("height", "auto").css("height", (this.scrollHeight + 13) + "px");
         $("#char-number").text(this.value.length + "/500");
-    }).focus(function() {
+    })
+    // when the textarea is focused remove the "Write a message" text and change the style
+    .focus(function() {
         $(this).css("color", "#000");
         if ($(this).val() === "Write a message")
             $(this).val("");
-    }).focusout(function() {
+    })
+    // when the textarea is focused-out and if there is no text, add the "Write a message" text and change the style
+    .focusout(function() {
         if ($(this).val() === "") {
             $(this).val("Write a message");
             $(this).css("color", "#707070");
@@ -192,6 +202,7 @@ async function openConversation(elem) {
         }
     });
 
+    // bind the event to the send message button
     $("#send-button").click(function() {
         sendMessage($(this).parents(".chat")[0].id)
     });
@@ -211,8 +222,6 @@ async function loadConversation(chatID) {
 async function sendMessage(chatID) {
     if ($("#message-input").val() === "Write a message") return;
     const message = $("#message-input").val();
-    console.log("Message to send:\n" + message);
-    console.log("chat id:", chatID);
     
     const options = {
         method: "POST",
@@ -222,7 +231,9 @@ async function sendMessage(chatID) {
         },
         body: JSON.stringify({chatID: chatID, sender: "place", message: message})
     };
+    // send the message
     const response = await fetch("/admin/send-message", options);
+    // if the server responded ok, append the new message to the chat
     if (response.status === 200) {
         let date = new Date();
         date = date.toDateString().slice(4,11).split(" ");
@@ -233,7 +244,9 @@ async function sendMessage(chatID) {
                 <div class="message-date">${date[1] + " " + date[0]}</div>
             </div>
         `);
+        // scroll down to show it
         $("#conversation-container").scrollTop(999999999);
+        // initialize the textarea
         $("textarea").val("Write a message");
         $("textarea").css("color", "#707070");
     }
@@ -260,8 +273,8 @@ async function displayPlaces() {
 }
 
 async function openPlace(elem) {
-    console.log(elem.id);
+    // request the place page
     const response = await fetch("/admin/" + document.cookie.split("jwt=")[1].split(";")[0] + "/place/" + elem.id);
-    console.log(response)
-    window.location.href = response.url
+    // redirect to that page
+    window.location.href = response.url;
 }
