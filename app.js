@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== "production") {
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+//const logger = require('morgan');
 const mongoose = require("mongoose");
 const favicon = require('serve-favicon');
 
@@ -44,27 +44,13 @@ let setCache = function (req, res, next) {
 }*/
 
 //app.use(setCache);
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))//, setCache)
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname, 'public', 'images')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-/* COOKIE DEBUG
-app.use(function(req,res,next) {
-  const cookie = req.cookies.jwt;
-  if (cookie == null) {
-    //const random = require("crypto").randomBytes(16).toString("hex");
-    //res.cookie('jwt', random, { maxAge: 900000, httpOnly: true });
-    console.log("jwt cookie doesn't exsist");
-  }
-  else
-    console.log("jwt cookie exists:", cookie);
-  next();
-})
-*/
 
 // Routers
 app.use("/", indexRouter);

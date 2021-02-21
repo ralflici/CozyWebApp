@@ -41,7 +41,7 @@ exports.verifyJWT = function(req, res, next) {
         jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, async function(err, payload) {
             // jwt not valid
             if(err) {
-                console.log("\x1b[31m", "jwt not valid");
+                //console.log("\x1b[31m", "jwt not valid");
                 res.statusCode = 401;
                 next();
                 return;

@@ -20,11 +20,6 @@ $(document).ready(function() {
         }
     });
 
-    // add the authorization info to the hidden input element included in the 'picture-container' form
-    // this ensures the success of the 'edit picture' operation since it is a submit function therefore
-    // there is no way of setting the headers
-    $("#jwt").val("Bearer " + document.cookie.split("jwt=")[1].split(";")[0]);
-
     // submit the profile info
     $("#profile-form").submit(async function(event) {
         // prevent default submit
@@ -148,5 +143,14 @@ $(".pic").click(function(event) {
 });
 // if the "input-picture" change event is triggered, submit the the change
 $("#input-picture").on("change", function() {
-    $("#picture-container").submit();
+    // add the authorization info to the hidden input element included in the 'picture-container' form
+    // this ensures the success of the 'edit picture' operation since it is a submit function therefore
+    // there is no way of setting the headers
+    if (document.cookie.indexOf("jwt") != -1) {
+        $("#jwt").val("Bearer " + document.cookie.split("jwt=")[1].split(";")[0]);
+        $("#picture-container").submit();
+    }
+    else {
+        console.warn("You must authenticate");
+    }
 });
