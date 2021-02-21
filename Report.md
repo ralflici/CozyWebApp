@@ -31,7 +31,7 @@ Da questa pagina l'utente può vedere le proprie prenotazioni e il loro stato. L
 
 ### Profile
 
-Qui l'utente può inserire e modificare i propri dati e un'immagine del profilo (che sarà in seguito sempre visibile nel header delle varie pagine). Per modificare l'immagine basta cliccare su **Edit** o sull'immagine stessa e questo genererà un evento legato all'input incluso nel form relativo all'immagine. Questo permette di rendere invisibile il pulsante di default di questo tipo di input poiché ad esso non si può applicare alcuno stile. Il form in questione include anche un `<input>` di tipo *hidden* che viene riempito con il valore del JWT affinché il caricamento dell'immagine sia un'operazione autorizzata.
+Qui l'utente può inserire e modificare i propri dati e un'immagine del profilo (che sarà in seguito sempre visibile nel header delle varie pagine). Per modificare l'immagine basta cliccare su **Edit** o sull'immagine stessa e questo genererà un evento legato al `<input>` incluso nel form relativo all'immagine. Questo permette di rendere invisibile il pulsante di default di questo tipo di `<input>` poiché ad esso non si può applicare alcuno stile. Il form in questione include anche un `<input>` di tipo *hidden* che viene riempito con il valore del JWT affinché il caricamento dell'immagine sia un'operazione autorizzata.
 Sono presenti anche le funzionalità relativa al cambio di password e all'eliminazione del proprio account. In quest'ultimo caso, ovviamente, verranno eliminate anche le relative prenotazioni e chat.  
 Infine, si può fare il log out che elimina il cookie JWT e reindirizza alla pagina di log in.
 
