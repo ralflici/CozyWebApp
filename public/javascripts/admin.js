@@ -161,9 +161,18 @@ async function openConversation(elem) {
     for (let i in conversation.chat.content) {
         const message = conversation.chat.content[i];
         const date = new Date(message.date).toString().substring(4,10).split(" ");
+        let image;
+        if (message.sender === "user") {
+            if (conversation.user.pic)
+                image = conversation.user.pic.data;
+            else
+                image = null;
+        }
+        else
+            image = conversation.place.images[0];
         $("#conversation-container").append(`
             <div class="message-item ${message.sender}">
-                <span class="sender-image"><img src="${message.sender === "user" ? conversation.user.pic.data : conversation.place.images[0]}" alt=""></img></span>
+                <span class="sender-image"><img src="${image === null ? "../images/userIcon.svg" : image}" alt=""></img></span>
                 <span class="message-content">${message.message}</span>
                 <div class="message-date">${date[1] + " " + date[0]}</div>
             </div>
