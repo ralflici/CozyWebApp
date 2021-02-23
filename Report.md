@@ -3,7 +3,8 @@
 Il progetto sviluppato ai fini dell'esame di Applicazioni Web è un sito volto ad offrire un servizio di bed and breakfast in diverse località nel mondo in base alle preferenze dell'utente. L'idea fondamentale è quella di permettere a quest'ultimo di filtrare gli alloggi in base ad una serie di criteri che vanno dalla posizione geografica alla struttura dell'alloggio e di vedere i risultati così ottenuti su una mappa. La consultazione degli alloggi è offerta a qualunque utente ma per poter usufruire degli altri servizi ci si dovrà iscrivere abilitando l'accesso alla propria area privata. Questa include pagine relative ai messaggi, alle prenotazioni e al profilo.  
 D'altra parte, gli utenti amministratori possono accedere a una sezione nella quale sono abilitati a controllare quasi ogni aspetto del servizio web. In particolare, possono rispondere ai messaggi degli utenti, accettare o rifiutare le prenotazioni e modificare, rimuovere o inserire nuovi alloggi.  
 La directory `utilities` contiene una serie di file non necessari al funzionamento dell'applicazione ma che sono stati utili per la sua costruzione.  
-Per avviare l'app basta installare le dependecies, digitare `npm start` nella directory principale del progetto e visitare l'indirizzo `localhost:3000`. Per iscriversi come utente amministratore, il codice segreto (definito nel file `.env`) è "`1234`".
+Per avviare l'app basta installare le dependecies, digitare `npm start` nella directory principale del progetto e visitare l'indirizzo `localhost:3000`. Per iscriversi come utente amministratore, il codice segreto (definito nel file `.env`) è "`1234`".  
+L'aaplicazione è in funzione pubblicamente all'indirizzo <https://cozy-web-app.herokuapp.com>
 
 ## Front-end
 
