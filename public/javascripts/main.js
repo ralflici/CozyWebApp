@@ -38,11 +38,11 @@ $(window).resize(function() {
     windowWidth = $(window).width();
     defineScreenSize();
     // change button text when resizing
-    if (screenType >= 2 && $("#get-started").text() == "Find you place ▼") {
+    if (screenType >= 2 && $("#get-started").text() == "Find your place ▼") {
         $("#get-started").text("Find your place");
     }
     else if (screenType < 2 && $("#get-started").text() == "Find your place") {
-        $("#get-started").text("Find you place ▼");
+        $("#get-started").text("Find your place ▼");
     }
 });
 
@@ -519,9 +519,9 @@ function changeButton(logged) {
         $("#get-started-link").attr("href", "#");
         // (for small screens) add an arrow since there no left and right container and the clicking the button will make the window scroll down
         if (screenType < 2)
-            $("#get-started").text("Find you place ▼");
+            $("#get-started").text("Find your place ▼");
         else
-            $("#get-started").text("Find you place");
+            $("#get-started").text("Find your place");
     }
     else {
         $("#get-started").text("Get started");
