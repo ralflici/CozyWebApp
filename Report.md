@@ -1,15 +1,16 @@
 # Report
 
 Il progetto sviluppato ai fini dell'esame di Applicazioni Web è un sito volto ad offrire un servizio di bed and breakfast in diverse località nel mondo in base alle preferenze dell'utente. L'idea fondamentale è quella di permettere a quest'ultimo di filtrare gli alloggi in base ad una serie di criteri che vanno dalla posizione geografica alla struttura dell'alloggio e di vedere i risultati così ottenuti su una mappa. La consultazione degli alloggi è offerta a qualunque utente ma per poter usufruire degli altri servizi ci si dovrà iscrivere abilitando l'accesso alla propria area privata. Questa include pagine relative ai messaggi, alle prenotazioni e al profilo.  
-D'altra parte, gli utenti amministratori possono accedere a una sezione nella quale sono abilitati a controllare quasi ogni aspetto del servizio web. In particolare, possono rispondere ai messaggi degli utenti, accettare o rifiutare le prenotazioni e modificare o inserire nuovi alloggi.  
+D'altra parte, gli utenti amministratori possono accedere a una sezione nella quale sono abilitati a controllare quasi ogni aspetto del servizio web. In particolare, possono rispondere ai messaggi degli utenti, accettare o rifiutare le prenotazioni e modificare, rimuovere o inserire nuovi alloggi.  
 La directory `utilities` contiene una serie di file non necessari al funzionamento dell'applicazione ma che sono stati utili per la sua costruzione.  
+Per avviare l'app basta installare le dependecies, digitare `npm start` nella directory principale del progetto e visitare l'indirizzo `localhost:3000`. Per iscriversi come utente amministratore, il codice segreto (definito nel file `.env`) è "`1234`".
 
 ## Front-end
 
 La parte relativa al client è stata sviluppata attraverso pagine HTML statiche, senza l'ausilio di un render engine. Ciò si è rivelato alquanto scomodo per l'aggiunta di nuovi elementi alle pagine e per la distribuzione delle stesse attraverso *express* (l'uso del metodo `sendFile()` piuttosto che di `render()`).  
 Lo stile generale e gli adattamenti necessari a rendere l'interfaccia grafica responsive sono stati ottenuti attraverso documenti *css* puri.  
 Sono state, inoltre, utilizzate delle librerie esterne che hanno facilitato la rappresentazione della mappa e del grafico dei prezzi. La prima è *LeafletJS* e la seconda *ChartJS*.  
-Visto che non è possibile settare gli headers quando viene richiesto un URL diretto o quando viene premuto un link, nel caso l'utente sia autenticato, gli URL sono automaticamente aggiornati dal client per includere il JWT permettendo così di accedere alle pagine private.
+Visto che non è possibile settare gli headers quando viene richiesto un URL diretto o quando viene premuto un link, nel caso l'utente sia autenticato, gli URL sono automaticamente aggiornati dal client per includere il JWT, permettendo così di accedere alle pagine private.
 
 ### Homepage
 
@@ -31,7 +32,7 @@ Da questa pagina l'utente può vedere le proprie prenotazioni e il loro stato. L
 
 ### Profile
 
-Qui l'utente può inserire e modificare i propri dati e un'immagine del profilo (che sarà in seguito sempre visibile nel header delle varie pagine). Per modificare l'immagine basta cliccare su **Edit** o sull'immagine stessa e questo genererà un evento legato al `<input>` incluso nel form relativo all'immagine. Questo permette di rendere invisibile il pulsante di default di questo tipo di `<input>` poiché ad esso non si può applicare alcuno stile. Il form in questione include anche un `<input>` di tipo *hidden* che viene riempito con il valore del JWT affinché il caricamento dell'immagine sia un'operazione autorizzata.
+Qui l'utente può inserire e modificare i propri dati e un'immagine del profilo (che sarà in seguito sempre visibile nell'elemento header delle varie pagine). Per modificare l'immagine basta cliccare su **Edit** o sull'immagine stessa e questo genererà un evento legato al `<input>` incluso nel form relativo all'immagine. Questo permette di rendere invisibile il pulsante di default di questo tipo di `<input>` poiché ad esso non si può applicare alcuno stile. Il form in questione include anche un `<input>` di tipo *hidden* che viene riempito con il valore del JWT affinché il caricamento dell'immagine sia un'operazione autorizzata.
 Sono presenti anche le funzionalità relativa al cambio di password e all'eliminazione del proprio account. In quest'ultimo caso, ovviamente, verranno eliminate anche le relative prenotazioni e chat.  
 Infine, si può fare il log out che elimina il cookie JWT e reindirizza alla pagina di log in.
 
@@ -39,7 +40,7 @@ Infine, si può fare il log out che elimina il cookie JWT e reindirizza alla pag
 
 La pagina contiene due form alternabili:
 
-- **Log in**: form che manda la richiesta di autenticazione al server e, in caso di risposta positiva, conferisce al client un cookie contenente il JWT che include nel proprio payload la variabile `_id` del *document* relativo allo user. Per ogni richiesta che necessita di autorizzazione, il client dovrà includere il token nell'header della richiesta nel giusto formato.
+- **Log in**: form che manda la richiesta di autenticazione al server e, in caso di risposta positiva, conferisce al client un cookie contenente il JWT che include nel proprio payload la variabile `_id` del *document* relativo allo user.
 - **Sign up**: form contenente un checkbox da spuntare nel caso ci si voglia iscrivere in qualità di amministratore (questo richiederà di inserire un codice segreto). Se lo username inserito appartiene già ad un altro utente o il codice segreto non è corretto, l'errore verrà segnalato.
 
 ### Admin page
@@ -47,32 +48,23 @@ La pagina contiene due form alternabili:
 La pagina principale dell'utente amministratore contiene 3 sezioni:
 
 - La prima sezione serve a rispondere ai messaggi degli utenti in qualità di gestore dell'alloggio.
-
 - La seconda sezione permette di gestire le prenotazioni che, una volta generate dall'utente, entrano nella stato *pending*, e successivamente possono essere contrassegnate come *accepted* o *rejected*. In quest'ultimo caso, l'alloggio interessato diventa nuovamente disponibile nelle date della prenotazione rifiutata.
+- La terza sezione contiene tutti gli alloggi del database. Questi possono essere consultati ed eventualmente modificati in tutti gli aspetti o rimossi (eliminando ogni chat e prenotazione ad esso associati).
 
-- La terza sezione contiene tutti gli alloggi del database. Questi possono essere consultati ed eventualmente modificati in tutti gli aspetti.
-
-Infine si può inserire un nuovo alloggio riempiendo un form apposito nel quale si può scegliere una località di quelle già presenti nel database o una nuova che verrà salvata assieme all'alloggio.
-
----
+Infine si può inserire un nuovo alloggio riempiendo un form apposito nel quale si può scegliere una località tra quelle già presenti nel database o una nuova che verrà salvata assieme all'alloggio.
 
 ## Back-end
 
 La parte server è costruita su *expressJS* ed appositi middleware necessari a gestire i diversi aspetti della comunicazione HTTP. La struttura di base del progetto è stata creata attraverso *express-generator* che ha inizializzato la directory e generato i file essenziali.  
 La comunicazione con il database (MongoDB Cloud Atlas) è gestita attraverso *mongoose*.  
-La struttura del back end è essenzialmente la seguente: con il comando `npm start` si avvia lo script `bin/www` che chiama il file `app.js` avviando così il server. Qui vengono importati gli strumenti middleware e i router. Ogni router gestisce i propri percorsi attraverso i metodi `get()` e `post()` chiamando le funzioni necessarie a svolgere le operazioni richieste. Queste funzioni sono, spesso, metodi esportati dai vari controller, i quali offrono strumenti di interazione con i *document* del database. I *document* sono creati sulla base dei file inclusi nella directory `models`.  
+La struttura del back end è essenzialmente la seguente: con il comando `npm start` si avvia lo script `bin/www` che chiama il file `app.js` avviando così il server. Qui vengono importati gli strumenti middleware e i router. Ogni router gestisce i propri percorsi attraverso i metodi `get()`, `post()` e `delete()`, chiamando le funzioni necessarie a svolgere le operazioni richieste. Queste funzioni sono, spesso, metodi esportati dai vari controller, i quali offrono strumenti di interazione con i *document* del database. I *document* sono creati sulla base dei file inclusi nella directory `models`.  
 Sono presenti, inoltre alcune altre dependencies:
 
 - Jimp: una libreria di manipolazione delle immagini necessaria a comprimere e ridimensionare le immagini caricate dagli utenti
-
 - Multer: uno strumento per il caricamento di file da form (utilizzato per le immagini)
-
 - Serve-favicon: un middleware che distribuisce il file *favicon.ico*
-
 - Async: usato nello script `populate_database.js`
-
 - Dotenv: utilizzato per gestire le variabili contenute nel file di node `.env`
-
 - Unsplash-js e Node-Fetch: per lo script `unsplash.js`  
 
-Solo nella funzione `isLogged()` nel file `routes/index.js` si valuta la presenza di un cookie contenente il JWT per valutare la necessità di reindirizzare un utente nel caso esso stia richiedendo la pagina di log in ma sia già stato autenticato.
+Solo nella funzione `isLogged()` (nel file `routes/index.js`) si valuta la presenza di un cookie contenente il JWT per valutare la necessità di reindirizzare un utente nel caso esso stia richiedendo la pagina di log in ma sia già stato autenticato.

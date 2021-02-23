@@ -7,7 +7,10 @@ exports.places_list = function(req, res) {
     .find({})
     .populate("location")
     .exec(function (err, listPlaces) {
-        if (err) {return next(err);}
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
         res.send(listPlaces);
     });
 };
@@ -18,7 +21,10 @@ exports.outmost_price = function(req, res) {
     .find({}, "location price")
     .populate("location")
     .exec(function (err, listPrices) {
-        if (err) {return next(err);}
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
 
         // obtain an array made only of the prices of the places of the desired location (if a location was sent by the client)
         let prices = listPrices.map(place => {
@@ -48,7 +54,10 @@ exports.places_list_filter = function(req, res) {
     })
     .populate("location")
     .exec(function(err, list) {
-        if (err) {return next(err);}
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
         // filter by location
         let filteredList = list.filter(place => {
             if (place.location.name === pref.location)
@@ -81,14 +90,19 @@ exports.getPlaceByID = async function(id) {
     try{
         const place = await Place.findById(id).populate("location");
         return place;
-    } 
-    catch(err) {
+    } catch(err) {
         throw err;
     } 
 };
 
 exports.isPlaceAvailable = async function(req, res, next) {
-    const place = await Place.findById(req.body.placeID).populate("location");
+    let place; 
+    try {
+        place = await Place.findById(req.body.placeID).populate("location");
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     const dates = new Array(new Date(req.body.dates[0]), new Date(req.body.dates[1]));
 
     for (let i in place.unavail) {
@@ -105,23 +119,46 @@ exports.isPlaceAvailable = async function(req, res, next) {
 
 exports.AddUnavailableDates = async function(req, res, next) {
     res.locals.place.unavail.push({start: res.locals.dates[0], end: res.locals.dates[1]});
-    await res.locals.place.save();
+    try {
+        await res.locals.place.save();
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     res.send();
 };
 
 exports.removeUnavailableDates = async function (req, res, next) {
     for (let i in res.locals.place) {
         if(!res.locals.skip[i]) {
-            const place = await Place.findById(res.locals.place[i]);
+            let place
+            try {
+                place = await Place.findById(res.locals.place[i]);
+            } catch(err) {
+                res.status(500).send(err);
+                return;
+            }
             place.unavail.splice(place.unavail.indexOf(res.locals.dates[i]), 1);
-            await place.save();
+            try {
+                await place.save();
+            } catch(err) {
+                res.status(500).send(err);
+                return;
+            }
         }
     }
     next();
 };
 
 exports.editPlace = async function(req, res, next) {
-    const place = await Place.findById(req.body.placeID);
+    let place;
+    try {
+        place = await Place.findById(req.body.placeID);
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
+
     if (place == null) {
         res.send(403, "Place not found in database");
         return;
@@ -141,13 +178,23 @@ exports.editPlace = async function(req, res, next) {
     place.images = [req.body.image0, req.body.image1, req.body.image2];
     place.coordinates = [parseFloat(req.body.lon), parseFloat(req.body.lat)];
     place.location = res.locals.location;
-    await place.save();
+    try {
+        await place.save();
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     res.redirect("back");
 }
 
 exports.insertPlace = async function(req, res, next) {
-    const placeInDB = await Place.find({ name: req.body.name });
-    console.log(placeInDB);
+    let placeInDB;
+    try {
+        placeInDB = await Place.find({ name: req.body.name });
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     if (placeInDB.length !== 0) {
         res.statusCode = 403;
         next();
@@ -171,7 +218,21 @@ exports.insertPlace = async function(req, res, next) {
         images: [req.body.image0, req.body.image1, req.body.image2],
         coordinates: [parseFloat(req.body.lon), parseFloat(req.body.lat)]
     });
-    console.log(place.coordinates);
-    await place.save();
+    try {
+        await place.save();
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     next();
+}
+
+exports.deletePlace = function(req, res, next) {
+    Place.findByIdAndDelete(req.params.id, function(err, doc) {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+        res.redirect("back");
+    });
 }

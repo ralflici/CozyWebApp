@@ -26,6 +26,7 @@ $(document).ready(async function() {
         // adjust the form's action url to include admin's jwt
         $("form").attr("action", "/admin/" + document.cookie.split("jwt=")[1].split(";")[0] + "/edit-place");
 
+
         $("#placeID").val(placeID);
 
         $("#name").val(info.name);

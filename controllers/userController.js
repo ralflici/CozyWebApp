@@ -15,24 +15,20 @@ exports.verifyJWT = function(req, res, next) {
     let accessToken;
     // search for the authorization header
     if (req.headers.authorization) {
-        //console.log("\x1b[35m", "HEADER FOUND");
         accessToken = req.headers.authorization.split("Bearer ")[1];
     }
     // otherwise search in the URL parameters
     else if (req.params.jwt) {
-        //console.log("\x1b[36m", "PARAM FOUND");
         accessToken = req.params.jwt;
     }
     // otherwise search in the body (only for the form relative to 'edit-picture')
     else if (req.body.jwt) {
-        //console.log("\x1b[36m", "BODY FOUND");
         accessToken = req.body.jwt.split("Bearer ")[1];
     }
     //console.log("\x1b[32m", "*** authorization", accessToken);
 
     // jwt not found or overridden
     if(accessToken == undefined || accessToken == "0") {
-        //console.log("\x1b[31m", "jwt not found");
         res.statusCode = 401;
         next();
     }
@@ -41,18 +37,21 @@ exports.verifyJWT = function(req, res, next) {
         jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, async function(err, payload) {
             // jwt not valid
             if(err) {
-                //console.log("\x1b[31m", "jwt not valid");
                 res.statusCode = 401;
                 next();
                 return;
-                //return res.send("Access token not valid");
             }
             
             // jwt valid
             // save user and user's id for later use
             res.locals.userID = payload.id;
-            res.locals.user = await User.findById(payload.id, "password name email location bio pic admin");
-            //console.log("\x1b[31m", "jwt valid");
+            try {
+                res.locals.user = await User.findById(payload.id, "password name email location bio pic admin");
+            } catch(err) {
+                res.status(500).send(err);
+                return;
+            }
+            
 
             // if the user is an admin save his access token to redirect him to the admin page
             if (res.locals.user.admin) {
@@ -81,13 +80,18 @@ exports.getUserByID = async function(id) {
     } 
 };
 
-exports.editProfile = function(req, res, next) {
+exports.editProfile = async function(req, res, next) {
     const user = res.locals.user;
     user.name = req.body.name;
     user.email = req.body.email;
     user.location = req.body.location;
     user.bio = req.body.bio;
-    user.save();
+    try {
+        await user.save();
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     res.redirect("back");
 };
 
@@ -108,14 +112,25 @@ exports.editPicture = function (req, res, next) {
     Jimp
     .read(path.join(__dirname + "/..", "/uploads", req.file.filename))
     .then(async function(image) {
-        const data = await image.cover(250,250).quality(70).getBase64Async(req.file.mimetype);
+        let data;
+        try {
+            data = await image.cover(250,250).quality(70).getBase64Async(req.file.mimetype);
+        } catch(err) {
+            res.status(500).send(err);
+            return;
+        }
         // save the image in the user's document
         user.pic = {
             data: data,
             contentType: req.file.mimetype,
             filename: req.file.filename
         }
-        await user.save();
+        try {
+            await user.save();
+        } catch(err) {
+            res.status(500).send(err);
+            return;
+        }
         // remove the uploaded image from the local 'uploads' directory
         fs.unlink('uploads/' + req.file.filename, (err) => {
             if (err) throw err;
@@ -123,7 +138,9 @@ exports.editPicture = function (req, res, next) {
         res.status(200);
         res.redirect("./profile.html");
     })
-    .catch(err => {throw err;});
+    .catch(err => {
+        res.status(500).send(err);
+    });
 };
 
 exports.getPic = function(req, res, next) {
@@ -145,7 +162,12 @@ exports.changePassword = async function(req, res, next) {
     if (SHA256(req.body.oldPass).toString() === res.locals.user.password) {
         // encrypt the new password and save it
         user.password = SHA256(req.body.newPass).toString();
-        await user.save();
+        try {
+            await user.save();
+        } catch(err) {
+            res.status(500).send(err);
+            return;
+        }
         res.status(200);
         res.send({ message: "Password changed successfully" });
     }

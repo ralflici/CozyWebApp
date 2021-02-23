@@ -115,7 +115,7 @@ $(document).ready(function() {
         });
         // delete the account
         $("#yes-delete").click(async function() {
-            const response = await fetch("/user/delete-account", { method: "POST", headers: { "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0], "Content-Type": "applications/json" }});
+            const response = await fetch("/user", { method: "DELETE", headers: { "Authorization": "Bearer " + document.cookie.split("jwt=")[1].split(";")[0], "Content-Type": "applications/json" }});
             // redirect to /log.html
             if (response.redirected)
                 window.location.href = response.url;

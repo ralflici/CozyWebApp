@@ -3,21 +3,49 @@
 const Booking = require("../models/booking");
 
 exports.bookingsList = async function(req, res, next) {
-    const list = await Booking.find({}).populate("user place");
-    res.send(list);
+    try {
+        const list = await Booking.find({}).populate("user place");
+        res.send(list);
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
 }
 
 exports.approve = async function(req, res, next) {
-    const booking = await Booking.findById(req.body.bookingID);
+    let booking;
+    try {
+        booking = await Booking.findById(req.body.bookingID);
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     booking.status = "approved";
-    await booking.save();
-    res.redirect("back");
+    try {
+        await booking.save();
+        res.redirect("back");
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
 }
 
 exports.reject = async function(req, res, next) {
-    const booking = await Booking.findById(req.body.bookingID);
+    let booking;
+    try {
+        booking = await Booking.findById(req.body.bookingID);
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     booking.status = "rejected";
-    await booking.save();
+    try {
+        await booking.save();
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
+    
     // save the following variables in order to remove the unavailable dates from the place since the booking was rejected
     res.locals.place = [];
     res.locals.place.push(booking.place);
@@ -46,7 +74,13 @@ exports.bookPlace = async function(req, res, next) {
         return;
     }
     // check if there is already another booking with the same data
-    const book = await Booking.findOne({dates: req.body.dates, user: res.locals.userID, place: req.body.placeID});
+    let book;
+    try {
+        book = await Booking.findOne({dates: req.body.dates, user: res.locals.userID, place: req.body.placeID});
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     // If it exists send error status code
     if (book != null && book.status !== "rejected") {
         res.statusCode = 403;
@@ -62,7 +96,12 @@ exports.bookPlace = async function(req, res, next) {
         price: req.body.price*req.body.nights,
         status: "pending"
     });
-    await booking.save();
+    try {
+        await booking.save();
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     next();
 };
 
@@ -77,28 +116,45 @@ exports.getUserBookings = async function(req, res, next) {
 };
 
 exports.deleteBooking = async function(req, res, next) {
+    let b;
     try {
-        const b = await Booking.findById(req.body.bookingID);
-        // save the following variables in order to remove the unavailable dates from the place since the booking is going to be deleted
-        res.locals.place = [];
-        res.locals.place.push(b.place);
-        res.locals.dates = [];
-        res.locals.dates.push({start: b.dates[0], end: b.dates[1]});
-        res.locals.skip = [];
-        if(b.status === "rejected") // If the booking was already rejected we don't need to remove the unavailable dates
-            res.locals.skip.push(true);
-        else
-            res.locals.skip.push(false);
+        b = await Booking.findById(req.body.bookingID);
+    }
+    catch(err) {
+        res.status(500).send(err);
+        return;
+    }
+
+    // save the following variables in order to remove the unavailable dates from the place since the booking is going to be deleted
+    res.locals.place = [];
+    res.locals.place.push(b.place);
+    res.locals.dates = [];
+    res.locals.dates.push({start: b.dates[0], end: b.dates[1]});
+    res.locals.skip = [];
+    if(b.status === "rejected") // If the booking was already rejected we don't need to remove the unavailable dates
+        res.locals.skip.push(true);
+    else
+        res.locals.skip.push(false);
+
+    try {
         await Booking.deleteOne({_id: req.body.bookingID});
     }
     catch(err) {
-        throw err;
+        res.status(500).send(err);
+        return;
     }
     next();
 }
 
 exports.deleteUserBookings = async function(req, res, next) {
-    const b = await Booking.find({ user: res.locals.userID });
+    let b;
+    try {
+        b = await Booking.find({ user: res.locals.userID });    
+    } catch(err) {
+        res.status(500).send(err);
+        return;       
+    }
+    
     // save the following variables in order to remove the unavailable dates from the places since the bookings are going to be deleted
     res.locals.place = [];
     res.locals.dates = [];
@@ -111,6 +167,24 @@ exports.deleteUserBookings = async function(req, res, next) {
         else
             res.locals.skip.push(false);
     }
-    await Booking.deleteMany({ user: res.locals.userID });
+    try {
+        await Booking.deleteMany({ user: res.locals.userID });        
+    }
+    catch(err) {
+        res.status(500).send(err)
+        return;
+    }
     next();
 }
+
+exports.deletePlaceBookings = async function(req, res, next) {
+    try {
+        await Booking.deleteMany({ place: req.params.id }); 
+    }
+    catch(err) {
+        res.status(500).send(err)
+        return;
+    }
+    next();
+}
+

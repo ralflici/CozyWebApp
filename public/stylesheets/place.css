@@ -100,7 +100,12 @@ ul {
 }
 
 h2 {
+    font-size: 16px;
     margin: 40px auto 6px auto;
+}
+
+label {
+    font-size: 16px;
 }
 
 #name, #image0, #image1, #image2, #newLocationName, #lat, #lon, #newLocationCountry, #newLocationImage {

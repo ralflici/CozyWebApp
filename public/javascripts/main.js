@@ -67,14 +67,14 @@ function defineScreenSize() {
 }
 
 async function searchLocation(text) {
-    const options = {
+    /*const options = {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({location : text})
-    }
-    const response = await fetch("/locations/name", options);
+    }*/
+    const response = await fetch("/locations/name/" + text);
     return response.json();
 }
 
@@ -160,14 +160,14 @@ async function getOutmostPrices(loc) {
 }
 
 async function getLocationsContinent(continent) {
-    const options = {
+    /*const options = {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({continent : continent})
-    }
-    const response = await fetch("/locations/continent", options);
+    }*/
+    const response = await fetch("/locations/continent/" + continent);
     return response.json();
 }
 
@@ -739,7 +739,7 @@ $(document).ready(function() {
         $("#search-button").click();
     });
 
-    getLocationsContinent("")
+    getLocationsContinent("*")
         .then((locs) => displayLocationSlides(locs))
         .catch((err) => console.log(err));
     // if a continent is selected hide the locations that don't have that continent as a class

@@ -43,10 +43,10 @@ router.get("/:jwt/bookings.html", user_controller.verifyJWT, unauthRedirect, fun
 router.get("/profile-info", user_controller.verifyJWT, user_controller.getInfo);
 
 router.post("/edit-profile", user_controller.verifyJWT, unauthRedirect, user_controller.editProfile);
-router.post("/edit-picture", upload.single("picture"), user_controller.verifyJWT, user_controller.editPicture); //multer insert the jwt in req.body so that verifyJWT can check his integrity
+router.post("/edit-picture", upload.single("picture"), user_controller.verifyJWT, user_controller.editPicture); // multer inserts the jwt in req.body so that verifyJWT can check his integrity
 router.get("/picture", user_controller.verifyJWT, user_controller.getPic);
 router.post("/change-password", user_controller.verifyJWT, unauthRedirect, user_controller.changePassword);
-router.post("/delete-account", user_controller.verifyJWT, unauthRedirect, bookings_controller.deleteUserBookings, place_controller.removeUnavailableDates, chat_controller.deleteUserChats, user_controller.deleteAccount);
+router.delete("/", user_controller.verifyJWT, unauthRedirect, bookings_controller.deleteUserBookings, place_controller.removeUnavailableDates, chat_controller.deleteUserChats, user_controller.deleteAccount);
 
 router.post("/:jwt/chat", user_controller.verifyJWT, chat_controller.getChat);
 router.get("/user-chats-list", user_controller.verifyJWT, chat_controller.getUserChats);

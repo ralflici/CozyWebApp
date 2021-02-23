@@ -9,7 +9,7 @@ $(document).ready(function() {
     displayPlaces();
 
     // adjust the link to include the admin's jwt
-    $("a").attr("href", window.location.href + "/new-place");
+    $("#new-place-link").attr("href", window.location.href + "/place");
 
     $("#log-out").click(function() {
         // override the cookie
@@ -261,13 +261,14 @@ async function displayPlaces() {
 
     for (let i in list) {
         $("#places-container>.content").append(`
-            <div class="item-container" id="${list[i]._id}" onclick="openPlace(this)">
+            <div class="item-container" id="${list[i]._id}">
                 <span class="item-image-container" style="overflow: hidden;"><img src="${list[i].images[0]}" style="width: 100%; height: 100%; object-fit: cover;"></img></span>
                 <span class="item-text">
-                    <div class="item-name">${list[i].name}</div>
+                    <div class="item-name"><a href="/admin/${document.cookie.split("jwt=")[1].split(";")[0]}/place/${list[i]._id}" style="cursor: pointer" title="Edit place">${list[i].name}</a></div>
                     <div class="item-location">${list[i].location.name}, ${list[i].location.country}</div>
                     <div class="item-bottom">
                         <span class="item-location">${list[i].price}€/night</span>
+                        <span class="item-delete" onclick="deletePlace(this)"><img src="../images/delete.svg" style="height: 100%; cursor: pointer" title="Delete place"></span>
                     </div>
                 </span>
             </div>
@@ -276,8 +277,31 @@ async function displayPlaces() {
 }
 
 async function openPlace(elem) {
+    // get the place id
+    const id = $(elem).parents(".item-container")[0].id;
     // request the place page
-    const response = await fetch("/admin/" + document.cookie.split("jwt=")[1].split(";")[0] + "/place/" + elem.id);
-    // redirect to that page
-    window.location.href = response.url;
+    const response = await fetch("/admin/" + document.cookie.split("jwt=")[1].split(";")[0] + "/place/" + id);
+    // if ok redirect
+    if (response.status === 200) {
+        window.location.href = response.url;
+    }
+    // else show response
+    else {
+        console.log(response);
+    }
+}
+
+async function deletePlace(elem) {
+    // get the place id
+    const id = $(elem).parents(".item-container")[0].id;
+    // request the delete operation
+    const response = await fetch("/admin/" + document.cookie.split("jwt=")[1].split(";")[0] + "/place/" + id, { method: "DELETE" });
+    // if ok redirect
+    if (response.redirected) {
+        window.location.href = response.url;
+    }
+    // else show response
+    else {
+        console.log(response);
+    }
 }

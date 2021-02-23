@@ -17,12 +17,14 @@ router.get("/bookings-list", admin_controller.verify, unauthRedirect, bookings_c
 router.post("/approve-booking", admin_controller.verify, unauthRedirect, bookings_controller.approve);
 router.post("/reject-booking", admin_controller.verify, unauthRedirect, bookings_controller.reject, place_controller.removeUnavailableDates, function(req, res, next) { res.redirect("back"); });
 
+// method to handle the request of the page of a new place
+router.get("/:jwt/place", admin_controller.verify, unauthRedirect, function(req, res, next) { res.sendFile(path.join(__dirname, '..', 'public', 'views', 'place.html')); });
+// method to handle the request of the page of an existing place
 router.get("/:jwt/place/:id", admin_controller.verify, unauthRedirect, function(req, res, next) {
     // send a cookie to indicate that the admin wants to edit an existing place with that id
     res.cookie("place", req.params.id);
     res.sendFile(path.join(__dirname, '..', 'public', 'views', 'place.html'));
 });
-router.get("/:jwt/new-place", admin_controller.verify, unauthRedirect, function(req, res, next) { res.sendFile(path.join(__dirname, '..', 'public', 'views', 'place.html')) });
 router.post("/:jwt/edit-place", admin_controller.verify, unauthRedirect, location_controller.insertLocation, place_controller.editPlace);
 router.post("/:jwt/insert-place", admin_controller.verify, unauthRedirect, location_controller.insertLocation, place_controller.insertPlace, function(req, res, next) {
     // if place insertion failed then the location should be removed
@@ -36,6 +38,7 @@ router.post("/:jwt/insert-place", admin_controller.verify, unauthRedirect, locat
         res.redirect("/admin/" + res.locals.userID);
     }
 });
+router.delete("/:jwt/place/:id", admin_controller.verify, unauthRedirect, chat_controller.deletePlaceChats, bookings_controller.deletePlaceBookings, place_controller.deletePlace);
 
 router.get("/:jwt", admin_controller.verify, unauthRedirect, function(req, res, next) { res.sendFile(path.join(__dirname, '..', 'public', 'views', 'admin.html')) });
 

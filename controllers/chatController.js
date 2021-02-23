@@ -5,8 +5,14 @@ const user_controller = require("./userController");
 const place_controller = require("./placeController");
 
 exports.chatsList = async function(req, res, next) {
-    const chats = await Chat.find({}).populate("user place");
-    res.send(chats);
+    try {
+        const chats = await Chat.find({}).populate("user place");
+        res.send(chats);
+    }
+    catch(err) {
+        res.status(500).send(err);
+        return;
+    }
 }
 
 exports.getUserChats = function(req,res,next) {
@@ -14,7 +20,10 @@ exports.getUserChats = function(req,res,next) {
     .find({})
     .populate("user place")
     .exec(function(err, chats) {
-        if (err) throw err;
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
         let arr = [];
         for (let i in chats) {
             if (chats[i].user != null && chats[i].user._id == res.locals.userID)
@@ -33,7 +42,10 @@ exports.getChat = async function(req, res, next) {
     .find({})
     .populate("user place")
     .exec(async function(err, chats) {
-        if (err) throw err;
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
 
         // find the chat that contains the requested user and place
         let chat;
@@ -49,20 +61,38 @@ exports.getChat = async function(req, res, next) {
             res.redirect("/user" + req.url + "/" + chat._id);
         // otherwise create a new chat and redirect to its page
         else {
-            const place = await place_controller.getPlaceByID(req.body.placeID);
+            let place;
+            try {
+                place = await place_controller.getPlaceByID(req.body.placeID);
+            } catch(err) {
+                res.status(500).send(err);
+                return;
+            }
             const newChat = new Chat({
                 user: res.locals.user,
                 place: place,
                 content: []
             });
-            await newChat.save();
+            try {
+                await newChat.save();
+            } catch(err) {
+                res.status(500).send(err);
+                return;
+            }
+            
             res.redirect("/user" + req.url + "/" + newChat._id);
         }
     });
 }
 
 exports.sendMessage = async function(req, res, next) {
-    const chat = await Chat.findById(req.body.chatID);
+    let chat;
+    try {
+        chat = await Chat.findById(req.body.chatID);
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     // create the content object with the required variables and push it to the chat document
     const content = {
         sender: req.body.sender,
@@ -70,26 +100,34 @@ exports.sendMessage = async function(req, res, next) {
         date: Date.now()
     };
     chat.content.push(content);
-    await chat.save();
+    try {
+        await chat.save();
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     res.redirect("back");
 }
 
 exports.chatExists = async function(req, res, next) {
-    console.log(req.params.id);
     try {
         await Chat.findById(req.params.id);
-    }
-    catch(err) {
-        res.sendStatus(404);
+    } catch(err) {
+        res.status(500).send(err);
         return;
     }
     next();
 }
 
 exports.getConversation = async function(req, res, next) {
-    const chat = await Chat.findById(req.params.id);
-    const place = await place_controller.getPlaceByID(chat.place);
-    const user = await user_controller.getUserByID(chat.user);
+    let chat, place, user;
+    try {
+        chat = await Chat.findById(req.params.id);
+        place = await place_controller.getPlaceByID(chat.place);
+        user = await user_controller.getUserByID(chat.user);
+    } catch(err) {
+        res.status(500).send(err);
+    }
 
     if (chat == undefined) {
         res.sendStatus(500);
@@ -100,6 +138,21 @@ exports.getConversation = async function(req, res, next) {
 }
 
 exports.deleteUserChats = async function(req, res, next) {
-    await Chat.deleteMany({ user: res.locals.userID })
+    try {
+        await Chat.deleteMany({ user: res.locals.userID });
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
+    next();
+}
+
+exports.deletePlaceChats = async function(req, res, next) {
+    try {
+        await Chat.deleteMany({ place: req.params.id });
+    } catch(err) {
+        res.status(500).send(err);
+        return;
+    }
     next();
 }

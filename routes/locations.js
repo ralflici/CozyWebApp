@@ -5,7 +5,7 @@ var router = express.Router();
 var location_controller = require("../controllers/locationController");
 
 router.get("/", location_controller.locationsList);
-router.post("/name", location_controller.locationsName);
-router.post("/continent", location_controller.locationsContinent);
+router.get("/name/:data", location_controller.locationsName);
+router.get("/continent/:data", location_controller.locationsContinent);
 
 module.exports = router;
