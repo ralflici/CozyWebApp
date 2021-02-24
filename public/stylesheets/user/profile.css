@@ -111,7 +111,6 @@
 }
 
 #picture-container {
-    margin: auto;
     width: 31.35%;
 }
 
@@ -296,7 +295,7 @@
         flex-flow: column;
     }
 
-    .picture-container {
+    #picture-container {
         width: 50%;
         order: 1;
         margin-bottom: 28px;
